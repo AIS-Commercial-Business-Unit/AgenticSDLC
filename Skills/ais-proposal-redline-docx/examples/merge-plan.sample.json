@@ -1,0 +1,49 @@
+{
+  "source_docx": "pink.docx",
+  "output_docx": "redline.docx",
+  "settings": {
+    "author": "AIS Proposal Team",
+    "initials": "AIS",
+    "enable_track_revisions": true,
+    "preserve_comments": true
+  },
+  "operations": [
+    {
+      "type": "insert_paragraph_after",
+      "paragraph_index": 18,
+      "style": "_Body",
+      "text": "AIS delivers the solution as one integrated AI/ML operating model: intake the mission need, build governed data and model assets, monitor performance and risk, and audit decisions against agency policy."
+    },
+    {
+      "type": "replace_paragraph_text",
+      "paragraph_index": 27,
+      "style": "_Body",
+      "text": "DataLance supports the AI/ML platform as the data-product and decision-framework layer, giving teams a repeatable way to qualify sources, trace lineage, and move from ingestion to governed intelligence."
+    },
+    {
+      "type": "insert_table_after",
+      "paragraph_index": 31,
+      "style": "TableGrid",
+      "rows": [
+        ["Phase", "Purpose"],
+        ["Intake", "Confirm use case, risk, data readiness, and approval path."],
+        ["Build", "Develop governed data, model, and integration assets."],
+        ["Monitor", "Track quality, drift, usage, and operational risk."],
+        ["Audit", "Maintain evidence for compliance and decision traceability."]
+      ]
+    }
+  ],
+  "comment_replies": [
+    {
+      "comment_id": "4",
+      "anchor_paragraph_index": 18,
+      "status": "addressed",
+      "reply": "Added an opening integration paragraph that links the AI/ML platform, DataLance support layer, governance, and proof points into one solution story."
+    }
+  ],
+  "validation": {
+    "expect_reviewer_comments": 1,
+    "expect_resolution_comments": 1,
+    "fail_generic_replies": true
+  }
+}

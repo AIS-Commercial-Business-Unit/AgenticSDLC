@@ -1,0 +1,97 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, reopened, synchronize, edited, labeled, unlabeled, ready_for_review]
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  release-label-lint:
+    name: Release Label Lint
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Validate release metadata
+        run: bash .specify/scripts/bash/validate-release-pr.sh
+
+  markdown-lint:
+    name: Markdown Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: DavidAnson/markdownlint-cli2-action@v23
+        with:
+          globs: |
+            **/*.md
+            !.project-context/**
+            !node_modules/**
+
+  frontmatter-lint:
+    name: Spec Frontmatter Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Validate spec frontmatter
+        run: bash .specify/scripts/bash/validate-frontmatter.sh
+
+  generated-command-drift:
+    name: Generated Command Drift
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Validate generated command files
+        run: bash .specify/scripts/bash/generate-commands.sh --check
+
+  shell-lint:
+    name: Shell Script Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install ShellCheck
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y shellcheck
+
+      - name: Validate Bash syntax
+        run: git ls-files | grep -E '^(\.specify/scripts/|scripts/).+\.sh$' | xargs -r bash -n
+
+      - name: Run ShellCheck
+        run: git ls-files | grep -E '^(\.specify/scripts/|scripts/).+\.sh$' | xargs -r shellcheck -x --severity=error
+
+  workflow-lint:
+    name: Workflow Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install actionlint
+        env:
+          ACTIONLINT_VERSION: 1.7.7
+        run: |
+          set -euo pipefail
+          curl -fsSL \
+            "https://github.com/rhysd/actionlint/releases/download/v${ACTIONLINT_VERSION}/actionlint_${ACTIONLINT_VERSION}_linux_amd64.tar.gz" \
+            -o actionlint.tar.gz
+          mkdir -p "$HOME/.local/bin"
+          tar -xzf actionlint.tar.gz -C "$HOME/.local/bin" actionlint
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+      - name: Validate GitHub Actions workflows
+        run: actionlint .github/workflows/*.yml

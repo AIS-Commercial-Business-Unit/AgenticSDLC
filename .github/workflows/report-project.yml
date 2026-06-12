@@ -1,0 +1,50 @@
+name: "Report: Project Overview"
+
+on:
+  workflow_dispatch:
+  workflow_call:
+    secrets:
+      ANTHROPIC_FOUNDRY_API_KEY:
+        required: true
+      ANTHROPIC_FOUNDRY_BASE_URL:
+        required: true
+      CLAUDE_MODEL:
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  project:
+    name: Generate Project Report
+    runs-on: ubuntu-latest
+    env:
+      CLAUDE_CODE_USE_FOUNDRY: "1"
+      ANTHROPIC_FOUNDRY_BASE_URL: ${{ secrets.ANTHROPIC_FOUNDRY_BASE_URL }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_FOUNDRY_API_KEY }}
+          prompt: |
+            Read and execute the instructions in .specify/prompts/ais.report.project.md to generate a comprehensive project report.
+            No additional user input is needed — use empty string for $ARGUMENTS.
+            Write the report file to specs/.project-plan/reports/ as specified in the prompt.
+          allowed_tools: "Bash,Read,Write,Edit,Glob,Grep"
+          model: ${{ secrets.CLAUDE_MODEL }}
+          max_turns: "25"
+
+      - name: Commit report
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add specs/.project-plan/reports/
+          if ! git diff --staged --quiet; then
+            git commit -m "Add project report $(date -u +%Y-%m-%d)"
+            git push
+          else
+            echo "No report generated — nothing to commit"
+          fi

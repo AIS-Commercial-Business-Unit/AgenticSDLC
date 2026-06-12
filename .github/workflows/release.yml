@@ -1,0 +1,208 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-main
+  cancel-in-progress: false
+
+jobs:
+  release:
+    name: Create GitHub Release
+    if: ${{ !contains(github.event.head_commit.message, '[skip release]') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate release app credentials
+        env:
+          AIS_RELEASE_APP_CLIENT_ID: ${{ vars.AIS_RELEASE_APP_CLIENT_ID }}
+          AIS_RELEASE_APP_PRIVATE_KEY: ${{ secrets.AIS_RELEASE_APP_PRIVATE_KEY }}
+        run: |
+          set -euo pipefail
+
+          [[ -n "$AIS_RELEASE_APP_CLIENT_ID" ]] || {
+            echo "Missing repo variable AIS_RELEASE_APP_CLIENT_ID." >&2
+            exit 1
+          }
+
+          [[ -n "$AIS_RELEASE_APP_PRIVATE_KEY" ]] || {
+            echo "Missing repo secret AIS_RELEASE_APP_PRIVATE_KEY." >&2
+            exit 1
+          }
+
+      - name: Create release app token
+        id: app-token
+        uses: actions/create-github-app-token@v3
+        with:
+          client-id: ${{ vars.AIS_RELEASE_APP_CLIENT_ID }}
+          private-key: ${{ secrets.AIS_RELEASE_APP_PRIVATE_KEY }}
+          permission-contents: write
+          permission-pull-requests: read
+
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          token: ${{ steps.app-token.outputs.token }}
+          persist-credentials: false
+
+      - name: Load release app identity
+        id: app-identity
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          APP_SLUG: ${{ steps.app-token.outputs.app-slug }}
+        run: |
+          set -euo pipefail
+
+          app_user_id="$(gh api "/users/${APP_SLUG}[bot]" --jq .id)"
+
+          {
+            echo "name=${APP_SLUG}[bot]"
+            echo "email=${app_user_id}+${APP_SLUG}[bot]@users.noreply.github.com"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Load merged PR metadata
+        id: pr
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          set -euo pipefail
+
+          pr_json=""
+          for attempt in 1 2 3 4 5 6; do
+            pr_json="$(gh api \
+              -H "Accept: application/vnd.github+json" \
+              "/repos/${GITHUB_REPOSITORY}/commits/${GITHUB_SHA}/pulls" \
+              --jq '.[0]' 2>/tmp/pr-lookup-error || true)"
+
+            if [[ -n "$pr_json" && "$pr_json" != "null" ]]; then
+              break
+            fi
+
+            [[ "$attempt" -lt 6 ]] || break
+            sleep_seconds=$((attempt * 5))
+            echo "Merged PR metadata is not available for ${GITHUB_SHA}; retrying in ${sleep_seconds}s." >&2
+            sleep "$sleep_seconds"
+          done
+
+          if [[ -z "$pr_json" || "$pr_json" == "null" ]]; then
+            commit_message="$(gh api \
+              "/repos/${GITHUB_REPOSITORY}/commits/${GITHUB_SHA}" \
+              --jq '.commit.message' 2>/tmp/commit-lookup-error || true)"
+            pr_number="$(printf '%s\n' "$commit_message" \
+              | sed -nE 's/.*\(#([0-9]+)\).*/\1/p' \
+              | tail -n 1)"
+
+            if [[ -n "$pr_number" ]]; then
+              echo "Falling back to PR #${pr_number} parsed from merge commit message." >&2
+              pr_json="$(gh api "/repos/${GITHUB_REPOSITORY}/pulls/${pr_number}" --jq '.')"
+              merge_commit_sha="$(printf '%s\n' "$pr_json" | jq -r '.merge_commit_sha // empty')"
+
+              if [[ "$merge_commit_sha" != "$GITHUB_SHA" ]]; then
+                echo "PR #${pr_number} merge_commit_sha (${merge_commit_sha}) does not match ${GITHUB_SHA}." >&2
+                exit 1
+              fi
+            fi
+          fi
+
+          if [[ -z "$pr_json" || "$pr_json" == "null" ]]; then
+            echo "No merged pull request found for commit ${GITHUB_SHA}." >&2
+            [[ ! -s /tmp/pr-lookup-error ]] || cat /tmp/pr-lookup-error >&2
+            [[ ! -s /tmp/commit-lookup-error ]] || cat /tmp/commit-lookup-error >&2
+            echo "Release automation requires main changes to arrive through pull requests." >&2
+            exit 1
+          fi
+
+          printf '{"pull_request":%s}\n' "$pr_json" > pr-event.json
+          bash .specify/scripts/bash/validate-release-pr.sh --event pr-event.json
+
+          release_label="$(jq -r '.pull_request.labels[].name' pr-event.json | grep -E '^release:(major|minor|patch)$')"
+          pr_number="$(jq -r '.pull_request.number' pr-event.json)"
+          pr_title="$(jq -r '.pull_request.title' pr-event.json)"
+          pr_url="$(jq -r '.pull_request.html_url' pr-event.json)"
+          jq -r '.pull_request.body // ""' pr-event.json > pr-body.md
+
+          {
+            echo "label=$release_label"
+            echo "number=$pr_number"
+            echo "title<<EOF"
+            echo "$pr_title"
+            echo "EOF"
+            echo "url=$pr_url"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Apply release bump
+        env:
+          RELEASE_LABEL: ${{ steps.pr.outputs.label }}
+          PR_NUMBER: ${{ steps.pr.outputs.number }}
+          PR_TITLE: ${{ steps.pr.outputs.title }}
+          PR_URL: ${{ steps.pr.outputs.url }}
+        run: |
+          bash .specify/scripts/bash/apply-release-bump.sh \
+            --label "$RELEASE_LABEL" \
+            --pr-number "$PR_NUMBER" \
+            --pr-title "$PR_TITLE" \
+            --pr-url "$PR_URL" \
+            --body-file pr-body.md
+
+      - name: Commit release files
+        id: release_commit
+        env:
+          APP_TOKEN: ${{ steps.app-token.outputs.token }}
+          APP_BOT_NAME: ${{ steps.app-identity.outputs.name }}
+          APP_BOT_EMAIL: ${{ steps.app-identity.outputs.email }}
+        run: |
+          set -euo pipefail
+
+          release_version="$(tr -d '[:space:]' < VERSION)"
+
+          if git diff --quiet -- VERSION .specify/VERSION CHANGELOG.md; then
+            echo "Release automation did not change VERSION, .specify/VERSION, or CHANGELOG.md." >&2
+            exit 1
+          fi
+
+          git config user.name "$APP_BOT_NAME"
+          git config user.email "$APP_BOT_EMAIL"
+          git add VERSION .specify/VERSION CHANGELOG.md
+          git commit -m "Release v${release_version} [skip release]"
+          git push "https://x-access-token:${APP_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" HEAD:main
+
+          {
+            echo "version=$release_version"
+            echo "sha=$(git rev-parse HEAD)"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Build release notes
+        run: |
+          set -euo pipefail
+          release_version="${{ steps.release_commit.outputs.version }}"
+
+          awk -v version="$release_version" '
+            $0 ~ "^## \\[" version "\\]" {
+              capture = 1
+              print
+              next
+            }
+            capture && /^## \[[0-9]+\.[0-9]+\.[0-9]+\]/ {
+              exit
+            }
+            capture {
+              print
+            }
+          ' CHANGELOG.md > release-notes.md
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          set -euo pipefail
+          release_version="${{ steps.release_commit.outputs.version }}"
+          release_sha="${{ steps.release_commit.outputs.sha }}"
+
+          gh release create "v${release_version}" \
+            --target "$release_sha" \
+            --title "v${release_version}" \
+            --notes-file release-notes.md

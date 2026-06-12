@@ -1,0 +1,54 @@
+name: "Report: All Reports"
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: read
+  issues: read
+
+jobs:
+  metrics:
+    name: Metrics
+    uses: ./.github/workflows/report-metrics.yml
+    secrets:
+      ANTHROPIC_FOUNDRY_API_KEY: ${{ secrets.ANTHROPIC_FOUNDRY_API_KEY }}
+      ANTHROPIC_FOUNDRY_BASE_URL: ${{ secrets.ANTHROPIC_FOUNDRY_BASE_URL }}
+      CLAUDE_MODEL: ${{ secrets.CLAUDE_MODEL }}
+
+  standup:
+    name: Standup
+    needs: metrics
+    uses: ./.github/workflows/report-standup.yml
+    secrets:
+      ANTHROPIC_FOUNDRY_API_KEY: ${{ secrets.ANTHROPIC_FOUNDRY_API_KEY }}
+      ANTHROPIC_FOUNDRY_BASE_URL: ${{ secrets.ANTHROPIC_FOUNDRY_BASE_URL }}
+      CLAUDE_MODEL: ${{ secrets.CLAUDE_MODEL }}
+
+  status:
+    name: Status
+    needs: standup
+    uses: ./.github/workflows/report-status.yml
+    secrets:
+      ANTHROPIC_FOUNDRY_API_KEY: ${{ secrets.ANTHROPIC_FOUNDRY_API_KEY }}
+      ANTHROPIC_FOUNDRY_BASE_URL: ${{ secrets.ANTHROPIC_FOUNDRY_BASE_URL }}
+      CLAUDE_MODEL: ${{ secrets.CLAUDE_MODEL }}
+
+  project:
+    name: Project
+    needs: status
+    uses: ./.github/workflows/report-project.yml
+    secrets:
+      ANTHROPIC_FOUNDRY_API_KEY: ${{ secrets.ANTHROPIC_FOUNDRY_API_KEY }}
+      ANTHROPIC_FOUNDRY_BASE_URL: ${{ secrets.ANTHROPIC_FOUNDRY_BASE_URL }}
+      CLAUDE_MODEL: ${{ secrets.CLAUDE_MODEL }}
+
+  retrospective:
+    name: Retrospective
+    needs: project
+    uses: ./.github/workflows/report-retrospective.yml
+    secrets:
+      ANTHROPIC_FOUNDRY_API_KEY: ${{ secrets.ANTHROPIC_FOUNDRY_API_KEY }}
+      ANTHROPIC_FOUNDRY_BASE_URL: ${{ secrets.ANTHROPIC_FOUNDRY_BASE_URL }}
+      CLAUDE_MODEL: ${{ secrets.CLAUDE_MODEL }}

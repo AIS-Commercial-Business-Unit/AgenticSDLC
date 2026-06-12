@@ -1,0 +1,33 @@
+# Project context (raw inputs, keep folder but not contents)
+.project-context/*
+!.project-context/.keep
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+
+# Temporary / generated
+*.log
+_gen.*
+
+# Claude Code - local/personal settings
+.claude/settings.local.json
