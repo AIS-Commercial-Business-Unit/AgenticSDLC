@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Agentic Engineering Maturity Assessment — Self-assessment checklist for enterprise teams adopting AI engineering governance. Get your maturity score and adoption roadmap." />
+  <meta name="theme-color" content="#0f1117" />
+  <title>Maturity Assessment — Agentic Engineering Framework</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ============================================================
+       NAVIGATION
+  ============================================================ -->
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <div class="nav__inner">
+      <a class="nav__brand" href="index.html">
+        <div class="nav__brand-mark" aria-hidden="true">AEF</div>
+        <span class="nav__brand-name">Agentic Engineering Framework</span>
+      </a>
+      <ul class="nav__links" role="list">
+        <li><a class="nav__link" href="index.html#features">Features</a></li>
+        <li><a class="nav__link" href="index.html#playbooks">Playbooks</a></li>
+        <li><a class="nav__link" href="index.html#quick-start">Documentation</a></li>
+        <li><a class="nav__link" href="governance-explorer.html">Governance</a></li>
+        <li><a class="nav__link" href="metrics.html">Metrics</a></li>
+        <li>
+          <a class="nav__link nav__link--github" href="#" aria-label="View on GitHub">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
+            </svg>
+            GitHub
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ============================================================
+       HERO
+  ============================================================ -->
+  <section class="hero section" style="padding-bottom: var(--space-12);">
+    <div class="container">
+      <div style="max-width: 720px;">
+        <div class="hero__eyebrow">
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor" aria-hidden="true"><circle cx="5" cy="5" r="5"/></svg>
+          Self-Assessment Tool
+        </div>
+        <h1 class="hero__title" style="font-size: clamp(var(--text-2xl), 3.5vw, var(--text-4xl));">
+          Agentic Engineering<br /><span>Maturity Assessment</span>
+        </h1>
+        <p class="hero__subtitle" style="max-width: 600px;">
+          Evaluate your organization's readiness across six dimensions of enterprise agentic engineering. Instant scoring, maturity tier, and a prioritized adoption roadmap.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       INSTRUCTIONS
+  ============================================================ -->
+  <div style="background: var(--color-surface); border-top: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border); padding: var(--space-5) 0;">
+    <div class="container">
+      <div style="display: flex; align-items: center; gap: var(--space-4); flex-wrap: wrap;">
+        <span class="badge badge--blue">Instructions</span>
+        <p style="margin: 0; font-size: var(--text-sm); color: var(--color-text-muted);">
+          Check each item that currently applies to your team. Your score and maturity tier update in real time. Use results to prioritize your adoption roadmap.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       MAIN CHECKLIST LAYOUT
+  ============================================================ -->
+  <section class="section section-sm">
+    <div class="container">
+      <div class="checklist-layout">
+
+        <!-- Sidebar -->
+        <aside class="checklist-sidebar" aria-label="Checklist navigation and score">
+          <nav class="checklist-nav" aria-label="Checklist sections">
+            <div class="checklist-nav__header">Sections</div>
+            <ul class="checklist-nav__list" role="list">
+              <li>
+                <a class="checklist-nav__item" href="#section-branch">
+                  <span class="checklist-nav__dot" aria-hidden="true"></span>
+                  Branch Management
+                </a>
+              </li>
+              <li>
+                <a class="checklist-nav__item" href="#section-pr">
+                  <span class="checklist-nav__dot" aria-hidden="true"></span>
+                  Pull Request Process
+                </a>
+              </li>
+              <li>
+                <a class="checklist-nav__item" href="#section-ai">
+                  <span class="checklist-nav__dot" aria-hidden="true"></span>
+                  AI / Copilot Governance
+                </a>
+              </li>
+              <li>
+                <a class="checklist-nav__item" href="#section-agents">
+                  <span class="checklist-nav__dot" aria-hidden="true"></span>
+                  Agent &amp; Skill Management
+                </a>
+              </li>
+              <li>
+                <a class="checklist-nav__item" href="#section-cicd">
+                  <span class="checklist-nav__dot" aria-hidden="true"></span>
+                  CI/CD &amp; Automation
+                </a>
+              </li>
+              <li>
+                <a class="checklist-nav__item" href="#section-docs">
+                  <span class="checklist-nav__dot" aria-hidden="true"></span>
+                  Documentation
+                </a>
+              </li>
+            </ul>
+          </nav>
+
+          <div class="checklist-score-card" aria-live="polite" aria-label="Your maturity score">
+            <div class="checklist-score-card__title">Your Score</div>
+            <div class="overall-score">
+              <div class="overall-score__value" id="overall-score">0%</div>
+              <div class="overall-score__label" id="overall-fraction">0 / 35 items</div>
+            </div>
+            <div id="maturity-tier-badge" class="maturity-tier maturity-tier--foundation">
+              Foundation
+            </div>
+            <p id="tier-description" style="font-size: var(--text-xs); color: var(--color-text-muted); margin-top: var(--space-3); text-align: center; line-height: 1.5;">
+              Get started with governance basics
+            </p>
+          </div>
+        </aside>
+
+        <!-- Checklist Main -->
+        <main aria-label="Maturity assessment checklist">
+
+          <!-- SECTION 1: Branch Management -->
+          <section class="checklist-section" id="section-branch" aria-labelledby="title-branch">
+            <div class="checklist-section__header">
+              <h2 class="checklist-section__title" id="title-branch">
+                <span aria-hidden="true">🌿</span>
+                Branch Management
+              </h2>
+              <span class="checklist-section__count" id="count-branch" aria-live="polite">0 / 6</span>
+            </div>
+            <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Branch management progress">
+              <div class="progress-bar__fill" id="progress-branch"></div>
+            </div>
+            <div class="checklist-section__body">
+              <label class="checklist-item">
+                <input type="checkbox" data-section="branch" />
+                <span class="checklist-item__label">We have protected branch rules on our main branch</span>
+              </label>
+              <label class="checklist-item">
+                <input type="checkbox" data-section="branch" />
+                <span class="checklist-item__label">We use feature branches for all changes</span>
+              </label>
+              <label class="checklist-item">
+                <input type="checkbox" data-section="branch" />
+                <span class="checklist-item__label">We require PR reviews before merge</span>
+              </label>
+              <label class="checklist-item">
+                <input type="checkbox" data-section="branch" />
+                <span class="checklist-item__label">We use conventional commit messages</span>
+              </label>
+              <label class="checklist-item">
+                <input type="checkbox" data-section="branch" />
+                <span class="checklist-item__label">We have a defined branching strategy documented</span>
+              </label>
+              <label class="checklist-item">
+                <input type="checkbox" data-section="branch" />
+                <span class="checklist-item__label">We enforce branch naming conventions</span>
+              </label>
+            </div>
+          </section>
+
+          <!-- SECTION 2: Pull Request Process -->
+          <section class="checklist-section" id="section-pr" aria-labelledby="title-pr">
+            <div class="checklist-section__header">
+              <h2 class="checklist-section__title" id="title-pr">
+                <span aria-hidden="true">🔀</span>
+                Pull Request Process
+              </h2>
+              <span class="checklist-section__count" id="count-pr" aria-live="polite">0 / 6</span>
+            </div>
+            <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Pull request process progress">
+              <div class="progress-bar__fill" id="progress-pr"></div>
+            </div>
+            <div class="checklist-section__body">
+              <label class="checklist-item">
+                <input type="checkbox" data-section="pr" />
+                <span class="checklist-item__label">All changes go through PRs (no direct commits to main)</span>
+              </label>
+              <label class="checklist-item">
+                <input type="checkbox" data-section="pr" />
+                <span class="checklist-item__label">PRs require at least 1 reviewer (2+ for critical paths)</span>
+              </label>
+              <label class="checklist-item">
+                <input type="checkbox" data-section="pr" />
+                <span class="checklist-item__label">We have a PR template / description standard</span>
+              </label>
+              <label class="checklist-item">
+                <input type="checkbox" data-section="pr" />
+                <span class="checklist-item__label">CI must pass before merge is allowed</span>
+              </label>
+              <label class="checklist-item">
+                <input type="checkbox" data-section="pr" />
+                <span class="checklist-item__label">Reviewers leave meaningful, actionable comments</span>
+              </label>
+              <label class="checklist-item">
+                <input type="checkbox" data-section="pr" />
+                <span class="checklist-item__label">We track PR review SLAs</span>
+              </label>
+            </div>
+          </section>
+
+          <!-- SECTION 3: AI / Copilot Governance -->
+          <section class="checklist-section" id="section-ai" aria-labelledby="title-ai">
+            <div class="checklist-section__header">
+              <h2 class="checklist-section__title" id="title-ai">
+                <span aria-hidden="true">🤖</span>
+                AI / Copilot Governance
+              </h2>
+              <span class="checklist-section__count" id="count-ai" aria-live="polite">0 / 6</span>
+            </div>
+            <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="AI governance progress">
+              <div class="progress-bar__fill" id="progress-ai"></div>
+            </div>
+            <div class="checklist-section__body">
+              <label class="checklist-item">
+                <input type="checkbox" data-section="ai" />
+                <span class="checklist-item__label">We have defined autonomy levels for our AI agents (L0–L3)</span>
+              </label>
+              <label class="checklist-item">
+                <input type="checkbox" data-section="ai" />
+                <span class="checklist-item__label">We have an audit trail for AI agent actions</span>
+              </label>
+              <label class="checklist-item">
+                <input type="checkbox" data-section="ai" />
+                <span class="checklist-item__label">We have a governance registry for agent configurations and policies</span>
+              </label>
+              <label class="checklist-item">
+                <input type="checkbox" data-section="ai" />
+                <span class="checklist-item__label">We require human approval for high-risk agent actions</span>
+              </label>
+              <label class="checklist-item">
+                <input type="checkbox" data-section="ai" />
+                <span class="checklist-item__label">We have tested our agents against failure modes and edge cases</span>
+              </label>
+              <label class="checklist-item">
+                <input type="checkbox" data-section="ai" />
+                <span class="checklist-item__label">We have a brownfield assessment for all existing repositories</span>
+              </label>
+            </div>
+          </section>
+
+          <!-- SECTION 4: Agent & Skill Management -->
+          <section class="checklist-section" id="section-agents" aria-labelledby="title-agents">
+            <div class="checklist-section__header">
+              <h2 class="checklist-section__title" id="title-agents">
+                <span aria-hidden="true">⚙️</span>
+                Agent &amp; Skill Management
+              </h2>
+              <span class="checklist-section__count" id="count-agents" aria-live="polite">0 / 6</span>
+            </div>
+            <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Agent and skill management progress">
+              <div class="progress-bar__fill" id="progress-agents"></div>
+            </div>
+            <div class="checklist-section__body">
+              <label class="checklist-item">
+                <input type="checkbox" data-section="agents" />
+                <span class="checklist-item__label">We have a catalog of all AI agents in use across the organization</span>
+              </label>
+              <label class="checklist-item">
+                <input type="checkbox" data-section="agents" />
+                <span class="checklist-item__label">We have documented agent roles, responsibilities, and boundaries</span>
+              </label>
+              <label class="checklist-item">
+                <input type="checkbox" data-section="agents" />
+                <span class="checklist-item__label">We version control our agent definitions and configurations</span>
+              </label>
+              <label class="checklist-item">
+                <input type="checkbox" data-section="agents" />
+                <span class="checklist-item__label">We have CI tests for agent behavior and expected outputs</span>
+              </label>
+              <label class="checklist-item">
+                <input type="checkbox" data-section="agents" />
+                <span class="checklist-item__label">We rotate and periodically review agent permissions</span>
+              </label>
+              <label class="checklist-item">
+                <input type="checkbox" data-section="agents" />
+                <span class="checklist-item__label">We have defined reusable skill definitions for common agent behaviors</span>
+              </label>
+            </div>
+          </section>
+
+          <!-- SECTION 5: CI/CD & Automation -->
+          <section class="checklist-section" id="section-cicd" aria-labelledby="title-cicd">
+            <div class="checklist-section__header">
+              <h2 class="checklist-section__title" id="title-cicd">
+                <span aria-hidden="true">🚀</span>
+                CI/CD &amp; Automation
+              </h2>
+              <span class="checklist-section__count" id="count-cicd" aria-live="polite">0 / 6</span>
+            </div>
+            <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="CI/CD and automation progress">
+              <div class="progress-bar__fill" id="progress-cicd"></div>
+            </div>
+            <div class="checklist-section__body">
+              <label class="checklist-item">
+                <input type="checkbox" data-section="cicd" />
+                <span class="checklist-item__label">We have automated schema validation in CI</span>
+              </label>
+              <label class="checklist-item">
+                <input type="checkbox" data-section="cicd" />
+                <span class="checklist-item__label">We have automated tests that run on every PR</span>
+              </label>
+              <label class="checklist-item">
+                <input type="checkbox" data-section="cicd" />
+                <span class="checklist-item__label">We deploy from CI pipelines (not manual deployments)</span>
+              </label>
+              <label class="checklist-item">
+                <input type="checkbox" data-section="cicd" />
+                <span class="checklist-item__label">We have defined and separated environments (dev / staging / prod)</span>
+              </label>
+              <label class="checklist-item">
+                <input type="checkbox" data-section="cicd" />
+                <span class="checklist-item__label">We have deployment approval gates for production</span>
+              </label>
+              <label class="checklist-item">
+                <input type="checkbox" data-section="cicd" />
+                <span class="checklist-item__label">We have documented and tested rollback procedures</span>
+              </label>
+            </div>
+          </section>
+
+          <!-- SECTION 6: Documentation -->
+          <section class="checklist-section" id="section-docs" aria-labelledby="title-docs">
+            <div class="checklist-section__header">
+              <h2 class="checklist-section__title" id="title-docs">
+                <span aria-hidden="true">📄</span>
+                Documentation
+              </h2>
+              <span class="checklist-section__count" id="count-docs" aria-live="polite">0 / 5</span>
+            </div>
+            <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Documentation progress">
+              <div class="progress-bar__fill" id="progress-docs"></div>
+            </div>
+            <div class="checklist-section__body">
+              <label class="checklist-item">
+                <input type="checkbox" data-section="docs" />
+                <span class="checklist-item__label">We have an ADR (Architecture Decision Record) process</span>
+              </label>
+              <label class="checklist-item">
+                <input type="checkbox" data-section="docs" />
+                <span class="checklist-item__label">We have runbooks for all production operations</span>
+              </label>
+              <label class="checklist-item">
+                <input type="checkbox" data-section="docs" />
+                <span class="checklist-item__label">We maintain up-to-date README files for all repositories</span>
+              </label>
+              <label class="checklist-item">
+                <input type="checkbox" data-section="docs" />
+                <span class="checklist-item__label">We document agent and automation behavior and expectations</span>
+              </label>
+              <label class="checklist-item">
+                <input type="checkbox" data-section="docs" />
+                <span class="checklist-item__label">We have a CONTRIBUTING.md with onboarding guidance</span>
+              </label>
+            </div>
+          </section>
+
+          <!-- RESULTS SECTION -->
+          <div class="results-section" id="results" aria-live="polite">
+            <span class="section-label">Your Result</span>
+            <h2>
+              <span id="result-score-display">0%</span> —
+              <span id="result-tier-name">Foundation</span>
+            </h2>
+            <p class="results-tier-desc" id="result-description">
+              Get started with governance basics. Focus on branch protection rules, PR process, and establishing your first governance touchpoints.
+            </p>
+
+            <div style="max-width: 480px; margin: 0 auto var(--space-8);">
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3); text-align: left; margin-bottom: var(--space-6);">
+                <div style="padding: var(--space-4); background: rgba(232, 91, 91, 0.07); border: 1px solid rgba(232, 91, 91, 0.15); border-radius: var(--border-radius);">
+                  <div style="font-size: var(--text-xs); font-weight: 700; color: #e85b5b; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: var(--space-2);">Foundation</div>
+                  <div style="font-size: var(--text-xs); color: var(--color-text-muted);">0 – 40%</div>
+                </div>
+                <div style="padding: var(--space-4); background: rgba(232, 180, 75, 0.07); border: 1px solid rgba(232, 180, 75, 0.15); border-radius: var(--border-radius);">
+                  <div style="font-size: var(--text-xs); font-weight: 700; color: #e8b44b; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: var(--space-2);">Developing</div>
+                  <div style="font-size: var(--text-xs); color: var(--color-text-muted);">41 – 65%</div>
+                </div>
+                <div style="padding: var(--space-4); background: rgba(79, 126, 245, 0.07); border: 1px solid rgba(79, 126, 245, 0.15); border-radius: var(--border-radius);">
+                  <div style="font-size: var(--text-xs); font-weight: 700; color: #7aa3f7; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: var(--space-2);">Established</div>
+                  <div style="font-size: var(--text-xs); color: var(--color-text-muted);">66 – 85%</div>
+                </div>
+                <div style="padding: var(--space-4); background: rgba(61, 153, 112, 0.07); border: 1px solid rgba(61, 153, 112, 0.15); border-radius: var(--border-radius);">
+                  <div style="font-size: var(--text-xs); font-weight: 700; color: #5bbf94; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: var(--space-2);">Advanced</div>
+                  <div style="font-size: var(--text-xs); color: var(--color-text-muted);">86 – 100%</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="results-actions">
+              <button class="btn btn--outline" onclick="window.print()" aria-label="Print your assessment results">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                  <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+                  <rect x="6" y="14" width="12" height="8"></rect>
+                </svg>
+                Download Your Results
+              </button>
+              <a class="btn btn--primary" href="index.html#quick-start">View the Framework →</a>
+            </div>
+          </div>
+
+        </main>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FOOTER
+  ============================================================ -->
+  <footer class="footer" role="contentinfo">
+    <div class="footer__inner">
+      <div class="footer__brand">
+        <div class="nav__brand-mark" aria-hidden="true">AEF</div>
+        <div>
+          <div class="footer__brand-name">Agentic Engineering Framework</div>
+          <div class="footer__meta">v1.0.0-alpha · MIT License · Built by AIS Commercial Business Unit</div>
+        </div>
+      </div>
+      <nav class="footer__links" aria-label="Footer navigation">
+        <a href="index.html#features">Features</a>
+        <a href="index.html#playbooks">Playbooks</a>
+        <a href="index.html#quick-start">Docs</a>
+        <a href="index.html">Home</a>
+        <a href="#">GitHub</a>
+      </nav>
+    </div>
+  </footer>
+
+  <!-- ============================================================
+       INLINE SCRIPT — Score calculation (~45 lines)
+  ============================================================ -->
+  <script>
+    (function () {
+      var TOTAL = 35;
+      var sections = {
+        branch:  { total: 6 },
+        pr:      { total: 6 },
+        ai:      { total: 6 },
+        agents:  { total: 6 },
+        cicd:    { total: 6 },
+        docs:    { total: 5 }
+      };
+      var tiers = [
+        { max: 40,  cls: 'foundation', label: 'Foundation', desc: 'Get started with governance basics. Focus on branch protection rules, PR process, and establishing your first governance touchpoints.' },
+        { max: 65,  cls: 'developing',  label: 'Developing',  desc: 'Building the right practices. You have a solid foundation—now standardize your PR process and introduce AI governance fundamentals.' },
+        { max: 85,  cls: 'established', label: 'Established', desc: 'Strong foundation. Optimize automation, expand your agent catalog, and tighten audit trail coverage to advance further.' },
+        { max: 100, cls: 'advanced',    label: 'Advanced',    desc: 'Leading enterprise agentic engineering practice. You are a model for governed AI adoption at scale.' }
+      ];
+
+      function getTier(pct) {
+        for (var i = 0; i < tiers.length; i++) {
+          if (pct <= tiers[i].max) return tiers[i];
+        }
+        return tiers[tiers.length - 1];
+      }
+
+      function update() {
+        var totalChecked = 0;
+        Object.keys(sections).forEach(function (key) {
+          var boxes = document.querySelectorAll('input[data-section="' + key + '"]');
+          var checked = 0;
+          boxes.forEach(function (b) { if (b.checked) checked++; });
+          var pct = sections[key].total > 0 ? Math.round((checked / sections[key].total) * 100) : 0;
+          document.getElementById('count-'    + key).textContent = checked + ' / ' + sections[key].total;
+          var bar = document.getElementById('progress-' + key);
+          bar.style.width = pct + '%';
+          bar.parentElement.setAttribute('aria-valuenow', pct);
+          totalChecked += checked;
+        });
+
+        var overallPct = Math.round((totalChecked / TOTAL) * 100);
+        var tier = getTier(overallPct);
+
+        document.getElementById('overall-score').textContent    = overallPct + '%';
+        document.getElementById('overall-fraction').textContent = totalChecked + ' / ' + TOTAL + ' items';
+        document.getElementById('result-score-display').textContent = overallPct + '%';
+        document.getElementById('result-tier-name').textContent     = tier.label;
+        document.getElementById('tier-description').textContent     = tier.desc;
+        document.getElementById('result-description').textContent   = tier.desc;
+
+        var badge = document.getElementById('maturity-tier-badge');
+        badge.className = 'maturity-tier maturity-tier--' + tier.cls;
+        badge.textContent = tier.label;
+      }
+
+      document.querySelectorAll('input[type="checkbox"]').forEach(function (box) {
+        box.addEventListener('change', update);
+      });
+
+      update();
+    })();
+  </script>
+
+</body>
+</html>

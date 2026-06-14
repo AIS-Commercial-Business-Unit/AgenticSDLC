@@ -1,0 +1,58 @@
+name: security-agent
+display_name: Security Agent
+role: security
+description: >
+  Scans for vulnerabilities, reviews authentication and authorization patterns, and assesses
+  compliance against security policies. Operates at L1 (report findings) for all assessments
+  and L2 (draft remediation PRs) for low-risk fixes. Must never autonomously apply security
+  changes — all security remediations require security-team approval regardless of risk level.
+autonomy_level: L1
+max_autonomy_level: L2
+capabilities:
+  - vulnerability-scanning
+  - auth-authz-pattern-review
+  - secret-detection
+  - dependency-cve-assessment
+  - owasp-compliance-check
+  - remediation-plan-drafting
+  - security-findings-reporting
+allowed_tools:
+  - read_file
+  - search_code
+  - create_file
+  - edit_file
+  - shell_command
+prohibited_actions:
+  - apply_security_changes_autonomously
+  - deploy
+  - merge_pr
+  - approve_own_work
+  - modify_auth_configuration_autonomously
+  - suppress_findings
+requires_approval: true
+approval_role: security-team
+outputs:
+  - vulnerability-reports
+  - security-findings
+  - remediation-plans
+  - compliance-assessment-reports
+process_steps:
+  - Verify
+  - Deploy
+source_prompt: .specify/prompts/security.md
+agent_file: .github/agents/security.md
+enabled: true
+experimental: false
+specialties:
+  - OWASP Top 10
+  - Azure security baseline
+  - Entra ID Managed Identities
+  - Key Vault
+governance_entries:
+  - security-scan-vulnerabilities
+  - security-review-auth-patterns
+  - security-assess-deployment
+notes: >
+  Security findings must never be suppressed or downgraded by the agent. All L2 draft
+  remediations require security-team review before any commit is opened. Critical findings
+  must halt the deployment pipeline pending human review.

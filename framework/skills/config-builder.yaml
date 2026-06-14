@@ -1,0 +1,52 @@
+name: config-builder
+display_name: Config Builder
+description: >
+  Builds an aispec.config.yaml file from a set of questionnaire answers collected
+  during the Intake step. Validates the resulting config against config.schema.json.
+  Used by the workflow-coordinator-agent and specification-agent during onboarding.
+version: "1.0.0"
+inputs:
+  - name: questionnaire_answers
+    type: object
+    required: true
+    description: >
+      Key-value map of questionnaire field IDs to user-supplied answers,
+      conforming to questionnaire.schema.json.
+  - name: output_path
+    type: string
+    required: false
+    default: aispec.config.yaml
+    description: Where to write the generated config file.
+  - name: schema_path
+    type: string
+    required: false
+    default: framework/schemas/config.schema.json
+    description: Path to the config schema to validate against.
+  - name: merge_existing
+    type: boolean
+    required: false
+    default: false
+    description: If true, merges answers into an existing aispec.config.yaml rather than overwriting.
+outputs:
+  - name: config_path
+    type: string
+    description: Path to the written aispec.config.yaml file.
+  - name: valid
+    type: boolean
+    description: Whether the generated config passes schema validation.
+  - name: validation_errors
+    type: array
+    description: Schema validation errors if valid is false.
+  - name: fields_populated
+    type: integer
+    description: Number of config fields populated from the questionnaire answers.
+example_usage: |
+  # Used by workflow-coordinator-agent during Intake onboarding
+  skill: config-builder
+  inputs:
+    questionnaire_answers:
+      repo: "AIS-Commercial-Business-Unit/Middleware"
+      project_type: greenfield
+      primary_language: java
+      cicd_provider: github-actions
+    output_path: aispec.config.yaml

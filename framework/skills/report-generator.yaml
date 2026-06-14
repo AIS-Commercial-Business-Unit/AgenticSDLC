@@ -1,0 +1,47 @@
+name: report-generator
+display_name: Report Generator
+description: >
+  Converts structured YAML or JSON data into formatted markdown reports. Supports
+  multiple report templates (governance grid, metrics summary, gap analysis, assessment
+  summary). Used by finops-agent, modernization-agent, and experiment-runner-agent
+  during Report and Learn steps.
+version: "1.0.0"
+inputs:
+  - name: data_path
+    type: string
+    required: true
+    description: Path to the structured YAML or JSON data file to render.
+  - name: template
+    type: string
+    required: true
+    description: Template name to use (governance-grid / metrics-summary / gap-analysis / assessment-summary / custom).
+  - name: output_path
+    type: string
+    required: true
+    description: Path where the rendered markdown file will be written.
+  - name: title
+    type: string
+    required: false
+    description: Optional report title to embed in the markdown header.
+  - name: custom_template_path
+    type: string
+    required: false
+    description: Path to a custom Handlebars or Mustache template file. Used only when template is "custom".
+outputs:
+  - name: report_path
+    type: string
+    description: Path to the generated markdown report file.
+  - name: word_count
+    type: integer
+    description: Approximate word count of the generated report.
+  - name: sections_generated
+    type: array
+    description: List of section names that were included in the report.
+example_usage: |
+  # Used by finops-agent during Report step
+  skill: report-generator
+  inputs:
+    data_path: docs/governance/summary-grid.json
+    template: governance-grid
+    output_path: docs/governance/summary-grid.md
+    title: "Governance Summary Grid — June 2026"

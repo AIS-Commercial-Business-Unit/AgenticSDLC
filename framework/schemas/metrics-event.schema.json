@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ais.com/agentic-sdlc/framework/schemas/metrics-event.schema.json",
+  "title": "AIS Metrics Audit Event",
+  "description": "JSON Schema 2020-12 for a single audit event emitted when an agent executes a governed activity. Events are written to audit/events/ as YAML or JSON files. Conforms to the scribe-governance-agent logging contract.",
+  "type": "object",
+  "required": [
+    "$schema",
+    "event_id",
+    "timestamp",
+    "agent",
+    "activity",
+    "ais_step",
+    "autonomy_level",
+    "outcome",
+    "repo"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "Schema URI identifying the event format version.",
+      "const": "https://ais.com/agentic-sdlc/framework/schemas/metrics-event.schema.json"
+    },
+    "event_id": {
+      "type": "string",
+      "description": "UUID v4 uniquely identifying this audit event.",
+      "format": "uuid"
+    },
+    "timestamp": {
+      "type": "string",
+      "description": "ISO 8601 date-time when the event was emitted (UTC).",
+      "format": "date-time"
+    },
+    "agent": {
+      "type": "string",
+      "description": "Kebab-case name of the agent that performed the activity (e.g., 'backend-developer-agent'). Must match an entry in the agent catalog."
+    },
+    "activity": {
+      "type": "string",
+      "description": "Human-readable name of the specific governed activity that was performed (e.g., 'Implement REST API Endpoint')."
+    },
+    "ais_step": {
+      "type": "string",
+      "description": "The AIS Specify SDLC step this activity belongs to.",
+      "enum": ["Intake", "Specify", "Design", "Plan", "Implement", "Verify", "Deploy", "Report", "Learn"]
+    },
+    "autonomy_level": {
+      "type": "string",
+      "description": "The autonomy level at which the activity was actually performed.",
+      "enum": ["L0", "L1", "L2", "L3"]
+    },
+    "duration_seconds": {
+      "type": ["number", "null"],
+      "description": "How long the activity took from start to completion in seconds. Null if not measured.",
+      "minimum": 0
+    },
+    "outcome": {
+      "type": "string",
+      "description": "The result of the governed activity.",
+      "enum": ["success", "failure", "skipped", "pending-approval", "approved", "rejected"]
+    },
+    "evidence": {
+      "type": "array",
+      "description": "File paths relative to the repository root or human-readable descriptions of artifacts produced as evidence of this activity.",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "human_approved_by": {
+      "type": ["string", "null"],
+      "description": "GitHub username of the person who provided human approval, if applicable. Null if no human approval was required or if approval is still pending."
+    },
+    "repo": {
+      "type": "string",
+      "description": "Repository identifier in owner/repo format (e.g., 'AIS-Commercial-Business-Unit/Middleware')."
+    },
+    "session_id": {
+      "type": ["string", "null"],
+      "description": "Framework workflow session ID linking this event to a broader workflow run. Null if not associated with a session."
+    },
+    "governance_entry_id": {
+      "type": ["string", "null"],
+      "description": "The governance registry entry ID that authorized this activity. Should match an entry in governance-registry.yaml."
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Extensible key-value map for additional context. Values must be strings, numbers, booleans, or null. Use for agent-specific telemetry not covered by top-level fields.",
+      "additionalProperties": {
+        "type": ["string", "number", "boolean", "null"]
+      }
+    }
+  }
+}

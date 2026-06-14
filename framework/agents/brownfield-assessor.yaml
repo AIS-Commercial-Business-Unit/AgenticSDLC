@@ -1,0 +1,52 @@
+name: brownfield-assessor-agent
+display_name: Brownfield Assessor Agent
+role: intake
+description: >
+  Performs read-only repository assessment and generates structured readiness reports for
+  brownfield modernization or framework onboarding. Strictly L0 — it observes and reports
+  only, and must never write to the target repository. All outputs are placed in the
+  framework workspace, not the assessed repository.
+autonomy_level: L0
+max_autonomy_level: L0
+capabilities:
+  - repository-structure-scanning
+  - technology-stack-detection
+  - readiness-baseline-assessment
+  - anti-pattern-detection
+  - dependency-inventory
+  - test-coverage-estimation
+  - documentation-completeness-check
+allowed_tools:
+  - read_file
+  - search_code
+  - repo-scanner
+  - gap-analyzer
+prohibited_actions:
+  - write_to_assessed_repository
+  - create_commits_in_target
+  - deploy
+  - merge_pr
+  - modify_target_code
+  - modify_infrastructure
+  - approve_own_work
+requires_approval: false
+approval_role: tech-lead
+outputs:
+  - readiness-assessment-reports
+  - repository-structure-metadata
+  - technology-stack-inventories
+  - gap-analysis-reports
+process_steps:
+  - Intake
+source_prompt: .specify/prompts/brownfield-assessor.md
+agent_file: .github/agents/brownfield-assessor.md
+enabled: true
+experimental: false
+specialties: []
+governance_entries:
+  - brownfield-assess-repository
+notes: >
+  Strictly read-only. Any write to the target repository is a critical governance
+  violation and must be treated as an incident. Assessment outputs are written to the
+  framework workspace under docs/assessment/ only. The agent requires requires_approval
+  set to false for observation activities, but assessment reports are advisory only.

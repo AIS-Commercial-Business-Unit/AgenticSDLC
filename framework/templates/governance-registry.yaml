@@ -1,0 +1,1323 @@
+# framework/templates/governance-registry.yaml
+# Authoritative reference example of a populated governance activity registry.
+# Conforms to framework/schemas/governance-registry.schema.json.
+# Review date: 90 days from 2026-06-14 = 2026-09-12
+
+registry:
+
+  # ── ARCHITECT ──────────────────────────────────────────────────────────────
+
+  - id: architect-design-service-boundaries
+    agent: architecture-agent
+    step: Design
+    activity: Define Service Boundaries
+    summary: >
+      Analyzes requirements and domain model to propose bounded context boundaries
+      and inter-service contracts. Produces a service boundary specification document.
+    max_autonomy: L1
+    current_autonomy: L1
+    risk_level: high
+    allowed_tools:
+      - read_file
+      - search_code
+      - create_file
+    prohibited_actions:
+      - merge_pr
+      - deploy
+      - modify_infrastructure
+    required_inputs:
+      - approved-requirements-document
+      - domain-model-draft
+    required_evidence:
+      - docs/architecture/service-boundaries.md
+      - docs/architecture/domain-model.md
+    approval_requirements:
+      - type: human
+        approver_role: solution-architect
+        required: true
+        timeout_hours: 48
+    confidence_threshold:
+      recommend: 0.80
+      prepare: 0.85
+    policy_source: docs/governance/architecture-policy.md
+    status: Approved
+    completeness_pct: 95
+    approved_by: steven-suing
+    approved_at: "2026-06-14T15:00:00Z"
+    last_assessed_at: "2026-06-14T15:00:00Z"
+    review_interval_days: 90
+    review_due_at: "2026-09-12"
+    review_state: current
+    owner: steven-suing
+    notes: High risk due to cross-service blast radius. Boundary changes require ADR.
+
+  - id: architect-author-adr
+    agent: architecture-agent
+    step: Specify
+    activity: Author Architecture Decision Record
+    summary: >
+      Drafts an ADR for a significant architectural decision. Follows the MADR
+      format. The draft is reviewed and approved by the solution architect.
+    max_autonomy: L1
+    current_autonomy: L1
+    risk_level: medium
+    allowed_tools:
+      - read_file
+      - search_code
+      - create_file
+      - edit_file
+    prohibited_actions:
+      - merge_pr
+      - deploy
+      - approve_own_work
+    required_inputs:
+      - architecture-decision-trigger
+      - context-document
+    required_evidence:
+      - docs/architecture/decisions/NNNN-decision-title.md
+    approval_requirements:
+      - type: human
+        approver_role: solution-architect
+        required: true
+        timeout_hours: 48
+    confidence_threshold:
+      recommend: 0.75
+      prepare: 0.80
+    policy_source: docs/guides/adr-process.md
+    status: Approved
+    completeness_pct: 90
+    approved_by: steven-suing
+    approved_at: "2026-06-14T15:00:00Z"
+    last_assessed_at: "2026-06-14T15:00:00Z"
+    review_interval_days: 90
+    review_due_at: "2026-09-12"
+    review_state: current
+    owner: steven-suing
+    notes: ADR must not be marked accepted until solution-architect approves the GitHub PR.
+
+  - id: architect-review-api-contracts
+    agent: architecture-agent
+    step: Design
+    activity: Review API Contracts
+    summary: >
+      Reviews proposed OpenAPI or AsyncAPI contracts for adherence to architecture
+      standards, naming conventions, and versioning policy. Produces a review report.
+    max_autonomy: L1
+    current_autonomy: L1
+    risk_level: medium
+    allowed_tools:
+      - read_file
+      - search_code
+    prohibited_actions:
+      - merge_pr
+      - modify_api_contracts_autonomously
+      - deploy
+    required_inputs:
+      - proposed-api-contract
+    required_evidence:
+      - docs/architecture/api-review-report.md
+    approval_requirements:
+      - type: human
+        approver_role: tech-lead
+        required: true
+        timeout_hours: 24
+    confidence_threshold:
+      recommend: 0.78
+      prepare: 0.82
+    policy_source: docs/reference/api-standards.md
+    status: Approved
+    completeness_pct: 88
+    approved_by: steven-suing
+    approved_at: "2026-06-14T15:00:00Z"
+    last_assessed_at: "2026-06-14T15:00:00Z"
+    review_interval_days: 90
+    review_due_at: "2026-09-12"
+    review_state: current
+    owner: steven-suing
+    notes: null
+
+  # ── SPECIFICATION ──────────────────────────────────────────────────────────
+
+  - id: specification-parse-requirements
+    agent: specification-agent
+    step: Intake
+    activity: Parse Requirements Document
+    summary: >
+      Reads raw requirements documents (Word, PDF, markdown) and extracts structured
+      requirement entries, constraints, and assumptions into a specification draft.
+    max_autonomy: L2
+    current_autonomy: L2
+    risk_level: low
+    allowed_tools:
+      - read_file
+      - create_file
+      - schema-validator
+    prohibited_actions:
+      - make_architecture_decisions
+      - approve_own_work
+    required_inputs:
+      - raw-requirements-document
+    required_evidence:
+      - specs/requirements-extracted.yaml
+    approval_requirements:
+      - type: human
+        approver_role: product-owner
+        required: true
+        timeout_hours: 24
+    confidence_threshold:
+      recommend: 0.70
+      prepare: 0.75
+    policy_source: null
+    status: Approved
+    completeness_pct: 85
+    approved_by: steven-suing
+    approved_at: "2026-06-14T15:00:00Z"
+    last_assessed_at: "2026-06-14T15:00:00Z"
+    review_interval_days: 90
+    review_due_at: "2026-09-12"
+    review_state: current
+    owner: steven-suing
+    notes: null
+
+  - id: specification-generate-spec
+    agent: specification-agent
+    step: Specify
+    activity: Generate Structured Specification
+    summary: >
+      Converts parsed requirements into a structured spec conforming to the spec schema,
+      including acceptance criteria, out-of-scope items, and dependency references.
+    max_autonomy: L2
+    current_autonomy: L2
+    risk_level: medium
+    allowed_tools:
+      - read_file
+      - create_file
+      - edit_file
+      - schema-validator
+    prohibited_actions:
+      - approve_own_work
+      - make_architecture_decisions
+      - deploy
+    required_inputs:
+      - parsed-requirements-yaml
+    required_evidence:
+      - specs/feature-spec.yaml
+    approval_requirements:
+      - type: human
+        approver_role: product-owner
+        required: true
+        timeout_hours: 48
+      - type: human
+        approver_role: tech-lead
+        required: false
+        timeout_hours: 24
+    confidence_threshold:
+      recommend: 0.75
+      prepare: 0.80
+    policy_source: null
+    status: Approved
+    completeness_pct: 90
+    approved_by: steven-suing
+    approved_at: "2026-06-14T15:00:00Z"
+    last_assessed_at: "2026-06-14T15:00:00Z"
+    review_interval_days: 90
+    review_due_at: "2026-09-12"
+    review_state: current
+    owner: steven-suing
+    notes: null
+
+  # ── PLANNING ───────────────────────────────────────────────────────────────
+
+  - id: planning-decompose-spec
+    agent: planning-agent
+    step: Plan
+    activity: Decompose Specification into Work Items
+    summary: >
+      Reads an approved specification and produces a structured set of work items
+      with titles, descriptions, acceptance criteria, and dependency links.
+    max_autonomy: L2
+    current_autonomy: L2
+    risk_level: low
+    allowed_tools:
+      - read_file
+      - create_file
+      - edit_file
+      - work-item-creator
+    prohibited_actions:
+      - modify_specifications
+      - deploy
+      - approve_own_work
+    required_inputs:
+      - approved-specification
+    required_evidence:
+      - docs/planning/work-item-breakdown.md
+    approval_requirements:
+      - type: human
+        approver_role: tech-lead
+        required: true
+        timeout_hours: 24
+    confidence_threshold:
+      recommend: 0.72
+      prepare: 0.78
+    policy_source: null
+    status: Approved
+    completeness_pct: 85
+    approved_by: steven-suing
+    approved_at: "2026-06-14T15:00:00Z"
+    last_assessed_at: "2026-06-14T15:00:00Z"
+    review_interval_days: 90
+    review_due_at: "2026-09-12"
+    review_state: current
+    owner: steven-suing
+    notes: null
+
+  - id: planning-estimate-effort
+    agent: planning-agent
+    step: Plan
+    activity: Estimate Effort for Work Items
+    summary: >
+      Applies t-shirt sizing (XS/S/M/L/XL) and story point estimation to work items.
+      Estimates are advisory and require tech-lead confirmation.
+    max_autonomy: L1
+    current_autonomy: L1
+    risk_level: low
+    allowed_tools:
+      - read_file
+      - edit_file
+    prohibited_actions:
+      - commit_to_sprint
+      - deploy
+      - approve_own_work
+    required_inputs:
+      - work-item-breakdown
+    required_evidence:
+      - docs/planning/estimates.md
+    approval_requirements:
+      - type: human
+        approver_role: tech-lead
+        required: true
+        timeout_hours: 24
+    confidence_threshold:
+      recommend: 0.70
+      prepare: 0.75
+    policy_source: null
+    status: Approved
+    completeness_pct: 80
+    approved_by: steven-suing
+    approved_at: "2026-06-14T15:00:00Z"
+    last_assessed_at: "2026-06-14T15:00:00Z"
+    review_interval_days: 90
+    review_due_at: "2026-09-12"
+    review_state: current
+    owner: steven-suing
+    notes: Estimates derived from similar historical work items in the audit trail.
+
+  # ── BACKEND DEVELOPER ──────────────────────────────────────────────────────
+
+  - id: backend-implement-api
+    agent: backend-developer-agent
+    step: Implement
+    activity: Implement REST API Endpoint
+    summary: >
+      Implements a REST API endpoint following the approved OpenAPI contract and
+      architecture decision records. Produces source code and unit tests.
+    max_autonomy: L2
+    current_autonomy: L2
+    risk_level: medium
+    allowed_tools:
+      - read_file
+      - search_code
+      - create_file
+      - edit_file
+      - run_tests
+    prohibited_actions:
+      - deploy_to_production
+      - merge_pr
+      - modify_approved_architecture
+      - approve_own_work
+    required_inputs:
+      - approved-api-contract
+      - approved-specification
+    required_evidence:
+      - src/main/java/**/*Controller.java
+      - src/test/java/**/*ControllerTest.java
+    approval_requirements:
+      - type: human
+        approver_role: tech-lead
+        required: true
+        timeout_hours: 24
+    confidence_threshold:
+      recommend: 0.78
+      prepare: 0.82
+    policy_source: docs/guides/implementation-standards.md
+    status: Approved
+    completeness_pct: 90
+    approved_by: steven-suing
+    approved_at: "2026-06-14T15:00:00Z"
+    last_assessed_at: "2026-06-14T15:00:00Z"
+    review_interval_days: 90
+    review_due_at: "2026-09-12"
+    review_state: current
+    owner: steven-suing
+    notes: null
+
+  - id: backend-implement-data-model
+    agent: backend-developer-agent
+    step: Implement
+    activity: Implement Data Model
+    summary: >
+      Implements domain entities, value objects, and repository interfaces following
+      the approved domain model. Must not import infrastructure types into the domain layer.
+    max_autonomy: L2
+    current_autonomy: L2
+    risk_level: medium
+    allowed_tools:
+      - read_file
+      - search_code
+      - create_file
+      - edit_file
+      - run_tests
+    prohibited_actions:
+      - import_infrastructure_into_domain
+      - deploy_to_production
+      - merge_pr
+      - approve_own_work
+    required_inputs:
+      - approved-domain-model
+      - approved-specification
+    required_evidence:
+      - src/main/java/**/domain/**/*.java
+      - src/test/java/**/domain/**/*.java
+    approval_requirements:
+      - type: human
+        approver_role: tech-lead
+        required: true
+        timeout_hours: 24
+    confidence_threshold:
+      recommend: 0.80
+      prepare: 0.85
+    policy_source: docs/guides/implementation-standards.md
+    status: Approved
+    completeness_pct: 88
+    approved_by: steven-suing
+    approved_at: "2026-06-14T15:00:00Z"
+    last_assessed_at: "2026-06-14T15:00:00Z"
+    review_interval_days: 90
+    review_due_at: "2026-09-12"
+    review_state: current
+    owner: steven-suing
+    notes: Domain layer must never import Kafka, MongoDB, or Spring infrastructure types.
+
+  - id: backend-refactor-routine
+    agent: backend-developer-agent
+    step: Implement
+    activity: Routine Code Refactor
+    summary: >
+      Executes a pre-approved refactor (rename, extract method, move class) within a
+      bounded scope. No new behavior introduced. Tests must remain green.
+    max_autonomy: L3
+    current_autonomy: L2
+    risk_level: low
+    allowed_tools:
+      - read_file
+      - search_code
+      - edit_file
+      - run_tests
+    prohibited_actions:
+      - introduce_new_behavior
+      - deploy_to_production
+      - merge_pr
+      - approve_own_work
+    required_inputs:
+      - approved-refactor-scope-document
+    required_evidence:
+      - passing-test-run-log
+    approval_requirements:
+      - type: human
+        approver_role: tech-lead
+        required: true
+        timeout_hours: 12
+    confidence_threshold:
+      recommend: 0.82
+      prepare: 0.87
+      execute: 0.90
+    policy_source: null
+    status: Draft
+    completeness_pct: 75
+    approved_by: null
+    approved_at: null
+    last_assessed_at: "2026-06-14T15:00:00Z"
+    review_interval_days: 60
+    review_due_at: "2026-09-12"
+    review_state: current
+    owner: steven-suing
+    notes: >
+      L3 current_autonomy is held at L2 pending first successful L3 execution evidence.
+      Will be elevated after 3 successful routine refactors with full evidence trail.
+
+  # ── FRONTEND DEVELOPER ─────────────────────────────────────────────────────
+
+  - id: frontend-implement-component
+    agent: frontend-developer-agent
+    step: Implement
+    activity: Implement React Component
+    summary: >
+      Implements a React component following the design specification and design system
+      tokens. Produces component source, unit tests, and a Storybook story.
+    max_autonomy: L2
+    current_autonomy: L2
+    risk_level: low
+    allowed_tools:
+      - read_file
+      - search_code
+      - create_file
+      - edit_file
+      - run_tests
+    prohibited_actions:
+      - deploy_to_production
+      - merge_pr
+      - approve_own_work
+      - introduce_new_npm_dependencies
+    required_inputs:
+      - approved-ux-specification
+      - design-system-tokens
+    required_evidence:
+      - src/components/**/*.tsx
+      - src/components/**/*.test.tsx
+    approval_requirements:
+      - type: human
+        approver_role: tech-lead
+        required: true
+        timeout_hours: 24
+    confidence_threshold:
+      recommend: 0.75
+      prepare: 0.80
+    policy_source: docs/guides/frontend-standards.md
+    status: Approved
+    completeness_pct: 85
+    approved_by: steven-suing
+    approved_at: "2026-06-14T15:00:00Z"
+    last_assessed_at: "2026-06-14T15:00:00Z"
+    review_interval_days: 90
+    review_due_at: "2026-09-12"
+    review_state: current
+    owner: steven-suing
+    notes: null
+
+  # ── INTEGRATION DEVELOPER ──────────────────────────────────────────────────
+
+  - id: integration-build-adapter
+    agent: integration-developer-agent
+    step: Implement
+    activity: Build Integration Adapter
+    summary: >
+      Implements a Camel route or Kafka consumer/producer adapter following the approved
+      integration contract. Must validate event schemas before publishing.
+    max_autonomy: L2
+    current_autonomy: L2
+    risk_level: high
+    allowed_tools:
+      - read_file
+      - search_code
+      - create_file
+      - edit_file
+      - run_tests
+      - schema-validator
+    prohibited_actions:
+      - deploy_to_production
+      - merge_pr
+      - bypass_schema_validation
+      - approve_own_work
+    required_inputs:
+      - approved-integration-contract
+      - event-schema
+    required_evidence:
+      - src/main/java/**/adapter/**/*.java
+      - src/test/java/**/adapter/**/*.java
+      - integration-test-run-log
+    approval_requirements:
+      - type: human
+        approver_role: tech-lead
+        required: true
+        timeout_hours: 24
+      - type: automated
+        approver_role: schema-validation-check
+        required: true
+        timeout_hours: null
+    confidence_threshold:
+      recommend: 0.80
+      prepare: 0.85
+    policy_source: docs/guides/integration-patterns.md
+    status: Approved
+    completeness_pct: 92
+    approved_by: steven-suing
+    approved_at: "2026-06-14T15:00:00Z"
+    last_assessed_at: "2026-06-14T15:00:00Z"
+    review_interval_days: 90
+    review_due_at: "2026-09-12"
+    review_state: current
+    owner: steven-suing
+    notes: High risk — cross-service impact. Schema validation is a hard gate.
+
+  - id: integration-define-contract
+    agent: integration-developer-agent
+    step: Design
+    activity: Define Integration Contract
+    summary: >
+      Drafts the integration contract (AsyncAPI or REST) for a new integration point.
+      Contract must be reviewed by architecture-agent before implementation begins.
+    max_autonomy: L1
+    current_autonomy: L1
+    risk_level: high
+    allowed_tools:
+      - read_file
+      - create_file
+      - edit_file
+    prohibited_actions:
+      - implement_before_approval
+      - deploy
+      - approve_own_work
+    required_inputs:
+      - architecture-design-document
+    required_evidence:
+      - docs/integration/contracts/contract-name.yaml
+    approval_requirements:
+      - type: human
+        approver_role: solution-architect
+        required: true
+        timeout_hours: 48
+      - type: human
+        approver_role: tech-lead
+        required: true
+        timeout_hours: 24
+    confidence_threshold:
+      recommend: 0.80
+      prepare: 0.85
+    policy_source: docs/guides/integration-patterns.md
+    status: Approved
+    completeness_pct: 88
+    approved_by: steven-suing
+    approved_at: "2026-06-14T15:00:00Z"
+    last_assessed_at: "2026-06-14T15:00:00Z"
+    review_interval_days: 90
+    review_due_at: "2026-09-12"
+    review_state: current
+    owner: steven-suing
+    notes: Contract changes are backwards-compatibility breaking by default. Semver required.
+
+  # ── QA TESTER ─────────────────────────────────────────────────────────────
+
+  - id: qa-author-test-plan
+    agent: qa-tester-agent
+    step: Verify
+    activity: Author Test Plan
+    summary: >
+      Drafts a structured test plan covering scope, test types, environment requirements,
+      entry/exit criteria, and evidence requirements for a feature or release.
+    max_autonomy: L2
+    current_autonomy: L2
+    risk_level: low
+    allowed_tools:
+      - read_file
+      - create_file
+      - edit_file
+    prohibited_actions:
+      - approve_own_test_results
+      - deploy
+      - merge_pr
+    required_inputs:
+      - approved-specification
+      - acceptance-criteria
+    required_evidence:
+      - docs/testing/test-plan.md
+    approval_requirements:
+      - type: human
+        approver_role: tech-lead
+        required: true
+        timeout_hours: 24
+    confidence_threshold:
+      recommend: 0.72
+      prepare: 0.78
+    policy_source: docs/guides/testing-standards.md
+    status: Approved
+    completeness_pct: 85
+    approved_by: steven-suing
+    approved_at: "2026-06-14T15:00:00Z"
+    last_assessed_at: "2026-06-14T15:00:00Z"
+    review_interval_days: 90
+    review_due_at: "2026-09-12"
+    review_state: current
+    owner: steven-suing
+    notes: null
+
+  - id: qa-run-integration-tests
+    agent: qa-tester-agent
+    step: Verify
+    activity: Execute Integration Test Suite
+    summary: >
+      Runs the full integration test suite against a non-production environment,
+      collects structured log evidence, and produces a test results report.
+    max_autonomy: L3
+    current_autonomy: L3
+    risk_level: medium
+    allowed_tools:
+      - run_tests
+      - shell_command
+      - create_file
+      - read_file
+    prohibited_actions:
+      - run_against_production
+      - approve_own_test_results
+      - suppress_failures
+      - merge_pr
+    required_inputs:
+      - approved-test-plan
+      - non-production-environment-url
+    required_evidence:
+      - audit/events/qa-run-*.yaml
+      - docs/testing/test-results-report.md
+    approval_requirements:
+      - type: human
+        approver_role: tech-lead
+        required: true
+        timeout_hours: 12
+    confidence_threshold:
+      recommend: 0.85
+      prepare: 0.88
+      execute: 0.92
+    policy_source: docs/guides/testing-standards.md
+    status: Approved
+    completeness_pct: 90
+    approved_by: steven-suing
+    approved_at: "2026-06-14T15:00:00Z"
+    last_assessed_at: "2026-06-14T15:00:00Z"
+    review_interval_days: 90
+    review_due_at: "2026-09-12"
+    review_state: current
+    owner: steven-suing
+    notes: Must never run against production. Environment isolation is a hard gate.
+
+  # ── CODE REVIEWER ──────────────────────────────────────────────────────────
+
+  - id: code-review-pr-patterns
+    agent: code-reviewer-agent
+    step: Verify
+    activity: Review PR for Framework Patterns
+    summary: >
+      Reviews a pull request for adherence to framework coding patterns, naming
+      conventions, and architectural boundaries. Produces a structured review report.
+    max_autonomy: L1
+    current_autonomy: L1
+    risk_level: low
+    allowed_tools:
+      - read_file
+      - search_code
+      - governance-checker
+    prohibited_actions:
+      - approve_pr
+      - merge_pr
+      - modify_source_code
+      - create_commits
+    required_inputs:
+      - pull-request-diff
+    required_evidence:
+      - docs/reviews/review-report.md
+    approval_requirements:
+      - type: human
+        approver_role: tech-lead
+        required: true
+        timeout_hours: null
+    confidence_threshold:
+      recommend: 0.75
+      prepare: 0.80
+    policy_source: docs/guides/code-review-standards.md
+    status: Approved
+    completeness_pct: 88
+    approved_by: steven-suing
+    approved_at: "2026-06-14T15:00:00Z"
+    last_assessed_at: "2026-06-14T15:00:00Z"
+    review_interval_days: 90
+    review_due_at: "2026-09-12"
+    review_state: current
+    owner: steven-suing
+    notes: Review reports are advisory only. Merge approval is always a human decision.
+
+  # ── SECURITY ──────────────────────────────────────────────────────────────
+
+  - id: security-scan-vulnerabilities
+    agent: security-agent
+    step: Verify
+    activity: Scan for Vulnerabilities
+    summary: >
+      Runs static analysis and dependency CVE scans against source code.
+      Produces a structured vulnerability report with severity classifications.
+    max_autonomy: L1
+    current_autonomy: L1
+    risk_level: critical
+    allowed_tools:
+      - read_file
+      - search_code
+      - shell_command
+    prohibited_actions:
+      - suppress_findings
+      - apply_security_changes_autonomously
+      - merge_pr
+      - deploy
+    required_inputs:
+      - source-code-branch
+    required_evidence:
+      - docs/security/vulnerability-report.md
+      - audit/events/security-scan-*.yaml
+    approval_requirements:
+      - type: human
+        approver_role: security-team
+        required: true
+        timeout_hours: 24
+    confidence_threshold:
+      recommend: 0.90
+      prepare: 0.92
+    policy_source: docs/governance/security-policy.md
+    status: Approved
+    completeness_pct: 95
+    approved_by: steven-suing
+    approved_at: "2026-06-14T15:00:00Z"
+    last_assessed_at: "2026-06-14T15:00:00Z"
+    review_interval_days: 30
+    review_due_at: "2026-09-12"
+    review_state: current
+    owner: steven-suing
+    notes: Critical risk. Findings must not be downgraded without security-team sign-off.
+
+  - id: security-assess-deployment
+    agent: security-agent
+    step: Deploy
+    activity: Assess Deployment Secrets and Configuration
+    summary: >
+      Reviews deployment manifests and CI/CD configuration for hardcoded secrets,
+      overly permissive role bindings, and Key Vault policy compliance.
+    max_autonomy: L1
+    current_autonomy: L1
+    risk_level: critical
+    allowed_tools:
+      - read_file
+      - search_code
+    prohibited_actions:
+      - apply_security_changes_autonomously
+      - modify_key_vault_policies
+      - deploy
+      - merge_pr
+      - suppress_findings
+    required_inputs:
+      - deployment-manifests
+      - cicd-pipeline-config
+    required_evidence:
+      - docs/security/deployment-security-review.md
+    approval_requirements:
+      - type: human
+        approver_role: security-team
+        required: true
+        timeout_hours: 12
+      - type: human
+        approver_role: devops-lead
+        required: true
+        timeout_hours: 12
+    confidence_threshold:
+      recommend: 0.92
+      prepare: 0.95
+    policy_source: docs/governance/security-policy.md
+    status: Approved
+    completeness_pct: 95
+    approved_by: steven-suing
+    approved_at: "2026-06-14T15:00:00Z"
+    last_assessed_at: "2026-06-14T15:00:00Z"
+    review_interval_days: 30
+    review_due_at: "2026-09-12"
+    review_state: current
+    owner: steven-suing
+    notes: Co-approval from devops-lead required alongside security-team.
+
+  # ── DEVOPS / PLATFORM ─────────────────────────────────────────────────────
+
+  - id: devops-generate-manifests
+    agent: devops-platform-agent
+    step: Deploy
+    activity: Generate Kubernetes Manifests
+    summary: >
+      Produces Kubernetes deployment manifests and Helm chart values from the approved
+      deployment specification. Manifests are placed in infrastructure/ for review.
+    max_autonomy: L2
+    current_autonomy: L2
+    risk_level: high
+    allowed_tools:
+      - read_file
+      - search_code
+      - create_file
+      - edit_file
+    prohibited_actions:
+      - apply_to_cluster
+      - modify_secrets_infrastructure
+      - approve_own_work
+      - merge_pr
+    required_inputs:
+      - approved-deployment-specification
+      - environment-configuration
+    required_evidence:
+      - infrastructure/k8s/**/*.yaml
+      - infrastructure/helm/**/*.yaml
+    approval_requirements:
+      - type: human
+        approver_role: devops-lead
+        required: true
+        timeout_hours: 24
+    confidence_threshold:
+      recommend: 0.80
+      prepare: 0.85
+    policy_source: docs/guides/deployment-standards.md
+    status: Approved
+    completeness_pct: 90
+    approved_by: steven-suing
+    approved_at: "2026-06-14T15:00:00Z"
+    last_assessed_at: "2026-06-14T15:00:00Z"
+    review_interval_days: 90
+    review_due_at: "2026-09-12"
+    review_state: current
+    owner: steven-suing
+    notes: null
+
+  - id: devops-deploy-non-production
+    agent: devops-platform-agent
+    step: Deploy
+    activity: Deploy to Non-Production Environment
+    summary: >
+      Applies approved manifests to the non-production AKS cluster. Requires explicit
+      approval token from devops-lead before execution. Smoke test must pass post-deploy.
+    max_autonomy: L3
+    current_autonomy: L2
+    risk_level: high
+    allowed_tools:
+      - run_pipeline
+      - shell_command
+      - read_file
+    prohibited_actions:
+      - deploy_to_production
+      - modify_secrets_infrastructure
+      - bypass_approval_gates
+      - approve_own_work
+    required_inputs:
+      - approved-kubernetes-manifests
+      - devops-lead-approval-token
+    required_evidence:
+      - audit/events/devops-deploy-*.yaml
+      - docs/deployment/smoke-test-results.md
+    approval_requirements:
+      - type: human
+        approver_role: devops-lead
+        required: true
+        timeout_hours: 4
+    confidence_threshold:
+      recommend: 0.85
+      prepare: 0.90
+      execute: 0.93
+    policy_source: docs/guides/deployment-standards.md
+    status: Draft
+    completeness_pct: 78
+    approved_by: null
+    approved_at: null
+    last_assessed_at: "2026-06-14T15:00:00Z"
+    review_interval_days: 60
+    review_due_at: "2026-09-12"
+    review_state: current
+    owner: steven-suing
+    notes: >
+      L3 current_autonomy held at L2 until rollback procedure has been tested and documented.
+      Elevate to L3 after first successful deploy + rollback drill with evidence.
+
+  # ── MODERNIZATION ─────────────────────────────────────────────────────────
+
+  - id: modernization-analyze-legacy
+    agent: modernization-agent
+    step: Intake
+    activity: Analyze Legacy Codebase
+    summary: >
+      Performs read-only analysis of a legacy repository. Identifies coupling,
+      anti-patterns, test coverage, and technology stack. Produces a structured assessment.
+    max_autonomy: L0
+    current_autonomy: L0
+    risk_level: low
+    allowed_tools:
+      - read_file
+      - search_code
+      - repo-scanner
+      - gap-analyzer
+    prohibited_actions:
+      - write_to_target_repository
+      - modify_legacy_code
+      - deploy
+    required_inputs:
+      - legacy-repository-path
+    required_evidence:
+      - docs/assessment/modernization-analysis.md
+    approval_requirements:
+      - type: human
+        approver_role: solution-architect
+        required: false
+        timeout_hours: null
+    confidence_threshold:
+      recommend: 0.70
+    policy_source: null
+    status: Approved
+    completeness_pct: 82
+    approved_by: steven-suing
+    approved_at: "2026-06-14T15:00:00Z"
+    last_assessed_at: "2026-06-14T15:00:00Z"
+    review_interval_days: 90
+    review_due_at: "2026-09-12"
+    review_state: current
+    owner: steven-suing
+    notes: Strictly read-only. Any write to target is a critical governance violation.
+
+  - id: modernization-produce-migration-plan
+    agent: modernization-agent
+    step: Design
+    activity: Produce Migration Plan
+    summary: >
+      Converts the modernization analysis into a phased migration plan using the
+      strangler fig pattern. Plan requires architecture-agent review and solution-architect approval.
+    max_autonomy: L1
+    current_autonomy: L1
+    risk_level: high
+    allowed_tools:
+      - read_file
+      - create_file
+      - edit_file
+    prohibited_actions:
+      - write_to_target_repository
+      - start_implementation_without_approval
+      - deploy
+    required_inputs:
+      - modernization-analysis-report
+    required_evidence:
+      - docs/architecture/migration-plan.md
+    approval_requirements:
+      - type: human
+        approver_role: solution-architect
+        required: true
+        timeout_hours: 72
+    confidence_threshold:
+      recommend: 0.78
+      prepare: 0.82
+    policy_source: docs/guides/modernization-playbook.md
+    status: Approved
+    completeness_pct: 85
+    approved_by: steven-suing
+    approved_at: "2026-06-14T15:00:00Z"
+    last_assessed_at: "2026-06-14T15:00:00Z"
+    review_interval_days: 90
+    review_due_at: "2026-09-12"
+    review_state: current
+    owner: steven-suing
+    notes: null
+
+  # ── FINOPS ────────────────────────────────────────────────────────────────
+
+  - id: finops-collect-token-usage
+    agent: finops-agent
+    step: Report
+    activity: Collect AI Token Usage Metrics
+    summary: >
+      Reads audit events and GitHub Models/Azure OpenAI telemetry to produce a token
+      usage snapshot. Purely observational — no configuration changes permitted.
+    max_autonomy: L0
+    current_autonomy: L0
+    risk_level: low
+    allowed_tools:
+      - read_file
+      - metrics-collector
+    prohibited_actions:
+      - throttle_agents
+      - modify_agent_configurations
+      - deploy
+    required_inputs:
+      - audit-events-directory
+    required_evidence:
+      - docs/metrics/token-usage-snapshot.yaml
+    approval_requirements: []
+    confidence_threshold:
+      recommend: 0.70
+    policy_source: null
+    status: Approved
+    completeness_pct: 80
+    approved_by: steven-suing
+    approved_at: "2026-06-14T15:00:00Z"
+    last_assessed_at: "2026-06-14T15:00:00Z"
+    review_interval_days: 90
+    review_due_at: "2026-09-12"
+    review_state: current
+    owner: steven-suing
+    notes: null
+
+  - id: finops-generate-cost-report
+    agent: finops-agent
+    step: Learn
+    activity: Generate Cost Optimization Report
+    summary: >
+      Analyzes token usage trends and identifies optimization opportunities.
+      Produces a markdown report with ranked recommendations.
+    max_autonomy: L1
+    current_autonomy: L1
+    risk_level: low
+    allowed_tools:
+      - read_file
+      - metrics-collector
+      - report-generator
+      - create_file
+    prohibited_actions:
+      - apply_cost_controls_autonomously
+      - modify_agent_configurations
+      - deploy
+    required_inputs:
+      - token-usage-snapshot
+    required_evidence:
+      - docs/metrics/cost-optimization-report.md
+    approval_requirements:
+      - type: human
+        approver_role: engineering-manager
+        required: false
+        timeout_hours: null
+    confidence_threshold:
+      recommend: 0.72
+      prepare: 0.78
+    policy_source: null
+    status: Approved
+    completeness_pct: 82
+    approved_by: steven-suing
+    approved_at: "2026-06-14T15:00:00Z"
+    last_assessed_at: "2026-06-14T15:00:00Z"
+    review_interval_days: 90
+    review_due_at: "2026-09-12"
+    review_state: current
+    owner: steven-suing
+    notes: Recommendations are advisory. Cost interventions require engineering-manager decision.
+
+  # ── SCRIBE / GOVERNANCE ───────────────────────────────────────────────────
+
+  - id: scribe-log-audit-event
+    agent: scribe-governance-agent
+    step: Implement
+    activity: Write Audit Event to Trail
+    summary: >
+      Appends a structured audit event YAML file to audit/events/ at the conclusion of
+      any governed activity. Autonomous at L3 for this specific action only.
+    max_autonomy: L3
+    current_autonomy: L3
+    risk_level: low
+    allowed_tools:
+      - create_file
+      - audit-logger
+    prohibited_actions:
+      - delete_audit_events
+      - rewrite_audit_events
+      - modify_governance_policy
+      - deploy
+    required_inputs:
+      - completed-governed-activity-record
+    required_evidence:
+      - audit/events/EVENT_ID.yaml
+    approval_requirements: []
+    confidence_threshold:
+      execute: 0.95
+    policy_source: audit/README.md
+    status: Approved
+    completeness_pct: 95
+    approved_by: steven-suing
+    approved_at: "2026-06-14T15:00:00Z"
+    last_assessed_at: "2026-06-14T15:00:00Z"
+    review_interval_days: 90
+    review_due_at: "2026-09-12"
+    review_state: current
+    owner: steven-suing
+    notes: L3 autonomy approved for this activity only. Append-only. Never overwrite.
+
+  - id: scribe-merge-governance-inbox
+    agent: scribe-governance-agent
+    step: Report
+    activity: Merge Governance Decision Inbox
+    summary: >
+      Reads decision entries from .squad/decisions/inbox/ and merges them into
+      decisions.md using append-only semantics. Does not edit existing entries.
+    max_autonomy: L3
+    current_autonomy: L2
+    risk_level: medium
+    allowed_tools:
+      - read_file
+      - edit_file
+      - create_file
+    prohibited_actions:
+      - rewrite_decisions_md
+      - delete_inbox_entries
+      - modify_existing_decisions
+      - deploy
+    required_inputs:
+      - governance-inbox-entries
+    required_evidence:
+      - .squad/decisions.md (updated)
+    approval_requirements:
+      - type: human
+        approver_role: tech-lead
+        required: true
+        timeout_hours: 24
+    confidence_threshold:
+      recommend: 0.85
+      prepare: 0.90
+      execute: 0.95
+    policy_source: .squad/decisions.md
+    status: Draft
+    completeness_pct: 70
+    approved_by: null
+    approved_at: null
+    last_assessed_at: "2026-06-14T15:00:00Z"
+    review_interval_days: 60
+    review_due_at: "2026-09-12"
+    review_state: current
+    owner: steven-suing
+    notes: Held at L2 pending validation of append-only merge tooling.
+
+  # ── WORKFLOW COORDINATOR ──────────────────────────────────────────────────
+
+  - id: coordinator-route-work-item
+    agent: workflow-coordinator-agent
+    step: Plan
+    activity: Route Work Item to Agent
+    summary: >
+      Evaluates a pending work item, selects the appropriate agent, and prepares the
+      handoff package including context, inputs, and governance constraints.
+    max_autonomy: L2
+    current_autonomy: L2
+    risk_level: low
+    allowed_tools:
+      - read_file
+      - create_file
+      - edit_file
+      - work-item-creator
+      - governance-checker
+    prohibited_actions:
+      - execute_work_on_behalf_of_agents
+      - approve_phase_transitions
+      - deploy
+      - merge_pr
+    required_inputs:
+      - pending-work-item
+      - agent-catalog
+    required_evidence:
+      - docs/workflow/handoff-package.md
+    approval_requirements:
+      - type: human
+        approver_role: tech-lead
+        required: false
+        timeout_hours: null
+    confidence_threshold:
+      recommend: 0.75
+      prepare: 0.80
+    policy_source: null
+    status: Approved
+    completeness_pct: 85
+    approved_by: steven-suing
+    approved_at: "2026-06-14T15:00:00Z"
+    last_assessed_at: "2026-06-14T15:00:00Z"
+    review_interval_days: 90
+    review_due_at: "2026-09-12"
+    review_state: current
+    owner: steven-suing
+    notes: null
+
+  # ── BROWNFIELD ASSESSOR ───────────────────────────────────────────────────
+
+  - id: brownfield-assess-repository
+    agent: brownfield-assessor-agent
+    step: Intake
+    activity: Assess Repository Readiness
+    summary: >
+      Performs a complete read-only assessment of a target repository and produces a
+      structured readiness report covering technology stack, test coverage, documentation,
+      CI/CD maturity, and framework onboarding gaps.
+    max_autonomy: L0
+    current_autonomy: L0
+    risk_level: low
+    allowed_tools:
+      - read_file
+      - search_code
+      - repo-scanner
+      - gap-analyzer
+    prohibited_actions:
+      - write_to_assessed_repository
+      - create_commits_in_target
+      - modify_target_code
+      - deploy
+    required_inputs:
+      - target-repository-path
+    required_evidence:
+      - docs/assessment/readiness-report.md
+    approval_requirements: []
+    confidence_threshold:
+      recommend: 0.70
+    policy_source: null
+    status: Approved
+    completeness_pct: 88
+    approved_by: steven-suing
+    approved_at: "2026-06-14T15:00:00Z"
+    last_assessed_at: "2026-06-14T15:00:00Z"
+    review_interval_days: 90
+    review_due_at: "2026-09-12"
+    review_state: current
+    owner: steven-suing
+    notes: Strictly read-only. Assessment outputs written to framework workspace only.
+
+  # ── EXPERIMENT RUNNER ─────────────────────────────────────────────────────
+
+  - id: experiment-execute-charter
+    agent: experiment-runner-agent
+    step: Learn
+    activity: Execute Experiment Charter
+    summary: >
+      Runs a defined experiment according to its approved charter. Collects telemetry,
+      validates hypothesis, and produces a results report. Must not deviate from charter parameters.
+    max_autonomy: L2
+    current_autonomy: L2
+    risk_level: medium
+    allowed_tools:
+      - read_file
+      - create_file
+      - edit_file
+      - run_tests
+      - shell_command
+      - metrics-collector
+    prohibited_actions:
+      - run_without_approved_charter
+      - modify_production_systems
+      - suppress_negative_findings
+      - approve_own_work
+    required_inputs:
+      - approved-experiment-charter
+      - non-production-environment-access
+    required_evidence:
+      - docs/experiments/results-report.md
+      - audit/events/experiment-*.yaml
+    approval_requirements:
+      - type: human
+        approver_role: tech-lead
+        required: true
+        timeout_hours: 24
+    confidence_threshold:
+      recommend: 0.78
+      prepare: 0.83
+    policy_source: docs/guides/experiment-playbook.md
+    status: Approved
+    completeness_pct: 80
+    approved_by: steven-suing
+    approved_at: "2026-06-14T15:00:00Z"
+    last_assessed_at: "2026-06-14T15:00:00Z"
+    review_interval_days: 90
+    review_due_at: "2026-09-12"
+    review_state: current
+    owner: steven-suing
+    notes: Experimental agent — charter must include explicit success and failure criteria.

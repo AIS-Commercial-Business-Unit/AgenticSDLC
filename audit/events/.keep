@@ -1,0 +1,17 @@
+# audit/events/
+#
+# This directory contains structured audit event YAML files produced by the
+# scribe-governance-agent at the conclusion of every governed agent activity.
+#
+# Each file:
+#   - Is named: {ISO-8601-timestamp}-{event-id-prefix}.yaml
+#     Example: 2026-06-14T150000Z-550e8400.yaml
+#   - Conforms to: framework/schemas/metrics-event.schema.json
+#   - Is APPEND-ONLY — never modified or deleted after creation
+#   - Is committed to the repository as the durable audit trail
+#
+# To read audit events, use the metrics-collector skill or query this
+# directory directly. See audit/README.md for full documentation.
+#
+# .gitattributes sets merge=union on audit/events/ to prevent merge conflicts
+# on concurrent event writes.

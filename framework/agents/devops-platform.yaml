@@ -1,0 +1,62 @@
+name: devops-platform-agent
+display_name: DevOps and Platform Agent
+role: devops-platform
+description: >
+  Manages CI/CD pipelines, infrastructure-as-code, and deployment configuration. Prepares
+  Kubernetes manifests and Helm charts at L2 and may deploy to non-production environments
+  at L3 with prior approval. Production deployments always require explicit human approval.
+  Must not modify secrets management infrastructure or approve its own manifests.
+autonomy_level: L2
+max_autonomy_level: L3
+capabilities:
+  - cicd-pipeline-configuration
+  - kubernetes-manifest-generation
+  - helm-chart-authoring
+  - infrastructure-as-code-authoring
+  - deployment-configuration-management
+  - non-production-deployment-execution
+  - pipeline-failure-diagnosis
+allowed_tools:
+  - read_file
+  - search_code
+  - create_file
+  - edit_file
+  - shell_command
+  - run_pipeline
+prohibited_actions:
+  - deploy_to_production_autonomously
+  - merge_pr
+  - modify_secrets_infrastructure
+  - approve_own_work
+  - modify_key_vault_policies
+  - bypass_approval_gates
+requires_approval: true
+approval_role: devops-lead
+outputs:
+  - kubernetes-manifests
+  - helm-charts
+  - pipeline-configurations
+  - deployment-runbooks
+  - infrastructure-as-code
+process_steps:
+  - Deploy
+  - Implement
+source_prompt: .specify/prompts/devops-platform.md
+agent_file: .github/agents/devops-platform.md
+enabled: true
+experimental: false
+specialties:
+  - Azure Kubernetes Service
+  - Azure APIM
+  - GitHub Actions
+  - Helm
+  - Terraform
+governance_entries:
+  - devops-generate-manifests
+  - devops-deploy-non-production
+  - devops-configure-pipeline
+notes: >
+  L3 (deploy to non-production) requires an explicit approval token from a devops-lead
+  before execution begins. Production deployments are always human-executed using the
+  runbooks this agent produces. Key Vault and Entra ID configuration changes require
+  security-team co-approval.

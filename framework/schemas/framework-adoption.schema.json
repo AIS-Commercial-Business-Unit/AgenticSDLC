@@ -1,0 +1,131 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ais.com/agentic-sdlc/framework/schemas/framework-adoption.schema.json",
+  "title": "AIS Framework Adoption Tracker",
+  "description": "JSON Schema 2020-12 for tracking which AIS Agentic Engineering Framework components a team has adopted in their repository. Produced by the gap-analyzer skill and the brownfield-assessor-agent. Used to calculate adoption percentages shown in the governance explorer.",
+  "type": "object",
+  "required": [
+    "$schema",
+    "generated_at",
+    "repo",
+    "overall_percentage",
+    "categories"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "Schema URI.",
+      "const": "https://ais.com/agentic-sdlc/framework/schemas/framework-adoption.schema.json"
+    },
+    "generated_at": {
+      "type": "string",
+      "description": "ISO 8601 date-time when this adoption report was generated.",
+      "format": "date-time"
+    },
+    "repo": {
+      "type": "string",
+      "description": "Repository identifier in owner/repo format."
+    },
+    "overall_percentage": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100,
+      "description": "Overall framework adoption percentage across all categories."
+    },
+    "categories": {
+      "type": "object",
+      "description": "Per-category adoption data. Each key is a category name.",
+      "properties": {
+        "config": {
+          "$ref": "#/$defs/AdoptionCategory",
+          "description": "aispec.config.yaml and related configuration files."
+        },
+        "agents": {
+          "$ref": "#/$defs/AdoptionCategory",
+          "description": "Agent definition YAML files in framework/agents/."
+        },
+        "skills": {
+          "$ref": "#/$defs/AdoptionCategory",
+          "description": "Skill definition YAML files in framework/skills/."
+        },
+        "governance": {
+          "$ref": "#/$defs/AdoptionCategory",
+          "description": "Governance registry entries in framework/templates/governance-registry.yaml."
+        },
+        "docs": {
+          "$ref": "#/$defs/AdoptionCategory",
+          "description": "Framework documentation files in docs/."
+        },
+        "tests": {
+          "$ref": "#/$defs/AdoptionCategory",
+          "description": "Framework test coverage and test evidence artifacts."
+        },
+        "ci": {
+          "$ref": "#/$defs/AdoptionCategory",
+          "description": "CI/CD workflow integration (.github/workflows/)."
+        },
+        "playbooks": {
+          "$ref": "#/$defs/AdoptionCategory",
+          "description": "Operational playbooks in docs/playbooks/."
+        }
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/AdoptionCategory"
+      }
+    }
+  },
+  "$defs": {
+    "AdoptionCategory": {
+      "type": "object",
+      "description": "Adoption data for a single framework component category.",
+      "required": ["total", "adopted", "percentage", "items"],
+      "additionalProperties": false,
+      "properties": {
+        "total": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Total number of trackable items in this category."
+        },
+        "adopted": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Number of items in this category that have been adopted."
+        },
+        "percentage": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "adopted / total × 100."
+        },
+        "items": {
+          "type": "array",
+          "description": "Individual item adoption status.",
+          "items": {
+            "type": "object",
+            "required": ["name", "adopted"],
+            "additionalProperties": false,
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Human-readable name of this framework component item."
+              },
+              "adopted": {
+                "type": "boolean",
+                "description": "True if this item has been adopted in the repository."
+              },
+              "path": {
+                "type": ["string", "null"],
+                "description": "Relative path to the adopted artifact in the repository. Null if not yet adopted."
+              },
+              "notes": {
+                "type": ["string", "null"],
+                "description": "Optional notes about adoption status, blockers, or partial adoption details."
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

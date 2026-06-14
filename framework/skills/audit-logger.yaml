@@ -1,0 +1,74 @@
+name: audit-logger
+display_name: Audit Logger
+description: >
+  Writes a structured audit event to the audit/events/ directory as a YAML file
+  conforming to metrics-event.schema.json. Each invocation creates one event file
+  named by timestamp and event_id. Used by the scribe-governance-agent cross-cutting
+  all AIS Specify steps.
+version: "1.0.0"
+inputs:
+  - name: event_id
+    type: string
+    required: true
+    description: UUID for this event. Must be unique across all events in the repository.
+  - name: agent
+    type: string
+    required: true
+    description: Name of the agent performing the governed activity.
+  - name: activity
+    type: string
+    required: true
+    description: The activity being performed.
+  - name: ais_step
+    type: string
+    required: true
+    description: The AIS Specify step (Intake/Specify/Design/Plan/Implement/Verify/Deploy/Report/Learn).
+  - name: autonomy_level
+    type: string
+    required: true
+    description: Autonomy level at which the activity was performed (L0/L1/L2/L3).
+  - name: outcome
+    type: string
+    required: true
+    description: Result of the activity (success/failure/skipped/pending-approval/approved/rejected).
+  - name: evidence
+    type: array
+    required: false
+    description: File paths or descriptions of evidence artifacts produced.
+  - name: human_approved_by
+    type: string
+    required: false
+    description: GitHub username of the approver, if human approval was given.
+  - name: duration_seconds
+    type: number
+    required: false
+    description: How long the activity took in seconds.
+  - name: session_id
+    type: string
+    required: false
+    description: Framework session ID linking this event to a workflow run.
+  - name: metadata
+    type: object
+    required: false
+    description: Additional key-value pairs for extensibility.
+outputs:
+  - name: event_file_path
+    type: string
+    description: Path to the written audit event YAML file (e.g., audit/events/2026-06-14T15-00-00Z-abc12345.yaml).
+  - name: event_id
+    type: string
+    description: The event_id that was written.
+example_usage: |
+  # Used automatically by scribe-governance-agent at the end of every governed activity
+  skill: audit-logger
+  inputs:
+    event_id: "550e8400-e29b-41d4-a716-446655440000"
+    agent: backend-developer-agent
+    activity: implement-api-endpoint
+    ais_step: Implement
+    autonomy_level: L2
+    outcome: pending-approval
+    evidence:
+      - src/main/java/com/ais/api/OrderController.java
+      - src/test/java/com/ais/api/OrderControllerTest.java
+    session_id: "session-2026-06-14-001"

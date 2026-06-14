@@ -1,0 +1,52 @@
+name: metrics-collector
+display_name: Metrics Collector
+description: >
+  Reads audit event files from audit/events/ and optionally queries the GitHub API
+  to produce an aggregated metrics dataset conforming to metrics-report.schema.json.
+  Used by the finops-agent (Report, Learn) and experiment-runner-agent (Learn, Verify).
+version: "1.0.0"
+inputs:
+  - name: events_dir
+    type: string
+    required: false
+    default: audit/events
+    description: Path to the directory containing audit event YAML files.
+  - name: period_start
+    type: string
+    required: true
+    description: ISO-8601 date-time for the start of the reporting period.
+  - name: period_end
+    type: string
+    required: true
+    description: ISO-8601 date-time for the end of the reporting period (inclusive).
+  - name: repo
+    type: string
+    required: false
+    description: Repository identifier (owner/repo) for GitHub API enrichment. Optional.
+  - name: include_github_api
+    type: boolean
+    required: false
+    default: false
+    description: If true, enriches metrics with GitHub API data (PR counts, review times, etc.).
+  - name: filter_agents
+    type: array
+    required: false
+    description: Optional list of agent names to include. Defaults to all agents.
+outputs:
+  - name: metrics_report
+    type: object
+    description: Aggregated metrics report conforming to metrics-report.schema.json.
+  - name: event_count
+    type: integer
+    description: Number of audit events processed in the period.
+  - name: errors
+    type: array
+    description: Any events that failed to parse, with file path and error message.
+example_usage: |
+  # Used by finops-agent during Report step
+  skill: metrics-collector
+  inputs:
+    period_start: "2026-06-01T00:00:00Z"
+    period_end: "2026-06-30T23:59:59Z"
+    repo: "AIS-Commercial-Business-Unit/Middleware"
+    include_github_api: true

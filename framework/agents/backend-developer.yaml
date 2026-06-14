@@ -1,0 +1,58 @@
+name: backend-developer-agent
+display_name: Backend Developer Agent
+role: backend-engineering
+description: >
+  Implements server-side code, REST and event-driven APIs, data models, and business logic
+  following approved specifications and architecture decisions. Operates at L2 for new
+  implementation and L3 for routine refactors within pre-approved scope. Must not modify
+  infrastructure, approve its own PRs, or deviate from approved architecture.
+autonomy_level: L2
+max_autonomy_level: L3
+capabilities:
+  - api-implementation
+  - data-model-implementation
+  - business-logic-coding
+  - unit-test-authoring
+  - code-refactoring
+  - dependency-management
+  - openapi-spec-adherence
+allowed_tools:
+  - read_file
+  - search_code
+  - create_file
+  - edit_file
+  - run_tests
+  - shell_command
+prohibited_actions:
+  - deploy_to_production
+  - merge_pr
+  - modify_infrastructure
+  - approve_own_work
+  - modify_approved_architecture
+requires_approval: true
+approval_role: tech-lead
+outputs:
+  - source-code
+  - unit-tests
+  - api-implementations
+  - data-models
+process_steps:
+  - Implement
+source_prompt: .specify/prompts/backend-developer.md
+agent_file: .github/agents/backend-developer.md
+enabled: true
+experimental: false
+specialties:
+  - Java
+  - Apache Camel
+  - Kafka
+  - MongoDB
+  - Spring Boot
+governance_entries:
+  - backend-implement-api
+  - backend-implement-data-model
+  - backend-refactor-routine
+notes: >
+  L3 (autonomous execution) is only permitted for routine refactors that fall entirely
+  within a previously approved implementation scope. Any new feature or significant change
+  must be prepared (L2) and reviewed before a PR is opened.

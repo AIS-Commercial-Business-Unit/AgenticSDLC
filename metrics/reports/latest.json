@@ -1,0 +1,68 @@
+{
+  "schemaVersion": "1.0.0",
+  "generatedAt": "2026-06-14T19:55:58.166Z",
+  "period": {
+    "days": 30,
+    "from": "2026-05-15T19:55:58.163Z",
+    "to": "2026-06-14T19:55:58.166Z"
+  },
+  "repository": "C:\\Dev\\AIS-Commercial-Business-Unit\\AgenticSDLC",
+  "auditEvents": {
+    "totalEvents": 0,
+    "byAgent": {},
+    "byStep": {},
+    "byAutonomyLevel": {},
+    "byOutcome": {},
+    "avgDurationMsByActivity": {},
+    "manualToGovernedRatio": null,
+    "topAgents": []
+  },
+  "github": null,
+  "adoption": {
+    "adoptionPercent": 76,
+    "summary": {
+      "totalPresent": 38,
+      "totalMax": 50
+    },
+    "categories": {
+      "config": {
+        "score": 0,
+        "max": 1
+      },
+      "agents": {
+        "score": 16,
+        "max": 16
+      },
+      "skills": {
+        "score": 0,
+        "max": 9
+      },
+      "governance": {
+        "score": 0,
+        "max": 2
+      },
+      "docs": {
+        "score": 4,
+        "max": 4
+      },
+      "tests": {
+        "score": 8,
+        "max": 8
+      },
+      "ci": {
+        "score": 3,
+        "max": 3
+      },
+      "playbooks": {
+        "score": 7,
+        "max": 7
+      }
+    }
+  },
+  "governanceHealth": {
+    "score": 76,
+    "status": "green",
+    "adoptionPercent": 76,
+    "manualToGovernedRatio": null
+  }
+}

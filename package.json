@@ -1,0 +1,30 @@
+{
+  "name": "agentic-engineering-framework",
+  "version": "0.23.0",
+  "description": "Governance-first enterprise Agentic Engineering Framework",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "pretest": "npm run validate-schemas",
+    "test:watch": "vitest",
+    "validate-schemas": "node scripts/validate-schemas.mjs",
+    "lint": "markdownlint '**/*.md' --ignore node_modules --ignore CHANGELOG.md",
+    "version:sync": "node -e \"const v=require('./package.json').version; require('fs').writeFileSync('VERSION',v+'\\n'); console.log('VERSION →',v);\"",
+    "setup": "bash scripts/setup-project.sh",
+    "process-docs": "bash scripts/process-input-docs.sh",
+    "scan": "node scripts/scan-repository.mjs",
+    "initialize": "node scripts/initialize.mjs",
+    "gap-report": "node scripts/generate-gap-report.mjs",
+    "governance-grid": "node scripts/generate-governance-grid.mjs",
+    "collect-metrics": "node scripts/collect-metrics.mjs",
+    "check-adoption": "node scripts/check-adoption.mjs"
+  },
+  "devDependencies": {
+    "vitest": "^1.6.0",
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
+    "js-yaml": "^4.1.0",
+    "@types/js-yaml": "^4.0.9"
+  }
+}

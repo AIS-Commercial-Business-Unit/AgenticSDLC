@@ -1,0 +1,241 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ais.com/agentic-sdlc/framework/schemas/metrics-report.schema.json",
+  "title": "AIS Metrics Report",
+  "description": "JSON Schema 2020-12 for an aggregated metrics report covering a defined time period. Produced by the metrics-collector skill and consumed by the finops-agent and governance explorer website.",
+  "type": "object",
+  "required": [
+    "$schema",
+    "generated_at",
+    "period_start",
+    "period_end",
+    "repo",
+    "total_events"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "Schema URI.",
+      "const": "https://ais.com/agentic-sdlc/framework/schemas/metrics-report.schema.json"
+    },
+    "generated_at": {
+      "type": "string",
+      "description": "ISO 8601 date-time when this report was generated.",
+      "format": "date-time"
+    },
+    "period_start": {
+      "type": "string",
+      "description": "ISO 8601 date-time for the inclusive start of the reporting period.",
+      "format": "date-time"
+    },
+    "period_end": {
+      "type": "string",
+      "description": "ISO 8601 date-time for the inclusive end of the reporting period.",
+      "format": "date-time"
+    },
+    "repo": {
+      "type": "string",
+      "description": "Repository identifier in owner/repo format."
+    },
+    "total_events": {
+      "type": "integer",
+      "description": "Total number of audit events processed in the reporting period.",
+      "minimum": 0
+    },
+    "events_by_agent": {
+      "type": "object",
+      "description": "Map of agent name (kebab-case) to event count for the period.",
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "events_by_step": {
+      "type": "object",
+      "description": "Map of AIS Specify step to event count.",
+      "properties": {
+        "Intake":     { "type": "integer", "minimum": 0 },
+        "Specify":    { "type": "integer", "minimum": 0 },
+        "Design":     { "type": "integer", "minimum": 0 },
+        "Plan":       { "type": "integer", "minimum": 0 },
+        "Implement":  { "type": "integer", "minimum": 0 },
+        "Verify":     { "type": "integer", "minimum": 0 },
+        "Deploy":     { "type": "integer", "minimum": 0 },
+        "Report":     { "type": "integer", "minimum": 0 },
+        "Learn":      { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    "events_by_autonomy": {
+      "type": "object",
+      "description": "Map of autonomy level to event count.",
+      "properties": {
+        "L0": { "type": "integer", "minimum": 0 },
+        "L1": { "type": "integer", "minimum": 0 },
+        "L2": { "type": "integer", "minimum": 0 },
+        "L3": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    "events_by_outcome": {
+      "type": "object",
+      "description": "Map of outcome to event count.",
+      "properties": {
+        "success":          { "type": "integer", "minimum": 0 },
+        "failure":          { "type": "integer", "minimum": 0 },
+        "skipped":          { "type": "integer", "minimum": 0 },
+        "pending-approval": { "type": "integer", "minimum": 0 },
+        "approved":         { "type": "integer", "minimum": 0 },
+        "rejected":         { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    "avg_duration_by_activity": {
+      "type": "object",
+      "description": "Map of activity name to average duration in seconds across all events in the period.",
+      "additionalProperties": {
+        "type": "number",
+        "minimum": 0
+      }
+    },
+    "manual_to_governed_ratio": {
+      "type": "object",
+      "description": "Tracks the ratio of manually performed activities to governance-logged activities, showing framework adoption momentum.",
+      "required": ["manual_count", "governed_count", "ratio"],
+      "additionalProperties": false,
+      "properties": {
+        "manual_count": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Number of activities performed without a governance audit event."
+        },
+        "governed_count": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Number of activities that produced a governance audit event."
+        },
+        "ratio": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "governed_count / (manual_count + governed_count). 1.0 = fully governed."
+        }
+      }
+    },
+    "maturity_scores": {
+      "type": "array",
+      "description": "Time series of framework readiness/maturity assessment scores, one entry per assessment date.",
+      "items": {
+        "type": "object",
+        "required": ["date", "score"],
+        "additionalProperties": false,
+        "properties": {
+          "date": {
+            "type": "string",
+            "description": "ISO 8601 date of the maturity assessment.",
+            "format": "date"
+          },
+          "score": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100,
+            "description": "Maturity score from 0 (not started) to 100 (fully adopted)."
+          }
+        }
+      }
+    },
+    "framework_adoption": {
+      "type": "object",
+      "description": "Summary of framework component adoption across the repository.",
+      "required": ["total_components", "adopted_components", "percentage"],
+      "additionalProperties": false,
+      "properties": {
+        "total_components": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Total number of framework components tracked."
+        },
+        "adopted_components": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Number of components that have been adopted."
+        },
+        "percentage": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "adopted_components / total_components × 100."
+        },
+        "breakdown": {
+          "type": "object",
+          "description": "Per-category adoption breakdown. Keys are category names.",
+          "additionalProperties": {
+            "type": "object",
+            "required": ["total", "adopted", "percentage"],
+            "additionalProperties": false,
+            "properties": {
+              "total":      { "type": "integer", "minimum": 0 },
+              "adopted":    { "type": "integer", "minimum": 0 },
+              "percentage": { "type": "number",  "minimum": 0, "maximum": 100 }
+            }
+          }
+        }
+      }
+    },
+    "top_agents_by_usage": {
+      "type": "array",
+      "description": "Ranked list of agents by activity volume in the period.",
+      "items": {
+        "type": "object",
+        "required": ["agent", "count", "pct"],
+        "additionalProperties": false,
+        "properties": {
+          "agent": {
+            "type": "string",
+            "description": "Agent name (kebab-case)."
+          },
+          "count": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Number of events emitted by this agent in the period."
+          },
+          "pct": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100,
+            "description": "Percentage of total events attributable to this agent."
+          }
+        }
+      }
+    },
+    "governance_health": {
+      "type": "object",
+      "description": "Health summary of the governance registry: how many entries are current, due soon, or overdue.",
+      "required": ["total_registry_entries", "overdue_count", "due_soon_count", "healthy_count"],
+      "additionalProperties": false,
+      "properties": {
+        "total_registry_entries": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Total number of governance registry entries."
+        },
+        "overdue_count": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Number of entries whose review_due_at is in the past."
+        },
+        "due_soon_count": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Number of entries whose review_due_at is within 30 days from today."
+        },
+        "healthy_count": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Number of entries that are current (review_due_at is more than 30 days away)."
+        }
+      }
+    }
+  }
+}

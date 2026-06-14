@@ -1,0 +1,87 @@
+{
+  "schemaVersion": "1.0.0",
+  "collectedAt": "2026-06-14T06:00:00.000Z",
+  "repository": "agentic-engineering-framework",
+  "adoptionPercent": 74,
+  "summary": {
+    "totalPresent": 29,
+    "totalMax": 39
+  },
+  "categories": {
+    "config": {
+      "score": 0,
+      "max": 1,
+      "items": [
+        { "item": "config/aispec.config.yaml", "present": false }
+      ]
+    },
+    "agents": {
+      "score": 0,
+      "max": 16,
+      "files": []
+    },
+    "skills": {
+      "score": 0,
+      "max": 9,
+      "files": []
+    },
+    "governance": {
+      "score": 0,
+      "max": 2,
+      "items": [
+        { "item": "governance-registry.yaml", "present": false },
+        { "item": "docs/governance/summary-grid.json", "present": false }
+      ]
+    },
+    "docs": {
+      "score": 4,
+      "max": 4,
+      "items": [
+        { "item": "docs/extending/", "present": true },
+        { "item": "docs/playbooks/", "present": true },
+        { "item": "docs/sdlc/", "present": true },
+        { "item": "docs/assessment/", "present": true }
+      ]
+    },
+    "tests": {
+      "score": 12,
+      "max": 12,
+      "files": [
+        "tests/scan-repository.test.js",
+        "tests/validate-schemas.test.js",
+        "tests/initialize.test.js",
+        "tests/gap-report.test.js",
+        "tests/check-adoption.test.js",
+        "tests/collect-metrics.test.js",
+        "tests/config.test.js",
+        "tests/governance-registry.test.js",
+        "tests/agent-catalog.test.js",
+        "tests/readiness-assessment.test.js",
+        "tests/questionnaire.test.js",
+        "tests/initialization-state.test.js"
+      ]
+    },
+    "ci": {
+      "score": 3,
+      "max": 3,
+      "items": [
+        { "item": ".github/workflows/validate-schemas.yml", "present": true },
+        { "item": ".github/workflows/test.yml", "present": true },
+        { "item": ".github/workflows/deploy-pages.yml", "present": true }
+      ]
+    },
+    "playbooks": {
+      "score": 10,
+      "max": 10,
+      "files": [
+        ".specify/prompts/brownfield.agent.catalog.md",
+        ".specify/prompts/brownfield.assess.md",
+        ".specify/prompts/brownfield.audit.trail.md",
+        ".specify/prompts/brownfield.experiment.charter.md",
+        ".specify/prompts/brownfield.governance.init.md",
+        ".specify/prompts/brownfield.initialize.md",
+        ".specify/prompts/brownfield.workmanagement.select.md"
+      ]
+    }
+  }
+}

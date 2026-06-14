@@ -1,0 +1,41 @@
+name: schema-validator
+display_name: Schema Validator
+description: >
+  Validates a YAML or JSON document against a JSON Schema (2020-12). Returns a
+  structured validation result including pass/fail status, all validation errors
+  with JSON Pointer paths, and a completeness percentage based on required fields present.
+version: "1.0.0"
+inputs:
+  - name: document_path
+    type: string
+    required: true
+    description: Path to the YAML or JSON file to validate.
+  - name: schema_path
+    type: string
+    required: true
+    description: Path to the JSON Schema file to validate against.
+  - name: format
+    type: string
+    required: false
+    default: yaml
+    description: Input document format — "yaml" or "json".
+outputs:
+  - name: valid
+    type: boolean
+    description: True if the document passes schema validation with no errors.
+  - name: errors
+    type: array
+    description: Array of validation error objects with instancePath, schemaPath, and message.
+  - name: completeness_pct
+    type: integer
+    description: Percentage of required fields present in the document.
+  - name: warnings
+    type: array
+    description: Non-blocking issues such as deprecated fields or missing optional fields.
+example_usage: |
+  # Used by specification-agent and scribe-governance-agent
+  skill: schema-validator
+  inputs:
+    document_path: framework/templates/governance-registry.yaml
+    schema_path: framework/schemas/governance-registry.schema.json
+    format: yaml

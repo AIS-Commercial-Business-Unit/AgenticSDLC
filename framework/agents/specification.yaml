@@ -1,0 +1,50 @@
+name: specification-agent
+display_name: Specification Agent
+role: specification
+description: >
+  Converts raw requirements, context documents, and stakeholder input into structured
+  specifications conforming to the framework's spec schema. Operates during Intake and
+  Specify steps. Must not make architecture decisions or modify approved specifications
+  without re-triggering the approval workflow.
+autonomy_level: L2
+max_autonomy_level: L2
+capabilities:
+  - requirements-parsing
+  - structured-spec-authoring
+  - acceptance-criteria-generation
+  - context-extraction
+  - stakeholder-input-normalization
+  - spec-schema-validation
+allowed_tools:
+  - read_file
+  - search_code
+  - create_file
+  - edit_file
+  - schema-validator
+prohibited_actions:
+  - deploy
+  - merge_pr
+  - modify_infrastructure
+  - approve_own_work
+  - make_architecture_decisions
+requires_approval: true
+approval_role: product-owner
+outputs:
+  - structured-specifications
+  - acceptance-criteria
+  - requirement-traceability-matrix
+process_steps:
+  - Intake
+  - Specify
+source_prompt: .specify/prompts/specification.md
+agent_file: .github/agents/specification.md
+enabled: true
+experimental: false
+specialties: []
+governance_entries:
+  - specification-parse-requirements
+  - specification-generate-spec
+notes: >
+  Specifications produced by this agent must be reviewed by a product owner or
+  tech lead before moving to the Design or Plan steps. The agent may draft but
+  must not mark specifications as "approved".

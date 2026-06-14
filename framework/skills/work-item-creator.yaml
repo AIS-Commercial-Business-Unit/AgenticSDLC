@@ -1,0 +1,66 @@
+name: work-item-creator
+display_name: Work Item Creator
+description: >
+  Creates a work item (issue, task, or story) in the configured work item provider.
+  Supports GitHub Issues. Accepts structured work item data and returns the created
+  item's ID and URL. Used by planning-agent and workflow-coordinator-agent during
+  the Plan step.
+version: "1.0.0"
+inputs:
+  - name: title
+    type: string
+    required: true
+    description: Work item title.
+  - name: body
+    type: string
+    required: true
+    description: Work item description in markdown. Should include acceptance criteria.
+  - name: labels
+    type: array
+    required: false
+    description: Labels to apply to the work item (e.g., ["squad:backend", "estimate:M"]).
+  - name: assignees
+    type: array
+    required: false
+    description: GitHub usernames to assign the work item to.
+  - name: milestone
+    type: string
+    required: false
+    description: Milestone name or number to associate with this work item.
+  - name: provider
+    type: string
+    required: false
+    default: github-issues
+    description: Work item provider — currently only "github-issues" is supported.
+  - name: repo
+    type: string
+    required: true
+    description: Repository in owner/repo format where the work item will be created.
+  - name: parent_issue
+    type: integer
+    required: false
+    description: Parent issue number for tracking hierarchy (linked in body).
+outputs:
+  - name: item_id
+    type: integer
+    description: The provider-assigned ID of the created work item.
+  - name: item_url
+    type: string
+    description: URL to the created work item.
+  - name: item_number
+    type: integer
+    description: Issue number (GitHub Issues only).
+example_usage: |
+  # Used by planning-agent during Plan step
+  skill: work-item-creator
+  inputs:
+    title: "Implement OrderController REST API"
+    body: |
+      ## Summary
+      Implement the OrderController following the approved API contract.
+      ## Acceptance Criteria
+      - [ ] All endpoints return correct HTTP status codes
+      - [ ] Integration tests pass
+    labels: ["squad:backend", "estimate:M"]
+    repo: "AIS-Commercial-Business-Unit/Middleware"
+    provider: github-issues

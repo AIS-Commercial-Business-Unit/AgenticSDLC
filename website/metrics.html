@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Engineering Metrics — Real-time visibility into agent activity, maturity progression, and framework adoption." />
+  <meta name="theme-color" content="#0f1117" />
+  <title>Engineering Metrics — Agentic Engineering Framework</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* -----------------------------------------------------------------------
+       Page-specific styles: Engineering Metrics
+    ----------------------------------------------------------------------- */
+    .page-hero {
+      padding: var(--space-16) 0 var(--space-12);
+      position: relative;
+      overflow: hidden;
+    }
+    .page-hero::before {
+      content: '';
+      position: absolute;
+      top: -30%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 700px;
+      height: 400px;
+      background: radial-gradient(ellipse at center,
+        rgba(79, 126, 245, 0.1) 0%,
+        rgba(124, 92, 191, 0.06) 40%,
+        transparent 70%);
+      pointer-events: none;
+    }
+    .page-hero__eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      font-size: var(--text-xs);
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-accent);
+      background: var(--color-accent-glow);
+      border: 1px solid rgba(79, 126, 245, 0.3);
+      padding: var(--space-1) var(--space-3);
+      border-radius: 100px;
+      margin-bottom: var(--space-4);
+    }
+    .page-hero__title {
+      font-size: clamp(var(--text-2xl), 3vw, var(--text-4xl));
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: var(--space-3);
+    }
+    .page-hero__subtitle {
+      font-size: var(--text-lg);
+      color: var(--color-text-muted);
+      max-width: 620px;
+    }
+
+    /* Nav active */
+    .nav__link--active {
+      color: var(--color-accent) !important;
+    }
+
+    /* Metadata bar */
+    .meta-bar {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--border-radius-lg);
+      padding: var(--space-3) var(--space-5);
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-5);
+      align-items: center;
+      margin-bottom: var(--space-8);
+      font-size: var(--text-xs);
+      color: var(--color-text-muted);
+    }
+    .meta-bar__item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+    .meta-bar__item strong {
+      color: var(--color-text);
+      font-weight: 600;
+    }
+    .meta-bar__sep {
+      width: 1px;
+      height: 16px;
+      background: var(--color-border-light);
+    }
+
+    /* Section headings */
+    .metrics-section {
+      margin-bottom: var(--space-12);
+    }
+    .metrics-section__header {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      margin-bottom: var(--space-5);
+    }
+    .metrics-section__title {
+      font-size: var(--text-lg);
+      font-weight: 700;
+      color: var(--color-text);
+    }
+    .metrics-section__icon {
+      font-size: var(--text-xl);
+    }
+
+    /* KPI cards grid */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-4);
+      margin-bottom: var(--space-12);
+    }
+    .kpi-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--border-radius-lg);
+      padding: var(--space-5) var(--space-6);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+    }
+    .kpi-card__label {
+      font-size: var(--text-xs);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--color-text-muted);
+    }
+    .kpi-card__value {
+      font-size: var(--text-3xl);
+      font-weight: 800;
+      color: var(--color-accent);
+      font-family: var(--font-mono);
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+    .kpi-card__value--warning { color: var(--color-warning); }
+    .kpi-card__value--success { color: var(--color-success); }
+    .kpi-card__value--error   { color: var(--color-error); }
+    .kpi-card__sub {
+      font-size: var(--text-xs);
+      color: var(--color-text-muted);
+    }
+    /* Mini progress bar inside KPI */
+    .kpi-mini-progress {
+      height: 4px;
+      background: var(--color-border);
+      border-radius: 100px;
+      overflow: hidden;
+      margin-top: var(--space-2);
+    }
+    .kpi-mini-progress__fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--color-accent), var(--color-secondary));
+      border-radius: 100px;
+      transition: width 0.6s ease;
+    }
+
+    /* Agent activity bar chart */
+    .bar-chart {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--border-radius-lg);
+      padding: var(--space-5) var(--space-6);
+    }
+    .bar-chart__row {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      margin-bottom: var(--space-3);
+    }
+    .bar-chart__row:last-child { margin-bottom: 0; }
+    .bar-chart__label {
+      font-size: var(--text-xs);
+      font-family: var(--font-mono);
+      color: var(--color-text);
+      width: 160px;
+      flex-shrink: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .bar-chart__track {
+      flex: 1;
+      height: 18px;
+      background: var(--color-bg);
+      border-radius: 100px;
+      overflow: hidden;
+    }
+    .bar-chart__fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--color-accent), var(--color-secondary));
+      border-radius: 100px;
+      transition: width 0.6s ease;
+      min-width: 2px;
+    }
+    .bar-chart__count {
+      font-size: var(--text-xs);
+      font-family: var(--font-mono);
+      color: var(--color-text-muted);
+      width: 40px;
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    /* AIS lifecycle step bar */
+    .step-bar-grid {
+      display: grid;
+      grid-template-columns: repeat(9, 1fr);
+      gap: var(--space-2);
+    }
+    .step-bar-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-2);
+    }
+    .step-bar-item__track {
+      width: 100%;
+      height: 80px;
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+    }
+    .step-bar-item__fill {
+      width: 100%;
+      background: linear-gradient(180deg, var(--color-secondary), var(--color-accent));
+      border-radius: var(--border-radius);
+      transition: height 0.6s ease;
+      min-height: 2px;
+    }
+    .step-bar-item__fill--zero {
+      background: var(--color-border);
+      opacity: 0.4;
+    }
+    .step-bar-item__label {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--color-text-muted);
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .step-bar-item__count {
+      font-size: var(--text-xs);
+      font-family: var(--font-mono);
+      color: var(--color-text);
+      font-weight: 700;
+    }
+
+    /* Autonomy distribution tiles */
+    .autonomy-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-4);
+    }
+    .autonomy-tile {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--border-radius-lg);
+      padding: var(--space-5);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .autonomy-tile::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+    }
+    .autonomy-tile--l0::before { background: #5bbf94; }
+    .autonomy-tile--l1::before { background: var(--color-accent); }
+    .autonomy-tile--l2::before { background: var(--color-warning); }
+    .autonomy-tile--l3::before { background: #e8923e; }
+    .autonomy-tile__level {
+      font-size: var(--text-xs);
+      font-family: var(--font-mono);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      margin-bottom: var(--space-2);
+    }
+    .autonomy-tile--l0 .autonomy-tile__level { color: #5bbf94; }
+    .autonomy-tile--l1 .autonomy-tile__level { color: #7aa3f7; }
+    .autonomy-tile--l2 .autonomy-tile__level { color: var(--color-warning); }
+    .autonomy-tile--l3 .autonomy-tile__level { color: #e8923e; }
+    .autonomy-tile__count {
+      font-size: var(--text-3xl);
+      font-weight: 800;
+      font-family: var(--font-mono);
+      letter-spacing: -0.02em;
+      line-height: 1;
+      color: var(--color-text);
+    }
+    .autonomy-tile__name {
+      font-size: var(--text-xs);
+      color: var(--color-text-muted);
+      margin-top: var(--space-1);
+    }
+    /* CSS donut-style ring */
+    .autonomy-ring {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      margin: var(--space-3) auto var(--space-2);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: conic-gradient(var(--ring-color) var(--ring-pct), var(--color-border) 0deg);
+    }
+    .autonomy-ring::after {
+      content: '';
+      position: absolute;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--color-surface);
+    }
+
+    /* Maturity SVG chart */
+    .maturity-chart-wrap {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--border-radius-lg);
+      padding: var(--space-5) var(--space-6);
+      overflow-x: auto;
+    }
+    .maturity-chart-wrap svg {
+      display: block;
+      width: 100%;
+      height: 220px;
+      min-width: 300px;
+    }
+
+    /* Adoption breakdown */
+    .adoption-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-3);
+    }
+    .adoption-row {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--border-radius);
+      padding: var(--space-4) var(--space-5);
+    }
+    .adoption-row__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--space-2);
+    }
+    .adoption-row__name {
+      font-size: var(--text-sm);
+      font-weight: 600;
+      color: var(--color-text);
+      text-transform: capitalize;
+    }
+    .adoption-row__fraction {
+      font-size: var(--text-xs);
+      font-family: var(--font-mono);
+      color: var(--color-text-muted);
+    }
+    .adoption-bar {
+      height: 6px;
+      background: var(--color-border);
+      border-radius: 100px;
+      overflow: hidden;
+    }
+    .adoption-bar__fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--color-accent), var(--color-secondary));
+      border-radius: 100px;
+      transition: width 0.6s ease;
+    }
+
+    /* Governance health tiles */
+    .health-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-4);
+    }
+    .health-tile {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--border-radius-lg);
+      padding: var(--space-6);
+      text-align: center;
+    }
+    .health-tile__icon { font-size: 2rem; margin-bottom: var(--space-2); }
+    .health-tile__count {
+      font-size: var(--text-3xl);
+      font-weight: 800;
+      font-family: var(--font-mono);
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+    .health-tile--overdue  .health-tile__count { color: var(--color-error); }
+    .health-tile--due-soon .health-tile__count { color: var(--color-warning); }
+    .health-tile--healthy  .health-tile__count { color: var(--color-success); }
+    .health-tile__label {
+      font-size: var(--text-sm);
+      color: var(--color-text-muted);
+      margin-top: var(--space-1);
+    }
+
+    /* Empty / loading state */
+    .empty-state {
+      text-align: center;
+      padding: var(--space-20) var(--space-8);
+    }
+    .empty-state__icon { font-size: 2.5rem; margin-bottom: var(--space-4); }
+    .empty-state__title { font-size: var(--text-xl); font-weight: 700; color: var(--color-text); margin-bottom: var(--space-3); }
+    .empty-state__body  { color: var(--color-text-muted); max-width: 480px; margin: 0 auto var(--space-6); }
+
+    @media (max-width: 1024px) {
+      .kpi-grid      { grid-template-columns: repeat(2, 1fr); }
+      .autonomy-grid { grid-template-columns: repeat(2, 1fr); }
+      .step-bar-grid { grid-template-columns: repeat(5, 1fr); }
+    }
+    @media (max-width: 768px) {
+      .kpi-grid      { grid-template-columns: 1fr 1fr; }
+      .adoption-grid { grid-template-columns: 1fr; }
+      .health-grid   { grid-template-columns: 1fr; }
+      .step-bar-grid { grid-template-columns: repeat(3, 1fr); }
+      .meta-bar__sep { display: none; }
+    }
+    @media (max-width: 480px) {
+      .kpi-grid      { grid-template-columns: 1fr; }
+      .autonomy-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================================
+       NAVIGATION
+  ============================================================ -->
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <div class="nav__inner">
+      <a class="nav__brand" href="index.html">
+        <div class="nav__brand-mark" aria-hidden="true">AEF</div>
+        <span class="nav__brand-name">Agentic Engineering Framework</span>
+      </a>
+      <ul class="nav__links" role="list">
+        <li><a class="nav__link" href="index.html#features">Features</a></li>
+        <li><a class="nav__link" href="index.html#playbooks">Playbooks</a></li>
+        <li><a class="nav__link" href="maturity-checklist.html">Maturity Check</a></li>
+        <li><a class="nav__link" href="governance-explorer.html">Governance</a></li>
+        <li><a class="nav__link nav__link--active" href="metrics.html" aria-current="page">Metrics</a></li>
+        <li>
+          <a class="nav__link nav__link--github" href="#" aria-label="View on GitHub">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
+            </svg>
+            GitHub
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ============================================================
+       HERO
+  ============================================================ -->
+  <div class="page-hero">
+    <div class="container">
+      <div class="page-hero__eyebrow">
+        <svg width="8" height="8" viewBox="0 0 10 10" fill="currentColor" aria-hidden="true"><circle cx="5" cy="5" r="5"/></svg>
+        Live Dashboard
+      </div>
+      <h1 class="page-hero__title">Engineering Metrics</h1>
+      <p class="page-hero__subtitle">
+        Real-time visibility into agent activity, maturity progression, and framework adoption across your organization.
+      </p>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       MAIN CONTENT — rendered by JS
+  ============================================================ -->
+  <main id="main-content">
+    <div class="container" style="padding-bottom: var(--space-20);">
+      <div id="metrics-root">
+        <div class="empty-state" id="loading-state">
+          <div class="empty-state__icon" aria-hidden="true">⏳</div>
+          <div class="empty-state__title">Loading metrics…</div>
+          <div class="empty-state__body">Fetching <code>metrics/reports/latest.json</code></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ============================================================
+       FOOTER
+  ============================================================ -->
+  <footer class="footer" role="contentinfo">
+    <div class="footer__inner">
+      <div class="footer__brand">
+        <div class="nav__brand-mark" aria-hidden="true">AEF</div>
+        <div>
+          <div class="footer__brand-name">Agentic Engineering Framework</div>
+          <div class="footer__meta">v1.0.0-alpha · MIT License · Built by AIS Commercial Business Unit</div>
+        </div>
+      </div>
+      <nav class="footer__links" aria-label="Footer navigation">
+        <a href="index.html#features">Features</a>
+        <a href="index.html#playbooks">Playbooks</a>
+        <a href="maturity-checklist.html">Maturity Check</a>
+        <a href="governance-explorer.html">Governance</a>
+        <a href="metrics.html">Metrics</a>
+      </nav>
+    </div>
+  </footer>
+
+  <!-- ============================================================
+       INLINE JAVASCRIPT
+  ============================================================ -->
+  <script>
+    (function () {
+      'use strict';
+
+      // ---- Helpers ----
+      function esc(v) {
+        return String(v == null ? '—' : v).replace(/[&<>"']/g, c => ({
+          '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+        }[c]));
+      }
+      function pct(n, d) { return d ? Math.round((n / d) * 100) : 0; }
+      function fmt(v)    { return v == null ? '—' : String(v); }
+
+      const AIS_STEPS = ['intake','specify','design','build','test','review','deploy','operate','learn'];
+
+      // ---- Fallback ----
+      function showFallback() {
+        document.getElementById('metrics-root').innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state__icon" aria-hidden="true">📊</div>
+            <div class="empty-state__title">No metrics data available yet</div>
+            <div class="empty-state__body">
+              Run the following command to generate your first report:
+            </div>
+            <div class="code-block" style="max-width:480px;margin:0 auto;text-align:left;">
+              <div class="code-block__header">
+                <span class="code-block__label">terminal</span>
+                <span class="code-block__lang">shell</span>
+              </div>
+              <pre><code><span class="code-prompt">$</span> npm run collect-metrics</code></pre>
+            </div>
+            <p style="margin-top:var(--space-6);font-size:var(--text-sm);color:var(--color-text-muted);">
+              This generates <code>metrics/reports/latest.json</code> which this page reads automatically.
+            </p>
+          </div>`;
+      }
+
+      // ---- Build metadata bar ----
+      function buildMetaBar(d) {
+        return `
+          <div class="meta-bar" role="region" aria-label="Report metadata">
+            <div class="meta-bar__item"><span>Period:</span> <strong>${esc(d.period_start)} → ${esc(d.period_end)}</strong></div>
+            <div class="meta-bar__sep" aria-hidden="true"></div>
+            <div class="meta-bar__item"><span>Generated:</span> <strong>${esc(d.generated_at)}</strong></div>
+            <div class="meta-bar__sep" aria-hidden="true"></div>
+            <div class="meta-bar__item"><span>Repo:</span> <strong>${esc(d.repo || d.repository)}</strong></div>
+          </div>`;
+      }
+
+      // ---- Build KPI cards ----
+      function buildKpis(d) {
+        const totalEvents     = d.total_events ?? d.event_count ?? 0;
+        const adoptionPct     = d.framework_adoption_pct ?? d.adoption_pct ?? 0;
+        const avgMaturity     = (d.maturity_scores && d.maturity_scores.length)
+          ? d.maturity_scores[d.maturity_scores.length - 1].score
+          : (d.avg_maturity ?? '—');
+        const gov             = d.governance_health ?? {};
+        const govTotal        = (gov.healthy || 0) + (gov.due_soon || 0) + (gov.overdue || 0);
+        const govHealthPct    = pct(gov.healthy || 0, govTotal || 1);
+        const manualCount     = d.manual_count ?? d.manual ?? 0;
+        const governedCount   = d.governed_count ?? d.governed ?? (totalEvents - manualCount);
+        const governedPct     = pct(governedCount, totalEvents || 1);
+        const overdueCount    = gov.overdue || 0;
+        const overdueClass    = overdueCount > 0 ? 'kpi-card__value--error' : 'kpi-card__value--success';
+
+        return `
+          <div class="kpi-grid" role="region" aria-label="Key performance indicators">
+            <div class="kpi-card">
+              <div class="kpi-card__label">Total Agent Events</div>
+              <div class="kpi-card__value">${esc(totalEvents)}</div>
+              <div class="kpi-card__sub">This reporting period</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-card__label">Framework Adoption</div>
+              <div class="kpi-card__value">${esc(adoptionPct)}%</div>
+              <div class="kpi-mini-progress">
+                <div class="kpi-mini-progress__fill" style="width:${Math.min(100, adoptionPct)}%"></div>
+              </div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-card__label">Avg Maturity Score</div>
+              <div class="kpi-card__value">${esc(avgMaturity)}</div>
+              <div class="kpi-card__sub">Latest assessment</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-card__label">Manual → Governed</div>
+              <div class="kpi-card__value">${governedPct}%</div>
+              <div class="kpi-card__sub">${esc(governedCount)} of ${esc(totalEvents)} governed</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-card__label">Governance Health</div>
+              <div class="kpi-card__value kpi-card__value--success">${govHealthPct}%</div>
+              <div class="kpi-mini-progress">
+                <div class="kpi-mini-progress__fill" style="width:${govHealthPct}%"></div>
+              </div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-card__label">Overdue Reviews</div>
+              <div class="kpi-card__value ${overdueClass}">${esc(overdueCount)}</div>
+              <div class="kpi-card__sub">${overdueCount > 0 ? '⚠️ Action required' : '✅ All current'}</div>
+            </div>
+          </div>`;
+      }
+
+      // ---- Build agent activity bar chart ----
+      function buildAgentChart(eventsByAgent) {
+        if (!eventsByAgent || !Object.keys(eventsByAgent).length) {
+          return '<p style="color:var(--color-text-muted);font-size:var(--text-sm);">No agent event data available.</p>';
+        }
+        const sorted = Object.entries(eventsByAgent).sort((a, b) => b[1] - a[1]);
+        const max = sorted[0][1] || 1;
+        const rows = sorted.map(([agent, count]) => `
+          <div class="bar-chart__row">
+            <div class="bar-chart__label" title="${esc(agent)}">${esc(agent)}</div>
+            <div class="bar-chart__track" role="progressbar" aria-valuenow="${count}" aria-valuemax="${max}" aria-label="${esc(agent)}: ${count} events">
+              <div class="bar-chart__fill" style="width:${pct(count, max)}%"></div>
+            </div>
+            <div class="bar-chart__count">${count}</div>
+          </div>`).join('');
+        return `<div class="bar-chart">${rows}</div>`;
+      }
+
+      // ---- Build AIS lifecycle step coverage ----
+      function buildStepCoverage(eventsByStep) {
+        const data = eventsByStep || {};
+        const counts = AIS_STEPS.map(s => data[s] ?? 0);
+        const max = Math.max(...counts, 1);
+        const items = AIS_STEPS.map((step, i) => {
+          const count = counts[i];
+          const heightPct = pct(count, max);
+          const zeroClass = count === 0 ? ' step-bar-item__fill--zero' : '';
+          return `
+            <div class="step-bar-item">
+              <div class="step-bar-item__count">${count}</div>
+              <div class="step-bar-item__track" role="progressbar" aria-valuenow="${count}" aria-valuemax="${max}" aria-label="${step}: ${count} events">
+                <div class="step-bar-item__fill${zeroClass}" style="height:${Math.max(heightPct, count > 0 ? 4 : 2)}%"></div>
+              </div>
+              <div class="step-bar-item__label">${step}</div>
+            </div>`;
+        }).join('');
+        return `<div class="step-bar-grid">${items}</div>`;
+      }
+
+      // ---- Build autonomy distribution ----
+      function buildAutonomyDist(dist) {
+        const d = dist || {};
+        const total = (d.L0 || 0) + (d.L1 || 0) + (d.L2 || 0) + (d.L3 || 0) || 1;
+        const levels = [
+          { key: 'L0', name: 'Suggest Only',   cls: 'l0', color: '#5bbf94' },
+          { key: 'L1', name: 'Human Approved',  cls: 'l1', color: '#7aa3f7' },
+          { key: 'L2', name: 'Supervised',       cls: 'l2', color: '#e8b44b' },
+          { key: 'L3', name: 'Autonomous',       cls: 'l3', color: '#e8923e' },
+        ];
+        const tiles = levels.map(lv => {
+          const count = d[lv.key] || 0;
+          const ringPct = pct(count, total);
+          return `
+            <div class="autonomy-tile autonomy-tile--${lv.cls}">
+              <div class="autonomy-tile__level">${lv.key}</div>
+              <div class="autonomy-ring" style="--ring-color:${lv.color};--ring-pct:${ringPct * 3.6}deg">
+                <span style="position:relative;z-index:1;font-size:var(--text-xs);font-family:var(--font-mono);font-weight:700;color:var(--color-text)">${ringPct}%</span>
+              </div>
+              <div class="autonomy-tile__count">${count}</div>
+              <div class="autonomy-tile__name">${lv.name}</div>
+            </div>`;
+        }).join('');
+        return `<div class="autonomy-grid">${tiles}</div>`;
+      }
+
+      // ---- Build maturity SVG timeline ----
+      function buildMaturityChart(scores) {
+        if (!scores || scores.length < 2) {
+          return `
+            <div class="maturity-chart-wrap" style="text-align:center;padding:var(--space-10);">
+              <p style="color:var(--color-text-muted);font-size:var(--text-sm);">
+                📈 Run assessments over time to see progression.
+              </p>
+            </div>`;
+        }
+
+        const W = 680, H = 160, PAD = { top: 16, right: 24, bottom: 28, left: 36 };
+        const chartW = W - PAD.left - PAD.right;
+        const chartH = H - PAD.top - PAD.bottom;
+
+        const maxScore = Math.max(...scores.map(p => p.score), 100);
+        const minScore = 0;
+        const scaleY = s => PAD.top + chartH - ((s - minScore) / (maxScore - minScore)) * chartH;
+        const scaleX = i => PAD.left + (i / (scores.length - 1)) * chartW;
+
+        const points = scores.map((p, i) => `${scaleX(i)},${scaleY(p.score)}`).join(' ');
+        const areaPoints = [
+          `${scaleX(0)},${scaleY(0)}`,
+          ...scores.map((p, i) => `${scaleX(i)},${scaleY(p.score)}`),
+          `${scaleX(scores.length - 1)},${scaleY(0)}`
+        ].join(' ');
+
+        const baseline = scaleY(0);
+        const target80 = scaleY(80);
+
+        const xLabels = scores.map((p, i) => {
+          const x = scaleX(i);
+          const label = String(p.date || p.period || '').substring(0, 10);
+          return `<text x="${x}" y="${H - 4}" text-anchor="middle" fill="#8b91a8" font-size="9" font-family="'JetBrains Mono',monospace">${esc(label)}</text>`;
+        }).join('');
+
+        const dots = scores.map((p, i) => `
+          <circle cx="${scaleX(i)}" cy="${scaleY(p.score)}" r="4" fill="var(--color-accent)" stroke="var(--color-bg)" stroke-width="2">
+            <title>${esc(p.date || p.period)}: ${p.score}</title>
+          </circle>`).join('');
+
+        return `
+          <div class="maturity-chart-wrap">
+            <svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Maturity score timeline chart">
+              <defs>
+                <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%"   stop-color="#4f7ef5" stop-opacity="0.25"/>
+                  <stop offset="100%" stop-color="#4f7ef5" stop-opacity="0.02"/>
+                </linearGradient>
+              </defs>
+              <!-- Grid lines -->
+              <line x1="${PAD.left}" y1="${scaleY(0)}"  x2="${W - PAD.right}" y2="${scaleY(0)}"  stroke="#2a2d3e" stroke-width="1"/>
+              <line x1="${PAD.left}" y1="${scaleY(25)}" x2="${W - PAD.right}" y2="${scaleY(25)}" stroke="#2a2d3e" stroke-width="1" stroke-dasharray="4,4"/>
+              <line x1="${PAD.left}" y1="${scaleY(50)}" x2="${W - PAD.right}" y2="${scaleY(50)}" stroke="#2a2d3e" stroke-width="1" stroke-dasharray="4,4"/>
+              <line x1="${PAD.left}" y1="${scaleY(75)}" x2="${W - PAD.right}" y2="${scaleY(75)}" stroke="#2a2d3e" stroke-width="1" stroke-dasharray="4,4"/>
+              <!-- Y labels -->
+              <text x="${PAD.left - 4}" y="${scaleY(0) + 4}"  text-anchor="end" fill="#5a6480" font-size="9" font-family="'JetBrains Mono',monospace">0</text>
+              <text x="${PAD.left - 4}" y="${scaleY(50) + 4}" text-anchor="end" fill="#5a6480" font-size="9" font-family="'JetBrains Mono',monospace">50</text>
+              <text x="${PAD.left - 4}" y="${scaleY(100) + 4}" text-anchor="end" fill="#5a6480" font-size="9" font-family="'JetBrains Mono',monospace">100</text>
+              <!-- Target line at 80 -->
+              <line x1="${PAD.left}" y1="${target80}" x2="${W - PAD.right}" y2="${target80}" stroke="#3d9970" stroke-width="1.5" stroke-dasharray="6,3" opacity="0.7"/>
+              <text x="${W - PAD.right + 4}" y="${target80 + 4}" fill="#3d9970" font-size="9" font-family="'JetBrains Mono',monospace">80</text>
+              <!-- Area fill -->
+              <polygon points="${areaPoints}" fill="url(#areaGrad)"/>
+              <!-- Line -->
+              <polyline points="${points}" fill="none" stroke="#4f7ef5" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+              <!-- Dots -->
+              ${dots}
+              <!-- X labels -->
+              ${xLabels}
+            </svg>
+          </div>`;
+      }
+
+      // ---- Build framework adoption breakdown ----
+      function buildAdoptionBreakdown(adoption) {
+        if (!adoption || !Object.keys(adoption).length) {
+          return '<p style="color:var(--color-text-muted);font-size:var(--text-sm);">No adoption data available.</p>';
+        }
+        const items = Object.entries(adoption).map(([cat, val]) => {
+          const adopted = typeof val === 'object' ? (val.adopted ?? val.count ?? 0) : (val || 0);
+          const total   = typeof val === 'object' ? (val.total ?? 1) : 1;
+          const p       = pct(adopted, total);
+          return `
+            <div class="adoption-row">
+              <div class="adoption-row__header">
+                <span class="adoption-row__name">${esc(cat)}</span>
+                <span class="adoption-row__fraction">${adopted}/${total} · ${p}%</span>
+              </div>
+              <div class="adoption-bar" role="progressbar" aria-valuenow="${p}" aria-valuemax="100" aria-label="${cat}: ${p}% adopted">
+                <div class="adoption-bar__fill" style="width:${p}%"></div>
+              </div>
+            </div>`;
+        }).join('');
+        return `<div class="adoption-grid">${items}</div>`;
+      }
+
+      // ---- Build governance health tiles ----
+      function buildHealthTiles(health) {
+        const h = health || {};
+        return `
+          <div class="health-grid">
+            <div class="health-tile health-tile--overdue">
+              <div class="health-tile__icon">⚠️</div>
+              <div class="health-tile__count">${h.overdue ?? 0}</div>
+              <div class="health-tile__label">Overdue Reviews</div>
+            </div>
+            <div class="health-tile health-tile--due-soon">
+              <div class="health-tile__icon">🔔</div>
+              <div class="health-tile__count">${h.due_soon ?? 0}</div>
+              <div class="health-tile__label">Due Soon (30 days)</div>
+            </div>
+            <div class="health-tile health-tile--healthy">
+              <div class="health-tile__icon">✅</div>
+              <div class="health-tile__count">${h.healthy ?? 0}</div>
+              <div class="health-tile__label">Healthy</div>
+            </div>
+          </div>
+          <p style="margin-top:var(--space-5);text-align:center;font-size:var(--text-sm);">
+            <a href="governance-explorer.html">View full registry in Governance Explorer →</a>
+          </p>`;
+      }
+
+      // ---- Render all sections ----
+      function render(d) {
+        const root = document.getElementById('metrics-root');
+        root.innerHTML = `
+          ${buildMetaBar(d)}
+
+          ${buildKpis(d)}
+
+          <section class="metrics-section" aria-labelledby="section-agents">
+            <div class="metrics-section__header">
+              <span class="metrics-section__icon" aria-hidden="true">🤖</span>
+              <h2 class="metrics-section__title" id="section-agents">Agent Activity</h2>
+            </div>
+            ${buildAgentChart(d.events_by_agent)}
+          </section>
+
+          <section class="metrics-section" aria-labelledby="section-steps">
+            <div class="metrics-section__header">
+              <span class="metrics-section__icon" aria-hidden="true">🔄</span>
+              <h2 class="metrics-section__title" id="section-steps">AIS Lifecycle Coverage</h2>
+            </div>
+            <div class="bar-chart" style="padding:var(--space-5);">
+              ${buildStepCoverage(d.events_by_step)}
+            </div>
+          </section>
+
+          <section class="metrics-section" aria-labelledby="section-autonomy">
+            <div class="metrics-section__header">
+              <span class="metrics-section__icon" aria-hidden="true">🎛️</span>
+              <h2 class="metrics-section__title" id="section-autonomy">Autonomy Distribution</h2>
+            </div>
+            ${buildAutonomyDist(d.autonomy_distribution || d.autonomy_dist)}
+          </section>
+
+          <section class="metrics-section" aria-labelledby="section-maturity">
+            <div class="metrics-section__header">
+              <span class="metrics-section__icon" aria-hidden="true">📈</span>
+              <h2 class="metrics-section__title" id="section-maturity">Maturity Score Timeline</h2>
+            </div>
+            ${buildMaturityChart(d.maturity_scores)}
+          </section>
+
+          <section class="metrics-section" aria-labelledby="section-adoption">
+            <div class="metrics-section__header">
+              <span class="metrics-section__icon" aria-hidden="true">📦</span>
+              <h2 class="metrics-section__title" id="section-adoption">Framework Adoption Breakdown</h2>
+            </div>
+            ${buildAdoptionBreakdown(d.framework_adoption || d.adoption_breakdown)}
+          </section>
+
+          <section class="metrics-section" aria-labelledby="section-health">
+            <div class="metrics-section__header">
+              <span class="metrics-section__icon" aria-hidden="true">🏥</span>
+              <h2 class="metrics-section__title" id="section-health">Governance Health</h2>
+            </div>
+            ${buildHealthTiles(d.governance_health)}
+          </section>`;
+      }
+
+      // ---- Fetch ----
+      fetch('../metrics/reports/latest.json')
+        .then(res => {
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          return res.json();
+        })
+        .then(data => render(data))
+        .catch(() => showFallback());
+    })();
+  </script>
+
+</body>
+</html>

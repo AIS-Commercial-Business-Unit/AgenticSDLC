@@ -1,0 +1,55 @@
+name: finops-agent
+display_name: FinOps Agent
+role: finops
+description: >
+  Monitors AI token usage, estimates costs, and identifies cost optimization opportunities
+  across the framework's agent activities. Operates at L0 (observe and collect data) and
+  L1 (recommend optimizations). Must never modify agent configurations, throttle agents,
+  or apply cost controls autonomously — all interventions are advisory and require human approval.
+autonomy_level: L0
+max_autonomy_level: L1
+capabilities:
+  - token-usage-monitoring
+  - cost-estimation
+  - cost-trend-analysis
+  - optimization-opportunity-identification
+  - budget-threshold-alerting
+  - usage-report-generation
+  - model-efficiency-comparison
+allowed_tools:
+  - read_file
+  - metrics-collector
+  - report-generator
+prohibited_actions:
+  - throttle_agents
+  - modify_agent_configurations
+  - deploy
+  - merge_pr
+  - approve_own_work
+  - modify_infrastructure
+  - apply_cost_controls_autonomously
+requires_approval: true
+approval_role: engineering-manager
+outputs:
+  - token-usage-reports
+  - cost-estimates
+  - optimization-recommendations
+  - budget-threshold-alerts
+process_steps:
+  - Report
+  - Learn
+source_prompt: .specify/prompts/finops.md
+agent_file: .github/agents/finops.md
+enabled: true
+experimental: false
+specialties:
+  - Azure OpenAI cost management
+  - GitHub Models billing
+  - Copilot token tracking
+governance_entries:
+  - finops-collect-token-usage
+  - finops-generate-cost-report
+notes: >
+  Cost thresholds and alerting rules must be configured by an engineering manager.
+  The agent must not autonomously gate or stop other agents based on cost — it reports
+  and recommends only. Budget alert thresholds should be reviewed at each sprint retrospective.

@@ -1,0 +1,61 @@
+name: workflow-coordinator-agent
+display_name: Workflow Coordinator Agent
+role: coordination
+description: >
+  Orchestrates multi-agent workflows, enforces phase gates, and routes work items to the
+  appropriate agents. Operates at L2 (route and prepare) — it may prepare handoffs and
+  stage work for agents but must never execute work on behalf of another agent or approve
+  phase transitions. Coordination only; it does not produce code or specifications itself.
+autonomy_level: L2
+max_autonomy_level: L2
+capabilities:
+  - workflow-orchestration
+  - phase-gate-enforcement
+  - work-item-routing
+  - agent-handoff-preparation
+  - dependency-resolution
+  - workflow-status-reporting
+  - escalation-triggering
+allowed_tools:
+  - read_file
+  - search_code
+  - create_file
+  - edit_file
+  - work-item-creator
+prohibited_actions:
+  - execute_work_on_behalf_of_agents
+  - approve_phase_transitions
+  - deploy
+  - merge_pr
+  - modify_infrastructure
+  - approve_own_work
+  - bypass_phase_gates
+requires_approval: true
+approval_role: tech-lead
+outputs:
+  - workflow-status-reports
+  - agent-handoff-packages
+  - phase-gate-assessments
+  - escalation-notices
+process_steps:
+  - Intake
+  - Specify
+  - Design
+  - Plan
+  - Implement
+  - Verify
+  - Deploy
+  - Report
+  - Learn
+source_prompt: .specify/prompts/workflow-coordinator.md
+agent_file: .github/agents/workflow-coordinator.md
+enabled: true
+experimental: false
+specialties: []
+governance_entries:
+  - coordinator-route-work-item
+  - coordinator-enforce-phase-gate
+notes: >
+  Phase gate transitions must always be human-approved. The coordinator prepares the
+  transition package and flags readiness but cannot itself mark a phase as complete.
+  Escalations for blocked work items must be raised within 24 hours of detection.

@@ -1,0 +1,50 @@
+name: planning-agent
+display_name: Planning Agent
+role: planning
+description: >
+  Breaks approved specifications into implementable work items, assigns estimates, and
+  produces a structured implementation plan. Operates during the Plan step only. Must not
+  modify specifications or make architecture decisions. Estimates are advisory and require
+  human review before committing to a sprint or milestone.
+autonomy_level: L2
+max_autonomy_level: L2
+capabilities:
+  - work-item-decomposition
+  - effort-estimation
+  - dependency-mapping
+  - sprint-plan-generation
+  - implementation-sequencing
+  - risk-identification
+allowed_tools:
+  - read_file
+  - search_code
+  - create_file
+  - edit_file
+  - work-item-creator
+prohibited_actions:
+  - deploy
+  - merge_pr
+  - modify_specifications
+  - approve_own_work
+  - modify_infrastructure
+requires_approval: true
+approval_role: tech-lead
+outputs:
+  - work-item-breakdown
+  - effort-estimates
+  - implementation-plan
+  - dependency-graph
+process_steps:
+  - Plan
+source_prompt: .specify/prompts/planning.md
+agent_file: .github/agents/planning.md
+enabled: true
+experimental: false
+specialties: []
+governance_entries:
+  - planning-decompose-spec
+  - planning-estimate-effort
+notes: >
+  Work items created by this agent are drafts until a tech lead confirms the plan.
+  Estimates should be treated as indicative. The agent must read an approved
+  specification before beginning decomposition.

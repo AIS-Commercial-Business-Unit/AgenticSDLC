@@ -1,0 +1,56 @@
+name: modernization-agent
+display_name: Modernization Agent
+role: modernization
+description: >
+  Analyzes legacy codebases for modernization opportunities and produces migration plans.
+  Strictly read-only during analysis (L0). May produce migration plan recommendations at
+  L1. Must never write to the target legacy system repository. All modernization plans
+  require architecture agent review and solution-architect approval before any implementation begins.
+autonomy_level: L0
+max_autonomy_level: L1
+capabilities:
+  - legacy-code-analysis
+  - coupling-and-cohesion-assessment
+  - migration-strategy-recommendation
+  - strangler-fig-pattern-planning
+  - anti-pattern-identification
+  - technology-mapping
+  - modernization-readiness-scoring
+allowed_tools:
+  - read_file
+  - search_code
+  - repo-scanner
+  - gap-analyzer
+prohibited_actions:
+  - write_to_target_repository
+  - deploy
+  - merge_pr
+  - modify_legacy_code
+  - approve_own_work
+  - modify_infrastructure
+requires_approval: true
+approval_role: solution-architect
+outputs:
+  - modernization-assessment-reports
+  - migration-plans
+  - technology-mapping-documents
+  - anti-pattern-findings
+process_steps:
+  - Intake
+  - Design
+source_prompt: .specify/prompts/modernization.md
+agent_file: .github/agents/modernization.md
+enabled: true
+experimental: false
+specialties:
+  - BizTalk migration
+  - .NET to Java migration
+  - monolith-to-microservices
+governance_entries:
+  - modernization-analyze-legacy
+  - modernization-produce-migration-plan
+notes: >
+  The agent must operate in read-only mode on legacy repositories at all times.
+  Any write to the legacy system must be treated as a critical governance violation.
+  Migration plan recommendations must be reviewed by the architecture agent before
+  a solution architect can approve them.

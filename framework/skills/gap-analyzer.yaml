@@ -1,0 +1,51 @@
+name: gap-analyzer
+display_name: Gap Analyzer
+description: >
+  Compares the current state of a repository or project against a readiness baseline
+  (from readiness-assessment.yaml) and produces a structured gap report identifying
+  what is missing, partially adopted, or fully adopted. Used by brownfield-assessor-agent
+  and modernization-agent during Intake and Design steps.
+version: "1.0.0"
+inputs:
+  - name: current_state_path
+    type: string
+    required: true
+    description: Path to the scanned current-state data (output of repo-scanner skill or existing assessment YAML).
+  - name: baseline_path
+    type: string
+    required: true
+    description: Path to the readiness baseline YAML to compare against.
+  - name: categories
+    type: array
+    required: false
+    description: Subset of categories to analyze (e.g., ["config", "agents", "governance"]). Defaults to all.
+  - name: output_path
+    type: string
+    required: false
+    description: Where to write the gap report. Defaults to docs/assessment/gap-report.yaml.
+outputs:
+  - name: gap_report_path
+    type: string
+    description: Path to the generated gap report YAML file.
+  - name: overall_readiness_pct
+    type: integer
+    description: Overall readiness percentage (0–100).
+  - name: gaps
+    type: array
+    description: Array of gap items, each with category, item, current_state, and recommendation.
+  - name: fully_adopted
+    type: array
+    description: Items that are fully adopted in the current state.
+  - name: priority_gaps
+    type: array
+    description: High-priority gaps that should be addressed first.
+example_usage: |
+  # Used by brownfield-assessor-agent during Intake
+  skill: gap-analyzer
+  inputs:
+    current_state_path: docs/assessment/current-state.yaml
+    baseline_path: framework/templates/readiness-assessment.yaml
+    categories:
+      - config
+      - agents
+      - governance

@@ -1,0 +1,63 @@
+name: scribe-governance-agent
+display_name: Scribe and Governance Agent
+role: scribe-governance
+description: >
+  Logs decisions, maintains the audit trail, and merges governance records. Operates at L3
+  for logging and record-keeping activities only — it may autonomously write audit events
+  and append to history files. For everything else (editing governance policy, approving
+  entries, modifying decisions.md directly) it operates at L0. Cross-cutting across all
+  AIS Specify steps.
+autonomy_level: L3
+max_autonomy_level: L3
+capabilities:
+  - audit-event-logging
+  - decision-record-maintenance
+  - governance-inbox-merging
+  - history-file-appending
+  - audit-trail-querying
+  - governance-record-formatting
+  - append-only-file-management
+allowed_tools:
+  - read_file
+  - create_file
+  - edit_file
+  - audit-logger
+prohibited_actions:
+  - rewrite_decisions_md
+  - rewrite_history_files
+  - delete_audit_events
+  - approve_governance_entries
+  - deploy
+  - merge_pr
+  - modify_infrastructure
+  - approve_own_work
+requires_approval: false
+approval_role: tech-lead
+outputs:
+  - audit-event-files
+  - decision-inbox-entries
+  - governance-merge-reports
+  - history-file-appends
+process_steps:
+  - Intake
+  - Specify
+  - Design
+  - Plan
+  - Implement
+  - Verify
+  - Deploy
+  - Report
+  - Learn
+source_prompt: .specify/prompts/scribe-governance.md
+agent_file: .github/agents/scribe-governance.md
+enabled: true
+experimental: false
+specialties: []
+governance_entries:
+  - scribe-log-audit-event
+  - scribe-merge-governance-inbox
+notes: >
+  Append-only constraint is non-negotiable: decisions.md, history.md files, and
+  audit/events/ may only be appended. The agent must never rewrite or reorder these
+  files. .gitattributes uses merge=union on these paths. Autonomous L3 applies ONLY
+  to audit event writes and history appends — all other activities are L0.

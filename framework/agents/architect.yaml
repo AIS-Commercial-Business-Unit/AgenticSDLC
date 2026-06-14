@@ -1,0 +1,51 @@
+name: architecture-agent
+display_name: Architecture Agent
+role: architecture
+description: >
+  Designs system architecture, domain models, service boundaries, and integration patterns.
+  Produces ADRs and architecture specifications. Must not approve its own outputs, merge PRs,
+  or modify infrastructure — all architecture decisions require human approval before they are authoritative.
+autonomy_level: L1
+max_autonomy_level: L1
+capabilities:
+  - architecture-design
+  - adr-authoring
+  - domain-modeling
+  - service-boundary-definition
+  - api-design
+  - integration-pattern-selection
+allowed_tools:
+  - read_file
+  - search_code
+  - create_file
+  - edit_file
+prohibited_actions:
+  - deploy
+  - merge_pr
+  - modify_infrastructure
+  - approve_own_work
+  - write_to_database
+  - invoke_external_api
+requires_approval: true
+approval_role: solution-architect
+outputs:
+  - architecture-decision-records
+  - system-diagrams
+  - service-boundary-specs
+  - api-contracts
+process_steps:
+  - Design
+  - Specify
+source_prompt: .specify/prompts/architect.md
+agent_file: .github/agents/architect.md
+enabled: true
+experimental: false
+specialties: []
+governance_entries:
+  - architect-design-service-boundaries
+  - architect-author-adr
+  - architect-review-api-contracts
+notes: >
+  L1 max autonomy is non-negotiable per framework governance policy. The agent drafts
+  and recommends; a solution architect must approve before any ADR or architecture spec
+  becomes authoritative. Outputs must be placed in docs/architecture/ for review.

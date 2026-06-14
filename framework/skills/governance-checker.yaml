@@ -1,0 +1,56 @@
+name: governance-checker
+display_name: Governance Checker
+description: >
+  Checks a proposed agent activity against the governance registry to determine
+  whether it is permitted, what autonomy level is allowed, what approvals are required,
+  and what evidence must be collected. Returns a go/no-go decision with full reasoning.
+version: "1.0.0"
+inputs:
+  - name: agent_name
+    type: string
+    required: true
+    description: The kebab-case name of the agent requesting permission (e.g., "backend-developer-agent").
+  - name: activity
+    type: string
+    required: true
+    description: The activity the agent wants to perform (e.g., "implement-api-endpoint").
+  - name: ais_step
+    type: string
+    required: true
+    description: The AIS Specify step this activity belongs to (Intake/Specify/Design/Plan/Implement/Verify/Deploy/Report/Learn).
+  - name: proposed_autonomy
+    type: string
+    required: true
+    description: The autonomy level the agent proposes to operate at (L0/L1/L2/L3).
+  - name: registry_path
+    type: string
+    required: false
+    default: framework/templates/governance-registry.yaml
+    description: Path to the governance registry YAML to check against.
+outputs:
+  - name: permitted
+    type: boolean
+    description: True if the activity is permitted at the proposed autonomy level.
+  - name: effective_autonomy
+    type: string
+    description: The autonomy level the agent is actually permitted to use (may be lower than proposed).
+  - name: matching_entry_id
+    type: string
+    description: The governance registry entry ID that matched this request.
+  - name: required_approvals
+    type: array
+    description: List of approval requirements that must be satisfied before execution.
+  - name: required_evidence
+    type: array
+    description: Evidence artifacts that must be produced and stored.
+  - name: denial_reason
+    type: string
+    description: Human-readable reason if permitted is false.
+example_usage: |
+  # Used by code-reviewer-agent and workflow-coordinator-agent
+  skill: governance-checker
+  inputs:
+    agent_name: devops-platform-agent
+    activity: deploy-to-non-production
+    ais_step: Deploy
+    proposed_autonomy: L3
