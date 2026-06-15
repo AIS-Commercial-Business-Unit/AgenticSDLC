@@ -2,7 +2,7 @@ name: Deploy to GitHub Pages
 # Source: website/ directory on main branch
 # Note: All actions should be pinned to commit SHAs in production environments.
 #       Current tags (v4/v5) are used here for readability; replace with SHAs before hardening.
-#       Example: actions/checkout@v4 → actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+#       Example: actions/checkout@v6 → actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
 
 on:
   push:
@@ -27,7 +27,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Verify site directory exists and contains files
         run: |
@@ -56,7 +56,7 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
