@@ -1194,10 +1194,11 @@ code, kbd, samp, pre {
   transition: all var(--transition-base);
 }
 
-.maturity-tier--foundation { background: rgba(232, 91, 91, 0.1);   color: #e85b5b;  border: 1px solid rgba(232, 91, 91, 0.2); }
-.maturity-tier--developing  { background: rgba(232, 180, 75, 0.1);  color: #e8b44b;  border: 1px solid rgba(232, 180, 75, 0.2); }
-.maturity-tier--established { background: rgba(79, 126, 245, 0.1);  color: #7aa3f7;  border: 1px solid rgba(79, 126, 245, 0.2); }
-.maturity-tier--advanced    { background: rgba(61, 153, 112, 0.1);  color: #5bbf94;  border: 1px solid rgba(61, 153, 112, 0.2); }
+.maturity-tier--ad-hoc      { background: rgba(232, 91, 91, 0.1);   color: #e85b5b;  border: 1px solid rgba(232, 91, 91, 0.2); }
+.maturity-tier--foundation  { background: rgba(232, 180, 75, 0.1);  color: #e8b44b;  border: 1px solid rgba(232, 180, 75, 0.2); }
+.maturity-tier--governed    { background: rgba(79, 126, 245, 0.1);  color: #7aa3f7;  border: 1px solid rgba(79, 126, 245, 0.2); }
+.maturity-tier--integrated  { background: rgba(61, 153, 112, 0.1);  color: #5bbf94;  border: 1px solid rgba(61, 153, 112, 0.2); }
+.maturity-tier--optimizing  { background: rgba(168, 85, 247, 0.1);  color: #c084fc;  border: 1px solid rgba(168, 85, 247, 0.2); }
 
 /* Checklist Sections */
 .checklist-section {
@@ -1394,10 +1395,6 @@ code, kbd, samp, pre {
 
   .nav__links {
     gap: var(--space-4);
-  }
-
-  .nav__link:not(.nav__link--github):nth-child(-n+2) {
-    display: none;
   }
 
   .hero {
