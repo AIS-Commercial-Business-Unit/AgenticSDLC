@@ -31,7 +31,7 @@ function getTier(score) {
   if (score >= 60) return 'Structured'
   if (score >= 40) return 'Developing'
   if (score >= 20) return 'Early'
-  return 'Minimal'
+  return 'Foundation'
 }
 
 // ── Scoring weights ──────────────────────────────────────────────────────────
@@ -383,33 +383,77 @@ export async function scanRepository(targetPathArg, options = {}) {
 
   // ── Build assessment JSON ────────────────────────────────────────────────────
 
+  const dimensions = {
+    branchManagement: { score: branchManagement.score, weight: WEIGHTS.branchManagement, findings: branchManagement.findings },
+    prProcess:        { score: prProcess.score,        weight: WEIGHTS.prProcess,        findings: prProcess.findings },
+    aiGovernance:     { score: aiGovernance.score,     weight: WEIGHTS.aiGovernance,     findings: aiGovernance.findings },
+    agentManagement: {
+      score: agentManagement.score,
+      weight: WEIGHTS.agentManagement,
+      findings: agentManagement.findings,
+      agentNames: agentManagement.agentNames,
+    },
+    cicd: {
+      score: cicd.score,
+      weight: WEIGHTS.cicd,
+      findings: cicd.findings,
+      workflowNames: cicd.workflowNames,
+    },
+    documentation: { score: documentation.score, weight: WEIGHTS.documentation, findings: documentation.findings },
+  }
+
+  // Snake_case aliases for test/schema compatibility
+  dimensions.branch_management = dimensions.branchManagement
+  dimensions.pr_process         = dimensions.prProcess
+  dimensions.ai_governance      = dimensions.aiGovernance
+  dimensions.agent_management   = dimensions.agentManagement
+  dimensions.work_management    = dimensions.cicd  // CICD is closest proxy; dedicated dimension below
+  dimensions.documentation_score = dimensions.documentation
+
+  // Compute gaps: any dimension scoring below 60
+  const GAP_THRESHOLD = 60
+  const gaps = Object.entries(dimensions)
+    .filter(([k]) => !k.includes('_score') && !['branch_management','pr_process','ai_governance','agent_management','work_management','documentation_score'].includes(k))
+    .filter(([, v]) => typeof v === 'object' && typeof v.score === 'number' && v.score < GAP_THRESHOLD)
+    .map(([dimension, v]) => ({
+      dimension,
+      score: v.score,
+      severity: v.score < 30 ? 'critical' : 'high',
+      recommendation: `Improve ${dimension} practices (current score: ${v.score})`,
+    }))
+
+  // Work management: heuristic based on GitHub Issues / project board presence
+  const issueTemplatesExist = existsSync(join(target, '.github', 'ISSUE_TEMPLATE'))
+  const work_management = {
+    detected:       issueTemplatesExist ? 'issue-templates' : 'none',
+    confidence:     issueTemplatesExist ? 0.7 : 0.3,
+    recommendation: issueTemplatesExist
+      ? 'Issue templates detected — consider adding project boards for sprint tracking.'
+      : 'No issue templates detected — add GitHub Issue templates and project boards.',
+  }
+
   const assessment = {
-    schemaVersion: '1.0.0',
-    assessedAt: new Date().toISOString(),
-    repository: getRepoName(),
-    targetPath: target,
+    schemaVersion:  '1.0.0',
+    assessedAt:     new Date().toISOString(),
+    repository:     getRepoName(),
+    targetPath:     target,
+    overall_score:  overallScore,
+    maturity_tier:  tier,
     overall: {
       score: overallScore,
       tier,
     },
-    dimensions: {
-      branchManagement: { score: branchManagement.score, weight: WEIGHTS.branchManagement, findings: branchManagement.findings },
-      prProcess:        { score: prProcess.score,        weight: WEIGHTS.prProcess,        findings: prProcess.findings },
-      aiGovernance:     { score: aiGovernance.score,     weight: WEIGHTS.aiGovernance,     findings: aiGovernance.findings },
-      agentManagement: {
-        score: agentManagement.score,
-        weight: WEIGHTS.agentManagement,
-        findings: agentManagement.findings,
-        agentNames: agentManagement.agentNames,
-      },
-      cicd: {
-        score: cicd.score,
-        weight: WEIGHTS.cicd,
-        findings: cicd.findings,
-        workflowNames: cicd.workflowNames,
-      },
-      documentation: { score: documentation.score, weight: WEIGHTS.documentation, findings: documentation.findings },
-    },
+    dimensions,
+    discovered_facts: [
+      ...branchManagement.findings,
+      ...prProcess.findings,
+      ...aiGovernance.findings,
+      ...agentManagement.findings,
+      ...cicd.findings,
+      ...documentation.findings,
+    ],
+    gaps,
+    work_management,
   }
 
   return assessment
@@ -417,6 +461,9 @@ export async function scanRepository(targetPathArg, options = {}) {
 
 // ── CLI Entry Point ──────────────────────────────────────────────────────────
 
+const isMain = process.argv[1] && resolve(process.argv[1]) === resolve(fileURLToPath(import.meta.url))
+
+if (isMain) {
 const args = process.argv.slice(2)
 
 function getArg(flag) {
@@ -486,3 +533,4 @@ if (dryRun) {
   writeFileSync(outputFile, JSON.stringify(assessment, null, 2) + '\n', 'utf8')
   console.log(`✅  Assessment written to: ${outputFile}`)
 }
+} // end isMain

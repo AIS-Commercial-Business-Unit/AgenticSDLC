@@ -5,12 +5,10 @@
   "description": "JSON Schema 2020-12 for an aggregated metrics report covering a defined time period. Produced by the metrics-collector skill and consumed by the finops-agent and governance explorer website.",
   "type": "object",
   "required": [
-    "$schema",
     "generated_at",
     "period_start",
     "period_end",
-    "repo",
-    "total_events"
+    "repo"
   ],
   "additionalProperties": false,
   "properties": {
@@ -42,6 +40,12 @@
       "type": "integer",
       "description": "Total number of audit events processed in the reporting period.",
       "minimum": 0
+    },
+    "events": {
+      "type": "array",
+      "description": "Array of audit event objects included in this report.",
+      "items": { "type": "object" },
+      "default": []
     },
     "events_by_agent": {
       "type": "object",

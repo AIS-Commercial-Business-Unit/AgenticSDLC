@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 /**
  * generate-governance-grid.mjs
  *
@@ -14,19 +13,11 @@
  *   node scripts/generate-governance-grid.mjs [--registry path] [--output docs/governance/]
  */
 
-import { readFileSync, writeFileSync, mkdirSync } from 'fs';
+import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'fs';
 import { resolve, join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { parseArgs } from 'util';
-
-// ── Dependency: js-yaml ────────────────────────────────────────────────────
-let yaml;
-try {
-  yaml = (await import('js-yaml')).default;
-} catch {
-  console.error('ERROR: js-yaml is not installed. Run: npm install');
-  process.exit(1);
-}
+import yaml from 'js-yaml';
 
 // ── CLI args ──────────────────────────────────────────────────────────────
 const { values: args } = parseArgs({
@@ -111,6 +102,7 @@ const enriched = registry.map(entry => {
     agent:            entry.agent,
     ais_step:         entry.step,
     activity:         entry.activity,
+    autonomy_level:   entry.max_autonomy,
     max_autonomy:     entry.max_autonomy,
     current_autonomy: entry.current_autonomy ?? entry.max_autonomy,
     risk_level:       entry.risk_level,
@@ -231,7 +223,14 @@ function buildJson() {
   };
 }
 
-// ── Write output files ────────────────────────────────────────────────────
+// ── Named export for testing ──────────────────────────────────────────────
+export async function generateGovernanceGrid() {
+  return { entries: enriched, health: healthSummary };
+}
+
+// ── Write output files (CLI only) ────────────────────────────────────────
+const isMain = process.argv[1] && resolve(process.argv[1]) === resolve(fileURLToPath(import.meta.url))
+if (isMain) {
 mkdirSync(outputDir, { recursive: true });
 
 const mdPath   = join(outputDir, 'summary-grid.md');
@@ -271,3 +270,4 @@ if (healthSummary.due_soon_count > 0) {
   });
   console.log('');
 }
+} // end isMain

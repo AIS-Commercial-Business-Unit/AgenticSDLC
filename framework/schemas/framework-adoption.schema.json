@@ -5,7 +5,6 @@
   "description": "JSON Schema 2020-12 for tracking which AIS Agentic Engineering Framework components a team has adopted in their repository. Produced by the gap-analyzer skill and the brownfield-assessor-agent. Used to calculate adoption percentages shown in the governance explorer.",
   "type": "object",
   "required": [
-    "$schema",
     "generated_at",
     "repo",
     "overall_percentage",

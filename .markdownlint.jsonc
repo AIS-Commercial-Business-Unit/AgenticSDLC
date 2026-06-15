@@ -28,5 +28,8 @@
   "MD040": false,
 
   // Allow duplicate headings in different sections (common in specs)
-  "MD024": { "siblings_only": true }
+  "MD024": { "siblings_only": true },
+
+  // Horizontal rule style: --- is standard (generated agent files use 3-dash)
+  "MD035": { "style": "---" }
 }

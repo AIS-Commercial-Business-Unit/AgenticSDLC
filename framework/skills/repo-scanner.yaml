@@ -29,10 +29,10 @@ outputs:
     description: Nested directory structure up to max_depth.
   - name: file_counts_by_extension
     type: object
-    description: Map of file extension to count (e.g., {".java": 142, ".yaml": 38}).
+    description: 'Map of file extension to count (e.g., {".java": 142, ".yaml": 38}).'
   - name: detected_stack
     type: array
-    description: Inferred technology stack entries (e.g., ["Java", "Apache Camel", "Kafka"]).
+    description: 'Inferred technology stack entries (e.g., ["Java", "Apache Camel", "Kafka"]).'
   - name: manifest_files
     type: array
     description: Paths to detected package/build manifests (pom.xml, package.json, etc.).

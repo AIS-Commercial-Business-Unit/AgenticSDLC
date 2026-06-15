@@ -5,7 +5,6 @@
   "description": "JSON Schema 2020-12 for a single audit event emitted when an agent executes a governed activity. Events are written to audit/events/ as YAML or JSON files. Conforms to the scribe-governance-agent logging contract.",
   "type": "object",
   "required": [
-    "$schema",
     "event_id",
     "timestamp",
     "agent",
@@ -24,8 +23,7 @@
     },
     "event_id": {
       "type": "string",
-      "description": "UUID v4 uniquely identifying this audit event.",
-      "format": "uuid"
+      "description": "Unique identifier for this audit event."
     },
     "timestamp": {
       "type": "string",
@@ -83,6 +81,10 @@
     "governance_entry_id": {
       "type": ["string", "null"],
       "description": "The governance registry entry ID that authorized this activity. Should match an entry in governance-registry.yaml."
+    },
+    "notes": {
+      "type": ["string", "null"],
+      "description": "Optional human-readable notes about this event for audit or debugging purposes."
     },
     "metadata": {
       "type": "object",

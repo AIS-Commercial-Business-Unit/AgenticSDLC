@@ -394,12 +394,14 @@ function renderGapSection(gaps, label) {
   let md = `## ${label}\n\n`
 
   for (const gap of gaps) {
-    md += `### ${gap.area} — ${gap.title}\n\n`
-    md += `- **Impact:** ${gap.impact}\n`
-    md += `- **Estimated effort:** ~${gap.effort}h\n`
-    md += `- **Remediation steps:**\n`
-    for (const step of gap.steps) {
-      md += `  1. ${step}\n`
+    md += `### ${gap.area ?? gap.dimension ?? 'Gap'} — ${gap.title ?? gap.recommendation ?? 'See details'}\n\n`
+    if (gap.impact) md += `- **Impact:** ${gap.impact}\n`
+    if (gap.effort != null) md += `- **Estimated effort:** ~${gap.effort}h\n`
+    if (gap.steps?.length) {
+      md += `- **Remediation steps:**\n`
+      for (const step of gap.steps) {
+        md += `  1. ${step}\n`
+      }
     }
     md += '\n'
   }
@@ -428,7 +430,37 @@ function renderScoreTable(assessment) {
 // ── Core export: Generate gap report from assessment ─────────────────────────
 
 export async function generateGapReport(assessment) {
-  const gaps      = analyzeGaps(assessment)
+  // Normalize flat-shape input (from tests/scanner output) to the full shape
+  if (assessment.overall_score !== undefined && assessment.overall === undefined) {
+    assessment = {
+      repository:    assessment.target_repo ?? assessment.repository ?? 'unknown',
+      assessedAt:    assessment.generated_at ?? assessment.assessedAt ?? new Date().toISOString(),
+      targetPath:    assessment.targetPath ?? '.',
+      overall: {
+        score: assessment.overall_score,
+        tier:  assessment.maturity_tier ?? 'Unknown',
+      },
+      dimensions: assessment.dimensions ?? {
+        aiGovernance:    { score: 0, findings: [] },
+        agentManagement: { score: 0, findings: [] },
+        cicd:            { score: 0, findings: [] },
+        branchManagement:{ score: 0, findings: [] },
+        prProcess:       { score: 0, findings: [] },
+        documentation:   { score: 0, findings: [] },
+      },
+      _precomputedGaps: assessment.gaps ?? [],
+    }
+  }
+  const _precomputed = assessment._precomputedGaps
+  // Normalize pre-computed flat gap array into { critical, high, medium, low }
+  const gaps = _precomputed
+    ? {
+        critical: _precomputed.filter(g => g.severity === 'critical' || g.priority === 'critical'),
+        high:     _precomputed.filter(g => g.severity === 'high'     || g.priority === 'high'),
+        medium:   _precomputed.filter(g => g.severity === 'medium'   || g.priority === 'medium'),
+        low:      _precomputed.filter(g => g.severity === 'low'      || g.priority === 'low'),
+      }
+    : analyzeGaps(assessment)
   const workRec   = workManagementRec(assessment)
   const mcpOps    = mcpOpportunities(assessment)
   const effort    = estimateEffort(gaps)
@@ -462,6 +494,7 @@ ${renderGapSection(gaps.critical, 'Critical Gaps')}
 ${renderGapSection(gaps.high, 'High Priority Gaps')}
 ${renderGapSection(gaps.medium, 'Medium Priority Gaps')}
 ${renderGapSection(gaps.low, 'Low Priority / Improvements')}
+${(gaps.critical.length + gaps.high.length + gaps.medium.length + gaps.low.length) === 0 ? '✅ No critical gaps — this repository is in good agentic engineering shape.\n' : ''}
 ## Recommended Next Steps
 
 ${steps.map((s, i) => `${i + 1}. ${s}`).join('\n')}
@@ -503,6 +536,9 @@ Approximately **${effort.totalHours} hours** of engineering effort across **${ef
 
 // ── CLI Entry Point ──────────────────────────────────────────────────────────
 
+const _isMainGap = process.argv[1] && import.meta.url.endsWith(process.argv[1].replace(/\\/g, '/').split('/').pop())
+
+if (_isMainGap) {
 const args = process.argv.slice(2)
 
 function getArg(flag) {
@@ -555,3 +591,4 @@ if (dryRun) {
   writeFileSync(outputPath, md, 'utf8')
   console.log(`✅  Gap report written to: ${outputPath}`)
 }
+} // end _isMainGap
