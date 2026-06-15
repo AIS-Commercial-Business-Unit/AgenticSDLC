@@ -1,0 +1,179 @@
+{
+  "schemaVersion": "1.0.0",
+  "assessedAt": "2026-06-13T16:33:34.427Z",
+  "repository": "AIS-Commercial-Business-Unit/AgenticSDLC",
+  "targetPath": "C:\\Dev\\AIS-Commercial-Business-Unit\\AgenticSDLC",
+  "overall": {
+    "score": 59,
+    "tier": "Developing"
+  },
+  "dimensions": {
+    "branchManagement": {
+      "score": 50,
+      "weight": 0.1,
+      "findings": [
+        {
+          "found": false,
+          "item": ".github/rulesets/"
+        },
+        {
+          "found": true,
+          "item": "CONTRIBUTING.md contains branching guidance"
+        },
+        {
+          "found": true,
+          "item": "README.md references branch protection"
+        }
+      ]
+    },
+    "prProcess": {
+      "score": 70,
+      "weight": 0.1,
+      "findings": [
+        {
+          "found": true,
+          "item": "Pull request template"
+        },
+        {
+          "found": false,
+          "item": "CODEOWNERS"
+        },
+        {
+          "found": true,
+          "item": "Conventional commit conventions referenced"
+        },
+        {
+          "found": true,
+          "item": "PR review process documented in CONTRIBUTING.md"
+        }
+      ]
+    },
+    "aiGovernance": {
+      "score": 40,
+      "weight": 0.25,
+      "findings": [
+        {
+          "found": false,
+          "item": "config/aispec.config.yaml"
+        },
+        {
+          "found": true,
+          "item": ".github/agents/ (16 agent file(s))"
+        },
+        {
+          "found": true,
+          "item": "AGENTS.md"
+        },
+        {
+          "found": false,
+          "item": ".github/copilot-instructions.md"
+        },
+        {
+          "found": false,
+          "item": "config/governance-registry.yaml"
+        }
+      ]
+    },
+    "agentManagement": {
+      "score": 35,
+      "weight": 0.2,
+      "findings": [
+        {
+          "found": true,
+          "item": ".github/agents/: ais.github.sync.agent.md, ais.maintain.clarify.agent.md, ais.maintain.debug.agent.md, ais.report.metrics.agent.md, ais.report.project.agent.md, ais.report.retrospective.agent.md, ais.report.standup.agent.md, ais.report.status.agent.md, ais.setup.architecture.agent.md, ais.setup.constitution.agent.md, ais.setup.plan.agent.md, ais.spec.brainstorm.agent.md, ais.spec.design.agent.md, ais.spec.implement.agent.md, ais.spec.specify.agent.md, ais.spec.tasks.agent.md"
+        },
+        {
+          "found": false,
+          "item": ".claude/commands/"
+        },
+        {
+          "found": false,
+          "item": ".cursor/rules/ or .cursorrules"
+        },
+        {
+          "found": false,
+          "item": ".agents/skills/"
+        }
+      ],
+      "agentNames": [
+        "ais.github.sync.agent",
+        "ais.maintain.clarify.agent",
+        "ais.maintain.debug.agent",
+        "ais.report.metrics.agent",
+        "ais.report.project.agent",
+        "ais.report.retrospective.agent",
+        "ais.report.standup.agent",
+        "ais.report.status.agent",
+        "ais.setup.architecture.agent",
+        "ais.setup.constitution.agent",
+        "ais.setup.plan.agent",
+        "ais.spec.brainstorm.agent",
+        "ais.spec.design.agent",
+        "ais.spec.implement.agent",
+        "ais.spec.specify.agent",
+        "ais.spec.tasks.agent"
+      ]
+    },
+    "cicd": {
+      "score": 98,
+      "weight": 0.2,
+      "findings": [
+        {
+          "found": true,
+          "item": ".github/workflows/: 11 workflow(s)"
+        },
+        {
+          "found": true,
+          "item": "test workflow detected in: ci.yml"
+        },
+        {
+          "found": true,
+          "item": "build workflow detected in: ci.yml"
+        },
+        {
+          "found": true,
+          "item": "lint workflow detected in: ci.yml"
+        },
+        {
+          "found": true,
+          "item": "deploy workflow detected in: ci.yml"
+        }
+      ],
+      "workflowNames": [
+        "ci.yml",
+        "deploy-pages.yml",
+        "release.yml",
+        "report-all.yml",
+        "report-metrics.yml",
+        "report-project.yml",
+        "report-retrospective.yml",
+        "report-standup.yml",
+        "report-status.yml",
+        "test.yml",
+        "validate-schemas.yml"
+      ]
+    },
+    "documentation": {
+      "score": 70,
+      "weight": 0.15,
+      "findings": [
+        {
+          "found": true,
+          "item": "README.md (7976 bytes — substantive)"
+        },
+        {
+          "found": true,
+          "item": "docs/ directory (11 item(s))"
+        },
+        {
+          "found": false,
+          "item": "ADRs (checked adr/, docs/adr/, docs/decisions/, docs/adrs/)"
+        },
+        {
+          "found": true,
+          "item": "CONTRIBUTING.md"
+        }
+      ]
+    }
+  }
+}

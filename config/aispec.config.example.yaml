@@ -1,0 +1,208 @@
+# =============================================================================
+# AIS Agentic Engineering Framework — Example Configuration
+# =============================================================================
+# Copy this file to config/aispec.config.yaml and customize for your repository.
+# Reference: framework.md sections 3, 6, 7, 9, 12
+# Schema: framework/schemas/config.schema.json
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# Framework Metadata
+# Required. Identifies the framework version in use.
+# -----------------------------------------------------------------------------
+framework:
+  version: "1.0.0"                      # Framework version. Must match a released VERSION tag.
+  schema: "framework/schemas/config.schema.json"  # Path to JSON schema for this file.
+  initialized_at: "2026-01-01T00:00:00Z"          # ISO-8601 timestamp when this config was first created.
+  initialized_by: ""                    # GitHub username or identity that initialized.
+
+# -----------------------------------------------------------------------------
+# Repository Context
+# Describes the target repository the framework is governing.
+# Used by brownfield initializer, governance checks, and agent context loading.
+# -----------------------------------------------------------------------------
+repository:
+  name: ""                              # Repository name (e.g., "my-app", "platform-api").
+  owner: ""                             # GitHub org or user owning the repo (e.g., "acme-corp").
+  type: brownfield                      # Values: brownfield | greenfield
+  description: ""                       # One-line description of the repo's purpose.
+
+  stack:
+    languages: []                       # Primary languages (e.g., ["java", "typescript"]).
+    frameworks: []                      # Frameworks in use (e.g., ["spring-boot", "react"]).
+    build_tools: []                     # Build tools (e.g., ["maven", "npm"]).
+    deployment_targets: []              # Where the app runs (e.g., ["aks", "azure-app-service"]).
+    ci_cd: []                           # CI/CD platforms (e.g., ["github-actions"]).
+
+  maturity:
+    level: 0                            # 0–4. 0=No AI tooling; 1=Ad-hoc; 2=Structured; 3=Governed; 4=Optimizing.
+    assessed_at: null                   # ISO-8601 timestamp of last maturity assessment.
+    assessed_by: ""                     # Who performed the assessment.
+
+# -----------------------------------------------------------------------------
+# AIS Specify Lifecycle
+# Maps the nine SDLC steps used by this framework's agents and governance.
+# Valid process steps: Intake | Specify | Design | Plan | Implement | Verify | Deploy | Report | Learn
+# -----------------------------------------------------------------------------
+specify:
+  lifecycle_steps:                      # Ordered list of active lifecycle steps.
+    - Intake
+    - Specify
+    - Design
+    - Plan
+    - Implement
+    - Verify
+    - Deploy
+    - Report
+    - Learn
+  current_step: Intake                  # The step the team is currently executing.
+  artifact_root: ".specify"             # Root directory where Specify artifacts live.
+
+# -----------------------------------------------------------------------------
+# Governance Settings
+# Controls agent autonomy, approval requirements, and confidence thresholds.
+# Reference: framework.md section 6 (Autonomy Model) and section 7 (Governance Control Architecture).
+# -----------------------------------------------------------------------------
+governance:
+  registry: "config/governance-registry.yaml"  # Path to the governance activity registry YAML.
+
+  default_autonomy_level: L1           # Default for all agents unless overridden in the registry.
+                                        # Values: L0 (Observe) | L1 (Recommend) | L2 (Prepare) | L3 (Execute)
+
+  # Autonomy level descriptions:
+  #   L0 — Read, inspect, analyze, report. No mutations.
+  #   L1 — Produce recommendations and proposals. Agent does NOT act.
+  #   L2 — Draft artifacts, prepare PRs/issues. Requires human approval before authoritative.
+  #   L3 — Execute authorized actions within hard constraints. Never implies unrestricted autonomy.
+
+  confidence_thresholds:
+    recommend: 0.60                     # Minimum confidence to surface a recommendation (0.0–1.0).
+    prepare: 0.75                       # Minimum confidence before preparing a draft artifact.
+    execute: 0.90                       # Minimum confidence before executing an L3 action.
+    escalation: 0.50                    # Below this value, escalate to human before proceeding.
+    block: 0.30                         # Below this value, block the action entirely.
+
+  hard_constraints:                     # G1 controls. These are enforced outside model reasoning.
+    protected_branches_require_approval: true   # Merging protected branches always needs approval.
+    secrets_cannot_be_committed: true           # Agents may never write secrets to files or PRs.
+    agents_cannot_modify_own_permissions: true  # Agents cannot change their own tool grants.
+    destructive_operations_require_approval: true  # Deletes, drops, resets require explicit approval.
+    production_deployment_requires_pipeline: true  # No direct prod deploys without an approved pipeline.
+
+  approval:
+    architecture_approver: ""           # GitHub username or team slug for architecture approvals.
+    issue_creation_approver: ""         # GitHub username or team slug for issue creation approvals.
+    pull_request_approver: ""           # GitHub username or team slug for PR approvals.
+    deployment_approver: ""             # GitHub username or team slug for deployment approvals.
+    default_approver: ""                # Fallback approver when no specific approver is configured.
+
+  review:
+    default_interval_days: 180          # How often governed activities must be re-reviewed.
+    notify_days_before: 14              # Warn this many days before review is due.
+
+# -----------------------------------------------------------------------------
+# Work Management Provider
+# Configures the system that owns engineering work items (issues, tasks, etc.).
+# Provider abstraction: swap provider without changing agent logic.
+# Supported providers: github-issues | jira | azure-devops | none
+# -----------------------------------------------------------------------------
+work_management:
+  provider: github-issues               # Active provider. Values: github-issues | jira | azure-devops | none
+
+  github_issues:
+    owner: ""                           # GitHub org/user (matches repository.owner).
+    repo: ""                            # GitHub repo name (matches repository.name).
+    label_prefix: "ais:"                # Prefix for all labels created by framework agents.
+    default_assignee: ""                # GitHub username to assign framework-created issues to.
+    milestone: null                     # Milestone name/number to attach to created issues.
+
+  jira:                                 # Jira provider — populate if provider = jira.
+    base_url: ""                        # Jira instance base URL (e.g., "https://acme.atlassian.net").
+    project_key: ""                     # Jira project key (e.g., "PLAT").
+    auth_secret: ""                     # Name of the secret holding the Jira API token.
+
+  azure_devops:                         # ADO provider — populate if provider = azure-devops.
+    organization: ""                    # ADO organization name.
+    project: ""                         # ADO project name.
+    auth_secret: ""                     # Name of the secret holding the ADO PAT.
+
+# -----------------------------------------------------------------------------
+# Agent Catalog Reference
+# Points to the YAML catalog describing all agents in use.
+# Schema: framework/schemas/agent-catalog.schema.json
+# -----------------------------------------------------------------------------
+agents:
+  catalog: "config/agent-catalog.yaml"  # Path to the agent catalog YAML.
+  default_instructions: ".github/copilot-instructions.md"  # Default context file loaded by all agents.
+
+# -----------------------------------------------------------------------------
+# Experiment Settings
+# Controls the experiment-driven validation loop (framework.md section 12).
+# Experiments validate new agent activities before they become governed defaults.
+# -----------------------------------------------------------------------------
+experiments:
+  enabled: true                         # Master switch. Set false to disable all experiment tracking.
+  directory: "experiments/"             # Root directory for experiment charter files.
+  metrics_collection: true             # Collect cycle time, rework rate, and quality metrics.
+  metrics_backend: null                 # Optional. Values: github-actions | prometheus | null
+  max_concurrent_experiments: 3        # Limit parallel experiments to avoid cross-contamination.
+  require_charter: true                 # Every experiment must have a charter file before it starts.
+  require_hypothesis: true             # Charters must define a testable hypothesis.
+  min_duration_days: 3                 # Minimum experiment duration before results are assessed.
+
+# -----------------------------------------------------------------------------
+# Audit Trail Settings
+# Controls the append-only audit log for agent actions and decisions.
+# Reference: framework.md section 7 G4 (Audit Logging).
+# -----------------------------------------------------------------------------
+audit:
+  enabled: true                         # Master switch. Set false to disable audit logging.
+  directory: "audit/"                   # Root directory for audit records.
+  retention_days: 365                  # How long audit records are retained.
+  tamper_evident: true                  # Use append-only patterns; never overwrite existing records.
+  auditable_events:                     # Which event types generate an audit record.
+    - agent_action
+    - approval_request
+    - approval_granted
+    - approval_denied
+    - governance_check
+    - policy_violation
+    - experiment_started
+    - experiment_completed
+    - phase_gate_passed
+    - phase_gate_failed
+
+# -----------------------------------------------------------------------------
+# Phase Gate Settings
+# Governs how the framework advances between AIS Specify lifecycle steps.
+# Agents may not advance the process step without meeting the gate criteria.
+# -----------------------------------------------------------------------------
+phase_gates:
+  enabled: true                         # Require gates before step transitions. Set false to allow free flow.
+  require_human_sign_off: true          # A named human must sign off each phase gate.
+  require_evidence: true                # Required evidence artifacts must exist before gate passes.
+  allow_override: false                 # If true, designated approvers may bypass gate criteria.
+  override_approver: ""                 # GitHub username with gate override authority (if allow_override: true).
+
+# -----------------------------------------------------------------------------
+# Context Loading
+# Controls how agents discover and load repository context.
+# Files in docs/input/ are user-supplied brownfield context (see docs/input/README.md).
+# -----------------------------------------------------------------------------
+context:
+  input_docs_dir: "docs/input"          # Drop zone for user-supplied docs (Word/Excel/PDF/Markdown).
+  project_context_dir: ".project-context"  # Framework project context directory.
+  max_context_files: 10                 # Maximum files loaded into a single agent context window.
+  prefer_recent_artifacts: true        # When multiple artifacts match, prefer more recent ones.
+
+# -----------------------------------------------------------------------------
+# FinOps / Cost Controls
+# Reference: framework.md section 4 (FinOps Agent).
+# -----------------------------------------------------------------------------
+finops:
+  enabled: true                         # Enable FinOps monitoring and controls.
+  token_budget_per_session: 200000      # Soft token limit per agent session (informational).
+  token_budget_hard_limit: 500000       # Hard limit — agent must stop and escalate if exceeded.
+  model_budget_escalation_owner: ""    # GitHub username notified on budget exceptions.
+  flag_redundant_context_loading: true  # Warn when the same large file is loaded repeatedly.
+  flag_unbounded_retry_loops: true      # Detect and interrupt infinite retry patterns.

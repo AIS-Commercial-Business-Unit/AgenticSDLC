@@ -31,3 +31,26 @@ _gen.*
 
 # Claude Code - local/personal settings
 .claude/settings.local.json
+
+# User-supplied brownfield context docs — source files stay local, never committed
+docs/input/*.docx
+docs/input/*.doc
+docs/input/*.xlsx
+docs/input/*.xls
+docs/input/*.pdf
+docs/input/*.pptx
+docs/input/*.ppt
+docs/input/*.png
+docs/input/*.jpg
+docs/input/*.jpeg
+docs/input/*.gif
+docs/input/*.svg
+docs/input/*.bmp
+docs/input/*.tiff
+# docs/input/processed/*.md IS committed — processed markdown outputs are tracked
+
+# Metrics reports are committed (tracked over time)
+# DO NOT add metrics/ to .gitignore
+
+# Audit events are committed — they are the durable audit trail
+# DO NOT ignore audit/

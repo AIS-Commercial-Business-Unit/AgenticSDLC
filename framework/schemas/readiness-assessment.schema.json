@@ -1,0 +1,251 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ais.com/agentic-sdlc/framework/schemas/readiness-assessment.schema.json",
+  "title": "AIS Agentic Engineering Framework — Brownfield Readiness Assessment",
+  "description": "JSON Schema 2020-12 for the output of the brownfield repository scanner. Conforms to readiness-assessment.yaml produced by the brownfield.assess prompt.",
+  "type": "object",
+  "required": ["$schema", "version", "generated_at", "target_repo", "overall_score", "maturity_tier", "dimensions", "discovered_facts", "assumptions", "gaps", "work_management", "next_steps", "completeness"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "JSON Schema URI for this document."
+    },
+    "version": {
+      "type": "string",
+      "description": "Assessment schema version (semver).",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "generated_at": {
+      "type": "string",
+      "description": "ISO-8601 timestamp when this assessment was generated.",
+      "format": "date-time"
+    },
+    "target_repo": {
+      "type": "string",
+      "description": "Path or URL of the repository that was assessed."
+    },
+    "overall_score": {
+      "type": "integer",
+      "description": "Weighted aggregate readiness score (0–100). Derived from the six dimension scores using the documented weighting formula.",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "maturity_tier": {
+      "type": "string",
+      "description": "Qualitative maturity classification derived from overall_score. Foundation=0–24, Developing=25–49, Established=50–74, Advanced=75–100.",
+      "enum": ["Foundation", "Developing", "Established", "Advanced"]
+    },
+    "dimensions": {
+      "type": "object",
+      "description": "Scored assessment of the six evaluation dimensions.",
+      "required": ["branch_management", "pr_process", "ai_governance", "agent_management", "ci_cd", "documentation"],
+      "additionalProperties": false,
+      "properties": {
+        "branch_management": {
+          "$ref": "#/$defs/dimension"
+        },
+        "pr_process": {
+          "$ref": "#/$defs/dimension"
+        },
+        "ai_governance": {
+          "$ref": "#/$defs/dimension"
+        },
+        "agent_management": {
+          "$ref": "#/$defs/dimension"
+        },
+        "ci_cd": {
+          "$ref": "#/$defs/dimension"
+        },
+        "documentation": {
+          "$ref": "#/$defs/dimension"
+        }
+      }
+    },
+    "discovered_facts": {
+      "type": "array",
+      "description": "Concrete facts observed in the repository, with attribution.",
+      "items": {
+        "$ref": "#/$defs/discovered_fact"
+      }
+    },
+    "assumptions": {
+      "type": "array",
+      "description": "Assumptions the assessor made in the absence of verifiable evidence.",
+      "items": {
+        "type": "string"
+      }
+    },
+    "gaps": {
+      "type": "array",
+      "description": "Identified gaps between the current state and the framework baseline.",
+      "items": {
+        "$ref": "#/$defs/gap"
+      }
+    },
+    "work_management": {
+      "type": "object",
+      "description": "Work management tooling discovery and recommendation.",
+      "required": ["detected_tools", "recommended", "reason"],
+      "additionalProperties": false,
+      "properties": {
+        "detected_tools": {
+          "type": "array",
+          "description": "Work management tools detected in the repository (e.g. from workflow files, config, or docs).",
+          "items": {
+            "type": "string"
+          }
+        },
+        "recommended": {
+          "type": "string",
+          "description": "Recommended work management provider for framework initialization.",
+          "enum": ["github-issues", "jira", "azure-devops", "mock"]
+        },
+        "reason": {
+          "type": "string",
+          "description": "1–2 sentence rationale for the recommendation."
+        }
+      }
+    },
+    "mcp_opportunities": {
+      "type": "array",
+      "description": "MCP server integration opportunities identified during assessment.",
+      "items": {
+        "$ref": "#/$defs/mcp_opportunity"
+      }
+    },
+    "modernization_hooks": {
+      "type": "array",
+      "description": "Placeholder modernization observations for Phase 3+ processing.",
+      "items": {
+        "$ref": "#/$defs/hook"
+      }
+    },
+    "finops_hooks": {
+      "type": "array",
+      "description": "Placeholder FinOps observations for Phase 3+ processing.",
+      "items": {
+        "$ref": "#/$defs/hook"
+      }
+    },
+    "next_steps": {
+      "type": "array",
+      "description": "Ordered list of recommended initialization actions, highest priority first.",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "completeness": {
+      "type": "number",
+      "description": "Confidence in assessment completeness (0.0–1.0). Lower values indicate the assessor lacked access to key areas.",
+      "minimum": 0.0,
+      "maximum": 1.0
+    }
+  },
+  "$defs": {
+    "dimension": {
+      "type": "object",
+      "description": "A single scored assessment dimension.",
+      "required": ["score", "findings"],
+      "additionalProperties": false,
+      "properties": {
+        "score": {
+          "type": "integer",
+          "description": "Dimension score (0–100).",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "findings": {
+          "type": "array",
+          "description": "Evidence-based observations for this dimension. Each finding is a single concrete statement.",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "discovered_fact": {
+      "type": "object",
+      "description": "A concrete, observable fact found in the repository.",
+      "required": ["category", "fact", "source"],
+      "additionalProperties": false,
+      "properties": {
+        "category": {
+          "type": "string",
+          "description": "Dimension or area this fact belongs to (e.g. ci_cd, documentation, ai_governance)."
+        },
+        "fact": {
+          "type": "string",
+          "description": "The observed fact, stated as a single declarative sentence."
+        },
+        "source": {
+          "type": "string",
+          "description": "File path or reference that is the evidence for this fact."
+        }
+      }
+    },
+    "gap": {
+      "type": "object",
+      "description": "A gap between current repository state and framework baseline requirements.",
+      "required": ["area", "description", "severity", "recommendation"],
+      "additionalProperties": false,
+      "properties": {
+        "area": {
+          "type": "string",
+          "description": "Dimension or area where the gap exists."
+        },
+        "description": {
+          "type": "string",
+          "description": "Clear description of what is missing or insufficient."
+        },
+        "severity": {
+          "type": "string",
+          "description": "Impact severity of this gap.",
+          "enum": ["low", "medium", "high", "critical"]
+        },
+        "recommendation": {
+          "type": "string",
+          "description": "Specific recommended action to close the gap."
+        }
+      }
+    },
+    "mcp_opportunity": {
+      "type": "object",
+      "description": "An identified opportunity to integrate an MCP server with this repository's workflow.",
+      "required": ["tool", "use_case", "priority"],
+      "additionalProperties": false,
+      "properties": {
+        "tool": {
+          "type": "string",
+          "description": "Name of the MCP tool or server (e.g. github, jira, filesystem)."
+        },
+        "use_case": {
+          "type": "string",
+          "description": "Specific use case this MCP tool would address in this repository."
+        },
+        "priority": {
+          "type": "string",
+          "description": "Implementation priority.",
+          "enum": ["low", "medium", "high"]
+        }
+      }
+    },
+    "hook": {
+      "type": "object",
+      "description": "A placeholder observation reserved for future phase processing.",
+      "required": ["area", "observation"],
+      "additionalProperties": false,
+      "properties": {
+        "area": {
+          "type": "string",
+          "description": "The area or subsystem this observation relates to."
+        },
+        "observation": {
+          "type": "string",
+          "description": "A concise statement of the observation, to be analyzed in a later phase."
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,88 @@
+{
+  "$schema": "https://docs.github.com/en/rest/repos/rules#create-a-repository-ruleset",
+  "_comment": "GitHub Repository Ruleset for primary integration branch (main). Apply via: gh api repos/{owner}/{repo}/rulesets --method POST --input docs/sdlc/branch-protection-ruleset.json. See docs/sdlc/README.md for field-by-field explanation.",
+  "name": "main-protected",
+  "target": "branch",
+  "enforcement": "active",
+  "conditions": {
+    "ref_name": {
+      "include": [
+        "refs/heads/main"
+      ],
+      "exclude": []
+    }
+  },
+  "rules": [
+    {
+      "type": "deletion",
+      "_comment": "Prevents deletion of the main branch. No one — including administrators — can delete main."
+    },
+    {
+      "type": "non_fast_forward",
+      "_comment": "Blocks force pushes to main. Preserves the immutable audit trail of the branch history. Required for compliance and to prevent accidental history rewrites."
+    },
+    {
+      "type": "creation",
+      "_comment": "If main does not exist, it can only be created once. Prevents accidental recreation after deletion."
+    },
+    {
+      "type": "pull_request",
+      "parameters": {
+        "required_approving_review_count": 1,
+        "_comment_required_approving_review_count": "Minimum 1 approval required for standard changes. Governance-sensitive paths (governance-registry.yaml, schemas/, .github/workflows/) require 2 approvals via CODEOWNERS configuration.",
+        "dismiss_stale_reviews_on_push": true,
+        "_comment_dismiss_stale_reviews_on_push": "When new commits are pushed to a PR branch, existing approvals are dismissed. Reviewers must re-approve the updated change. Prevents approving a safe version then pushing unsafe changes.",
+        "require_code_owner_review": true,
+        "_comment_require_code_owner_review": "Changes to CODEOWNERS-gated paths require approval from the designated code owner(s). This is how governance-sensitive directories enforce the 2-reviewer requirement.",
+        "require_last_push_approval": true,
+        "_comment_require_last_push_approval": "The last push to a PR branch must be approved by a reviewer who did not author that push. Prevents self-approval of last-minute changes.",
+        "required_review_thread_resolution": true,
+        "_comment_required_review_thread_resolution": "All review comment threads must be marked resolved before the PR can be merged. Ensures reviewers confirm their concerns were addressed.",
+        "automatic_copilot_code_review_enabled": false,
+        "_comment_automatic_copilot_code_review_enabled": "Set to true if your organization has Copilot code review enabled and wants it to run automatically on every PR. Does not replace human review — Copilot review is in addition to required human approvals."
+      }
+    },
+    {
+      "type": "required_status_checks",
+      "parameters": {
+        "strict_required_status_checks_policy": true,
+        "_comment_strict_required_status_checks_policy": "Branches must be up-to-date with main before merge. Prevents 'works on my machine' integration failures where a branch passes CI but conflicts with recent main changes.",
+        "required_status_checks": [
+          {
+            "context": "ci / markdown-lint",
+            "_comment": "All markdown files must pass lint rules defined in .markdownlint.jsonc"
+          },
+          {
+            "context": "ci / schema-validation",
+            "_comment": "governance-registry.yaml and aispec.config.yaml must validate against their JSON schemas"
+          },
+          {
+            "context": "ci / framework-tests",
+            "_comment": "All framework tests in tests/ must pass"
+          },
+          {
+            "context": "ci / workflow-lint",
+            "_comment": "GitHub Actions workflow files must pass actionlint validation"
+          }
+        ]
+      }
+    },
+    {
+      "type": "commit_message_pattern",
+      "parameters": {
+        "operator": "regex",
+        "pattern": "^(feat|fix|docs|chore|test|refactor|break)(\\([a-z0-9-]+\\))?: .{1,100}",
+        "negate": false,
+        "_comment": "Enforces Conventional Commits format on squash-merged commit messages. Pattern: type(scope): description. The PR title becomes the squash commit message, so PR title format is enforced here. Adjust the pattern to match your organization's type vocabulary."
+      }
+    }
+  ],
+  "bypass_actors": [
+    {
+      "actor_type": "RepositoryRole",
+      "actor_id": 5,
+      "bypass_mode": "always",
+      "_comment": "actor_id 5 = Repository Admin role. Admins can bypass in emergencies. All bypass events are logged. Bypasses should be documented with a follow-up issue explaining why they were necessary."
+    }
+  ]
+}

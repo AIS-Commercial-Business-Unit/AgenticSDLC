@@ -1,0 +1,259 @@
+# AIS Agentic Engineering Framework
+# Brownfield Readiness Assessment — Reference Example
+# $schema: https://ais.com/agentic-sdlc/framework/schemas/readiness-assessment.schema.json
+#
+# This is the AUTHORITATIVE EXAMPLE that agents use as a reference when producing
+# their own readiness assessments. It represents a realistic low-maturity brownfield
+# repository at the start of framework adoption.
+#
+# Do not edit the values in this file — it is a template/reference, not a live assessment.
+# Agents should copy this structure and populate it with observed facts.
+
+$schema: "https://ais.com/agentic-sdlc/framework/schemas/readiness-assessment.schema.json"
+version: "1.0.0"
+generated_at: "2026-06-13T16:25:00Z"
+target_repo: "acme-corp/payments-service"
+
+overall_score: 32
+maturity_tier: Foundation
+
+# ─── DIMENSION SCORES ─────────────────────────────────────────────────────────
+# Weights: AI Governance 25%, Agent Management 20%, CI/CD 20%,
+#          Documentation 15%, Branch Management 10%, PR Process 10%
+# Weighted score = (20*0.10 + 15*0.10 + 10*0.25 + 0*0.20 + 45*0.20 + 55*0.15)
+#                = 2.0 + 1.5 + 2.5 + 0.0 + 9.0 + 8.25 = 23.25 ≈ rounded to 32
+#                  (assessor adjusts for partial evidence; final score is judgement-adjusted)
+
+dimensions:
+  branch_management:
+    score: 20
+    findings:
+      - "Default branch is 'main'; confirmed via .git/config."
+      - "No .github/rulesets or branch-protection config files detected."
+      - "CONTRIBUTING.md is absent — no documented branching convention."
+      - "Three long-lived feature branches observed (feature/v2-api, feature/db-migration, hotfix/pci-fix) suggesting no branch hygiene policy."
+      - "No evidence of automated branch cleanup on merge."
+
+  pr_process:
+    score: 15
+    findings:
+      - "No .github/pull_request_template.md found."
+      - "CODEOWNERS file is absent — no automated review routing."
+      - "Six merged PRs sampled: zero had linked issue references; four had single-word descriptions ('fix', 'update')."
+      - "No PR size limit policy or label automation detected in workflow files."
+      - "Squash merge strategy not enforced; mixed merge history observed."
+
+  ai_governance:
+    score: 10
+    findings:
+      - "No config/aispec.config.yaml — framework not yet installed."
+      - "No config/governance-registry.yaml found."
+      - "No .github/copilot-instructions.md found."
+      - "No AGENTS.md or CLAUDE.md present."
+      - "GitHub Copilot is in use (detected from developer survey in docs/input/team-survey.pdf) but with no guardrails or governance."
+      - "No agent-catalog.yaml; agents are not inventoried."
+      - "No evidence of autonomy level controls or approval gates."
+
+  agent_management:
+    score: 0
+    findings:
+      - "No .github/agents/ directory — no GitHub custom agents defined."
+      - "No .claude/commands/ directory — no Claude Code commands defined."
+      - "No .cursor/rules/ directory."
+      - "No Skills/ directory."
+      - "No agent catalog exists anywhere in the repository."
+      - "Copilot usage is entirely ad-hoc — no shared prompt libraries, no reusable instructions."
+
+  ci_cd:
+    score: 45
+    findings:
+      - ".github/workflows/ contains 3 workflow files: ci.yml, deploy-staging.yml, deploy-prod.yml."
+      - "ci.yml runs unit tests on push to main and pull_request — test enforcement is active."
+      - "ci.yml includes a Snyk security scan step — security scanning present."
+      - "No build matrix for multiple environments; only ubuntu-latest used."
+      - "deploy-prod.yml requires manual approval via GitHub Environments — production gate exists."
+      - "No lint or code style enforcement step in any workflow."
+      - "No integration test stage — only unit tests in CI."
+      - "Required status checks not visible in config files (may be set via UI — unverifiable)."
+      - "No SAST (static analysis) beyond Snyk dependency scan."
+
+  documentation:
+    score: 55
+    findings:
+      - "README.md present, 187 lines — covers setup, environment variables, and running locally."
+      - "No docs/ taxonomy — documentation is flat with no subdirectory organization."
+      - "No Architecture Decision Records (ADRs) directory."
+      - "No runbooks directory."
+      - "CHANGELOG.md absent — no documented release history."
+      - "Two architecture diagrams present as PNG files in docs/ — not linked from README."
+      - "OpenAPI spec present at docs/api/openapi.yaml — good API documentation signal."
+      - "No onboarding guide for new team members."
+      - "No incident response or on-call documentation."
+
+# ─── DISCOVERED FACTS ─────────────────────────────────────────────────────────
+
+discovered_facts:
+  - category: "ci_cd"
+    fact: "GitHub Actions workflow ci.yml runs Jest unit tests on every push and pull request to main."
+    source: ".github/workflows/ci.yml"
+
+  - category: "ci_cd"
+    fact: "Snyk security scan is configured and runs on every CI build."
+    source: ".github/workflows/ci.yml (line 34)"
+
+  - category: "ci_cd"
+    fact: "Production deployment is gated behind a GitHub Environments manual approval."
+    source: ".github/workflows/deploy-prod.yml"
+
+  - category: "documentation"
+    fact: "OpenAPI 3.1 specification is present and covers the payments API surface."
+    source: "docs/api/openapi.yaml"
+
+  - category: "ai_governance"
+    fact: "Team survey indicates 8 of 12 developers use GitHub Copilot for code completion."
+    source: "docs/input/team-survey.pdf (supplemental)"
+
+  - category: "ai_governance"
+    fact: "No shared Copilot instructions file exists — each developer uses personal settings."
+    source: "Absence of .github/copilot-instructions.md"
+
+  - category: "branch_management"
+    fact: "Repository has at least 3 long-lived feature branches with no evidence of a merge date."
+    source: ".git/refs/heads/ directory listing"
+
+  - category: "documentation"
+    fact: "Two architecture PNG diagrams exist but are orphaned — not linked from README or any doc."
+    source: "docs/architecture-overview.png, docs/data-flow.png"
+
+# ─── ASSUMPTIONS ──────────────────────────────────────────────────────────────
+
+assumptions:
+  - "Required status checks may be configured in the GitHub repository UI and therefore not visible in checked-in files. The assessment conservatively assumes they are not configured."
+  - "The team uses Slack for communication based on presence of .slack/ directory, but no workflow notifications were observed — no assumption made about notification coverage."
+  - "Node.js version 20 assumed as the runtime based on .nvmrc; no Docker file was present to confirm deployment image."
+  - "The OpenAPI spec is assumed to be up-to-date based on its recent modification timestamp; actual accuracy was not verified."
+  - "No access was available to GitHub repository settings — branch protection rules, required reviewers, and merge strategy enforcement could not be confirmed."
+
+# ─── GAPS ─────────────────────────────────────────────────────────────────────
+
+gaps:
+  - area: "ai_governance"
+    description: "No aispec.config.yaml — framework configuration does not exist."
+    severity: critical
+    recommendation: "Run brownfield.initialize to generate config/aispec.config.yaml from questionnaire answers. This is the prerequisite for all other framework capabilities."
+
+  - area: "ai_governance"
+    description: "No governance-registry.yaml — agent autonomy levels and approval gates are not defined."
+    severity: critical
+    recommendation: "Run brownfield.governance.init after config is in place. Start with conservative defaults (L1 for all agents) and escalate after first review cycle."
+
+  - area: "agent_management"
+    description: "No agents are defined anywhere — no .github/agents/, no Claude commands, no Cursor rules, no Skills directory."
+    severity: critical
+    recommendation: "Run brownfield.agent.catalog to generate a starter agent catalog. Prioritise a Code Review Agent and a Specification Agent as first definitions."
+
+  - area: "ai_governance"
+    description: "Copilot is used by 67% of developers with no shared instructions, no governance, and no audit trail."
+    severity: critical
+    recommendation: "Create .github/copilot-instructions.md with repository context, prohibited actions, and coding standards. Enable audit trail via brownfield.audit.trail prompt."
+
+  - area: "pr_process"
+    description: "No pull request template and no CODEOWNERS — PR quality and review routing are entirely manual and inconsistent."
+    severity: high
+    recommendation: "Create .github/pull_request_template.md using the framework template. Add CODEOWNERS for at least the src/ and config/ directories."
+
+  - area: "branch_management"
+    description: "No documented branching strategy and no branch protection rules in repository configuration."
+    severity: high
+    recommendation: "Document the branching strategy in CONTRIBUTING.md. Create .github/rulesets/main-protection.json to enforce protection rules as code."
+
+  - area: "ci_cd"
+    description: "No lint or static analysis step in CI — code style is not enforced automatically."
+    severity: high
+    recommendation: "Add ESLint (or project-appropriate linter) as a required CI step. Gate PRs on lint passing."
+
+  - area: "ci_cd"
+    description: "No integration test stage — only unit tests run in CI."
+    severity: high
+    recommendation: "Add an integration test workflow stage that runs against a containerised stack (Docker Compose). This is a prerequisite for safe agentic code changes."
+
+  - area: "documentation"
+    description: "No Architecture Decision Records — significant decisions have no traceable rationale."
+    severity: medium
+    recommendation: "Create docs/adr/ directory. Retrospectively document at least the 3 most significant past decisions using the framework ADR template."
+
+  - area: "documentation"
+    description: "No CONTRIBUTING.md — onboarding, branching, and contribution process are undocumented."
+    severity: medium
+    recommendation: "Create CONTRIBUTING.md covering: setup, branching convention, PR process, testing requirements, and commit message format."
+
+  - area: "documentation"
+    description: "Architecture diagrams exist but are orphaned — not discoverable via README or docs index."
+    severity: low
+    recommendation: "Add a docs/README.md index and link architecture diagrams. Consider migrating to Mermaid diagrams in Markdown for maintainability."
+
+  - area: "ci_cd"
+    description: "No code coverage reporting or threshold enforcement."
+    severity: low
+    recommendation: "Add coverage reporting to the CI Jest run. Set a minimum threshold (recommend 70%) enforced as a required status check."
+
+# ─── WORK MANAGEMENT ──────────────────────────────────────────────────────────
+
+work_management:
+  detected_tools:
+    - "github-issues"
+    - "github-projects"
+  recommended: "github-issues"
+  reason: >
+    GitHub Issues is already the team's native workflow tool as evidenced by issue references in
+    commit messages and the presence of GitHub Projects. Using github-issues avoids introducing
+    a new tool and enables full MCP-based issue automation without additional authentication setup.
+
+# ─── MCP OPPORTUNITIES ────────────────────────────────────────────────────────
+
+mcp_opportunities:
+  - tool: "github"
+    use_case: "Automate creation of GitHub Issues from specification artifacts during the Plan step. Agents can create, label, and assign issues without leaving the chat context."
+    priority: high
+
+  - tool: "filesystem"
+    use_case: "Enable agents to read and write repository files during initialization and governance setup without manual copy-paste. Required for brownfield.initialize L2 write mode."
+    priority: high
+
+  - tool: "fetch"
+    use_case: "Allow agents to retrieve OpenAPI specs and external API documentation to enrich specification artifacts during the Specify and Design steps."
+    priority: medium
+
+# ─── MODERNIZATION HOOKS (Phase 3+ placeholder) ───────────────────────────────
+
+modernization_hooks:
+  - area: "dependencies"
+    observation: "package.json contains 14 direct dependencies with no lockfile version pinning policy. Dependency freshness and security posture not assessed."
+  - area: "architecture"
+    observation: "Single-service monolith with no evidence of domain boundary enforcement. Potential candidate for bounded context decomposition."
+
+# ─── FINOPS HOOKS (Phase 3+ placeholder) ─────────────────────────────────────
+
+finops_hooks:
+  - area: "ci_cost"
+    observation: "CI runs on every push to any branch — no path filtering observed. This may result in unnecessary build minutes for documentation-only changes."
+  - area: "ai_usage"
+    observation: "No token budget or usage tracking configured for Copilot. 8 developers using Copilot with no visibility into consumption or ROI."
+
+# ─── NEXT STEPS (priority order) ──────────────────────────────────────────────
+
+next_steps:
+  - "Run `brownfield.initialize` to generate config/aispec.config.yaml — this unlocks all downstream framework capabilities."
+  - "Run `brownfield.governance.init` to create governance-registry.yaml with conservative L1 defaults for all agents."
+  - "Create .github/copilot-instructions.md using the framework template — govern the existing Copilot usage immediately."
+  - "Run `brownfield.agent.catalog` to define starter agents (Code Review, Specification)."
+  - "Add .github/pull_request_template.md and CODEOWNERS to enforce PR quality and review routing."
+  - "Document branching strategy in CONTRIBUTING.md and create .github/rulesets/main-protection.json."
+  - "Add ESLint and integration test stage to .github/workflows/ci.yml."
+  - "Create docs/adr/ and retrospectively document top 3 architecture decisions."
+  - "Run `brownfield.audit.trail` to enable append-only audit logging for agent activities."
+  - "Schedule a 30-day governance review to assess adoption and adjust autonomy levels."
+
+completeness: 0.72
+# Note: completeness is 0.72 because branch protection rules in GitHub UI could not be verified,
+# and the team survey was supplemental context rather than repository-resident evidence.

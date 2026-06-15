@@ -1,0 +1,202 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ais.com/agentic-sdlc/framework/schemas/governance-registry.schema.json",
+  "title": "AIS Governance Activity Registry",
+  "description": "JSON Schema 2020-12 for governance-registry.yaml. Each entry defines one governed agent activity including its autonomy level, risk, tools, approval requirements, and evidence requirements. Reference: framework.md section 9.",
+  "type": "object",
+  "required": ["registry"],
+  "additionalProperties": false,
+  "properties": {
+    "registry": {
+      "type": "array",
+      "description": "Array of governance activity entries.",
+      "items": { "$ref": "#/$defs/GovernanceEntry" }
+    }
+  },
+  "$defs": {
+    "GovernanceEntry": {
+      "type": "object",
+      "description": "A single governed agent activity.",
+      "required": [
+        "id",
+        "agent",
+        "step",
+        "activity",
+        "max_autonomy",
+        "risk_level",
+        "confidence_threshold",
+        "status"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique kebab-case identifier for this governance entry (e.g., 'architecture-review-requirements').",
+          "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+        },
+        "agent": {
+          "type": "string",
+          "description": "The agent responsible for this activity (e.g., 'architecture-agent'). Must match an entry in agent-catalog.yaml."
+        },
+        "step": {
+          "type": "string",
+          "description": "The AIS Specify SDLC step this activity belongs to.",
+          "enum": ["Intake", "Specify", "Design", "Plan", "Implement", "Verify", "Deploy", "Report", "Learn"]
+        },
+        "activity": {
+          "type": "string",
+          "description": "Human-readable name of the specific activity being governed."
+        },
+        "summary": {
+          "type": "string",
+          "description": "Brief description of what the agent does in this activity."
+        },
+        "max_autonomy": {
+          "type": "string",
+          "description": "Maximum autonomy level permitted for this activity. L0=Observe; L1=Recommend; L2=Prepare; L3=Execute.",
+          "enum": ["L0", "L1", "L2", "L3"]
+        },
+        "current_autonomy": {
+          "type": "string",
+          "description": "Currently active autonomy level. May be lower than max_autonomy.",
+          "enum": ["L0", "L1", "L2", "L3"]
+        },
+        "risk_level": {
+          "type": "string",
+          "description": "Risk classification of this activity.",
+          "enum": ["low", "medium", "high", "critical"]
+        },
+        "allowed_tools": {
+          "type": "array",
+          "description": "Explicit list of tools the agent is permitted to invoke for this activity.",
+          "items": { "type": "string" }
+        },
+        "prohibited_actions": {
+          "type": "array",
+          "description": "Actions the agent must never perform in this activity, regardless of confidence.",
+          "items": { "type": "string" }
+        },
+        "required_inputs": {
+          "type": "array",
+          "description": "Artifact types or named artifacts that must exist before this activity can begin.",
+          "items": { "type": "string" }
+        },
+        "required_evidence": {
+          "type": "array",
+          "description": "Evidence artifacts that must be produced and stored before the activity is considered complete.",
+          "items": { "type": "string" }
+        },
+        "approval_requirements": {
+          "type": "array",
+          "description": "Named approval checks that must pass before this activity's outputs are authoritative.",
+          "items": {
+            "type": "object",
+            "required": ["type", "approver_role"],
+            "additionalProperties": false,
+            "properties": {
+              "type": {
+                "type": "string",
+                "description": "Approval type.",
+                "enum": ["human", "policy", "automated"]
+              },
+              "approver_role": {
+                "type": "string",
+                "description": "Role or GitHub team that must approve (e.g., 'solution-architect', 'security-team')."
+              },
+              "required": {
+                "type": "boolean",
+                "description": "If true, this approval is mandatory and cannot be bypassed."
+              },
+              "timeout_hours": {
+                "type": ["integer", "null"],
+                "description": "How many hours to wait for approval before escalating. Null means no timeout."
+              }
+            }
+          }
+        },
+        "confidence_threshold": {
+          "type": "object",
+          "description": "Per-activity confidence thresholds. Override the global governance defaults.",
+          "additionalProperties": false,
+          "properties": {
+            "recommend": {
+              "type": "number",
+              "minimum": 0.0,
+              "maximum": 1.0,
+              "description": "Minimum confidence to produce a recommendation."
+            },
+            "prepare": {
+              "type": "number",
+              "minimum": 0.0,
+              "maximum": 1.0,
+              "description": "Minimum confidence to prepare a draft artifact."
+            },
+            "execute": {
+              "type": "number",
+              "minimum": 0.0,
+              "maximum": 1.0,
+              "description": "Minimum confidence to execute an L3 action."
+            }
+          }
+        },
+        "policy_source": {
+          "type": "string",
+          "description": "Path or reference to the policy, standard, or approved artifact that authorizes this activity."
+        },
+        "status": {
+          "type": "string",
+          "description": "Governance approval status for this entry.",
+          "enum": ["Not Assessed", "Draft", "Approved"]
+        },
+        "completeness_pct": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Percentage of required fields and evidence that have been configured."
+        },
+        "approved_by": {
+          "type": ["string", "null"],
+          "description": "GitHub username who approved this entry. Null if not yet approved."
+        },
+        "approved_at": {
+          "type": ["string", "null"],
+          "description": "ISO-8601 timestamp when this entry was approved.",
+          "format": "date-time"
+        },
+        "last_assessed_at": {
+          "type": ["string", "null"],
+          "description": "ISO-8601 timestamp of the last review assessment.",
+          "format": "date-time"
+        },
+        "review_interval_days": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "How frequently this entry must be reviewed (days). Overrides global default."
+        },
+        "review_due_at": {
+          "type": ["string", "null"],
+          "description": "ISO-8601 date when the next review is due.",
+          "format": "date"
+        },
+        "review_state": {
+          "type": "string",
+          "description": "Current review state, updated by governance reassessment workflow.",
+          "enum": ["current", "due-soon", "review-due", "overdue"]
+        },
+        "review_date": {
+          "type": ["string", "null"],
+          "description": "Alias for review_due_at. Prefer review_due_at for new entries.",
+          "format": "date"
+        },
+        "owner": {
+          "type": "string",
+          "description": "GitHub username or team responsible for maintaining this governance entry."
+        },
+        "notes": {
+          "type": "string",
+          "description": "Free-form notes about this activity, outstanding assumptions, or open questions."
+        }
+      }
+    }
+  }
+}

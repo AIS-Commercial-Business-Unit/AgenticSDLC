@@ -1,0 +1,161 @@
+{
+  "$schema": "https://ais.com/agentic-sdlc/framework/schemas/readiness-assessment.schema.json",
+  "version": "1.0.0",
+  "overall_score": 22,
+  "maturity_tier": "Foundation",
+  "generated_at": "2026-06-13T16:25:00Z",
+  "target_repo": "samples/brownfield-sample",
+  "dimensions": {
+    "branch_management": {
+      "score": 0,
+      "findings": [
+        "No branch protection rules detected",
+        "No .github/branch-protection.yml or equivalent config found"
+      ]
+    },
+    "pr_process": {
+      "score": 10,
+      "findings": [
+        "No .github/pull_request_template.md found",
+        "No CODEOWNERS file detected"
+      ]
+    },
+    "ai_governance": {
+      "score": 0,
+      "findings": [
+        "No aispec.config.yaml detected — framework not initialized",
+        "No governance-registry.yaml found"
+      ]
+    },
+    "agent_management": {
+      "score": 0,
+      "findings": [
+        "No .github/agents/ directory detected",
+        "No agent instruction files present"
+      ]
+    },
+    "ci_cd": {
+      "score": 0,
+      "findings": [
+        "No .github/workflows/ directory found",
+        "No CI/CD pipeline configuration detected"
+      ]
+    },
+    "documentation": {
+      "score": 30,
+      "findings": [
+        "README.md present at repository root",
+        "No CONTRIBUTING.md found",
+        "No Architecture Decision Records (ADRs) directory detected"
+      ]
+    }
+  },
+  "discovered_facts": [
+    {
+      "category": "documentation",
+      "fact": "README.md is present at the repository root.",
+      "source": "README.md"
+    },
+    {
+      "category": "ci_cd",
+      "fact": "No .github/workflows directory exists — CI/CD pipeline is not configured.",
+      "source": ".github/"
+    },
+    {
+      "category": "agent_management",
+      "fact": "No .github/agents directory exists — no agent instruction files are present.",
+      "source": ".github/"
+    },
+    {
+      "category": "ai_governance",
+      "fact": "No aispec.config.yaml found — the Agentic Engineering Framework has not been initialized.",
+      "source": "./"
+    },
+    {
+      "category": "pr_process",
+      "fact": "No .github/pull_request_template.md found — pull request descriptions are unguided.",
+      "source": ".github/"
+    },
+    {
+      "category": "pr_process",
+      "fact": "No CODEOWNERS file detected — code ownership is not declared.",
+      "source": "./"
+    },
+    {
+      "category": "documentation",
+      "fact": "No Architecture Decision Records directory found (docs/decisions/ or similar).",
+      "source": "docs/"
+    },
+    {
+      "category": "ai_governance",
+      "fact": "No governance-registry.yaml found — agent autonomy levels are unconstrained.",
+      "source": "./"
+    },
+    {
+      "category": "branch_management",
+      "fact": "No branch protection configuration detected in the repository.",
+      "source": ".github/"
+    }
+  ],
+  "assumptions": [
+    "Repository is hosted on GitHub based on presence of package.json and .github directory structure",
+    "Default branch is 'main' — no explicit branch config found to confirm"
+  ],
+  "gaps": [
+    {
+      "area": "ai_governance",
+      "description": "No governance configuration detected — aispec.config.yaml and governance-registry.yaml are absent.",
+      "severity": "high",
+      "recommendation": "Run initialize.mjs to scaffold aispec.config.yaml and governance-registry.yaml"
+    },
+    {
+      "area": "agent_management",
+      "description": "No agent instruction files present — .github/agents/ directory does not exist.",
+      "severity": "high",
+      "recommendation": "Create .github/agents/ directory and add agent instruction Markdown files"
+    },
+    {
+      "area": "ci_cd",
+      "description": "No CI/CD pipeline configured — .github/workflows/ directory is absent.",
+      "severity": "high",
+      "recommendation": "Add .github/workflows/ci.yml to automate build and test on pull requests"
+    },
+    {
+      "area": "pr_process",
+      "description": "No pull request template found.",
+      "severity": "medium",
+      "recommendation": "Add .github/pull_request_template.md to standardize PR descriptions"
+    },
+    {
+      "area": "documentation",
+      "description": "No Architecture Decision Records directory found.",
+      "severity": "medium",
+      "recommendation": "Create docs/decisions/ and adopt the MADR ADR format"
+    }
+  ],
+  "work_management": {
+    "detected_tools": [],
+    "recommended": "github-issues",
+    "reason": "No work management tools detected in the repository. GitHub Issues is the default recommendation for new framework adopters."
+  },
+  "mcp_opportunities": [
+    {
+      "tool": "github",
+      "use_case": "Enable agents to create, triage, and close GitHub Issues automatically as part of governed workflows",
+      "priority": "high"
+    },
+    {
+      "tool": "filesystem",
+      "use_case": "Allow agents to scaffold governance config, agent definitions, and ADR templates without manual file operations",
+      "priority": "medium"
+    }
+  ],
+  "next_steps": [
+    "Run initialize.mjs to start the interactive brownfield initialization wizard",
+    "Answer questionnaire questions to generate aispec.config.yaml",
+    "Add .github/agents/ directory with agent instruction files",
+    "Configure .github/workflows/ci.yml for CI/CD automation",
+    "Add .github/pull_request_template.md"
+  ],
+  "completeness": 0.85
+}

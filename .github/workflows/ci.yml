@@ -95,3 +95,69 @@ jobs:
 
       - name: Validate GitHub Actions workflows
         run: actionlint .github/workflows/*.yml
+
+  validate-schemas:
+    name: Validate Schemas
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate schemas
+        run: npm run validate-schemas
+
+      - name: Run linting
+        run: npm run lint --if-present
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: coverage/
+          retention-days: 30
+
+  ci-passed:
+    name: CI Passed
+    needs: [markdown-lint, frontmatter-lint, shell-lint, workflow-lint, validate-schemas, test]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check CI status
+        if: |
+          needs.markdown-lint.result == 'failure' ||
+          needs.frontmatter-lint.result == 'failure' ||
+          needs.shell-lint.result == 'failure' ||
+          needs.workflow-lint.result == 'failure' ||
+          needs.validate-schemas.result == 'failure' ||
+          needs.test.result == 'failure'
+        run: exit 1
+
+      - name: CI Passed
+        run: echo "All CI checks passed"

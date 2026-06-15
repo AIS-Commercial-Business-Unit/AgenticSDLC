@@ -1,0 +1,13 @@
+---
+description: >
+  Agent catalog builder. Inventories all agents, skills, and AI automation in an
+  existing repository across all surfaces (Copilot, Claude, Cursor, GitHub Actions,
+  scripts). Produces a structured agent-catalog.yaml and inventory report.
+allowed_tools:
+  - read_file
+  - list_directory
+  - search_files
+  - grep
+  - glob
+output_type: agent_catalog_yaml
+---

@@ -1,45 +1,62 @@
-# Playbooks
+# Brownfield Governance Playbooks
 
-Reusable domain knowledge for different engagement types. Playbooks capture patterns, risks, estimation heuristics, engagement-shape guidance, and typical spec decompositions that inform pre-sales proposals and delivery planning.
+Playbooks in this directory are **operational runbooks for brownfield repository governance**. Each playbook is a source document used to generate or run agent prompts in supported AI surfaces (GitHub Copilot, Claude Code).
 
-## What Playbooks Do
+These are NOT the runnable prompts themselves — those live in `.specify/prompts/`. Playbooks here document the operational intent, pre-conditions, and usage context for each prompt.
 
-- **Pre-sales**: Inform discovery questions, spec decomposition, technology recommendations, ROM estimation, staffing inputs, and cost drivers during `/ais.presales.synthesize` and `/ais.presales.propose`
-- **Setup**: Guide architecture patterns and spec decomposition during `/ais.setup.plan` and `/ais.setup.architecture`
-- **Delivery**: Provide domain-specific risk patterns and quality gates that seed the constitution
+---
 
-## Available Playbooks
+## What Is a Playbook?
 
-| Playbook | Engagement Type | When to Use |
-|----------|----------------|-------------|
-| [Agent & AI Builds](agent-ai-builds.md) | AI agents, copilots, RAG systems, ML pipelines | Client wants AI/ML capabilities |
-| [Copilot Readiness](copilot-readiness.md) | M365 Copilot readiness, data security, Purview/DLP, AI governance | Client is rolling out Microsoft 365 Copilot and needs security + governance foundation |
-| [Data Platforms](data-platforms.md) | Data warehouses, lakes, pipelines, analytics | Client needs data infrastructure |
-| [Custom Applications](custom-applications.md) | Web apps, mobile apps, SaaS products | Client wants a bespoke application |
-| [Integration Projects](integration-projects.md) | System integrations, API gateways, ETL | Client connecting existing systems |
-| [Modernization](modernization.md) | Legacy migration, re-platforming, re-architecture | Client modernizing existing systems |
-| [Ops Continuity](ops-continuity.md) | Post-delivery support, operations, enhancements, advisory reachback | Client needs reusable Base/Standard/Premium support options or an ops handoff playbook |
+In the AIS Agentic Engineering Framework, a **playbook** is a governed, repeatable procedure for applying the framework to a brownfield repository. Every playbook:
 
-## Using a Playbook
+- Maps to one or more AIS Specify lifecycle steps.
+- Operates at a defined autonomy level (L0–L3).
+- Has a source prompt in `.specify/prompts/`.
+- Has a companion human-readable guide in `docs/playbooks/`.
+- Never exceeds its defined autonomy level without explicit configuration change.
 
-Playbooks are automatically consumed by pre-sales and setup commands when relevant. You can also reference them explicitly:
+---
 
-```
-/ais.presales.synthesize Use the agent-ai-builds playbook
-/ais.setup.plan Reference data-platforms playbook for architecture patterns
-```
+## Playbook Inventory
 
-## Creating a New Playbook
+| Playbook | Prompt | Autonomy | Step | Description |
+|---|---|---|---|---|
+| Repository Assessment | `brownfield.assess.md` | L0 | Intake | Read-only AI readiness inventory and maturity scoring |
+| Governance Initializer | `brownfield.governance.init.md` | L2 | Intake→Specify | Creates config, registry, catalog, audit structure |
+| Agent Catalog Builder | `brownfield.agent.catalog.md` | L0 | Intake | Inventories all agents, skills, and AI automation |
+| Experiment Charter | `brownfield.experiment.charter.md` | L1 | Learn→Intake | Designs hypothesis-driven experiments |
+| Audit Trail Setup | `brownfield.audit.trail.md` | L2 | Intake→Learn | Creates audit infrastructure and schema |
 
-1. Copy `_playbook-template.md` to `{engagement-type}.md`
-2. Fill in all sections with domain-specific knowledge
-3. Add the playbook to the table above
-4. Test by running a pre-sales flow referencing the new playbook
+---
 
-## Conventions
+## Recommended Sequence for New Repositories
 
-- **Underscore prefix** (`_playbook-template.md`) marks the template — not an active playbook
-- Playbooks are **advisory, not prescriptive** — they inform recommendations, not mandate them
-- Mermaid diagrams are encouraged for architecture patterns
-- Effort estimates use T-shirt sizing (S/M/L/XL) consistent with spec effort fields
-- Staffing guidance and cost drivers are inputs to green-sheet/business review, not approved pricing
+1. **Start with Assessment** — Run `brownfield.assess.md` to understand where you are.
+2. **Build the Agent Catalog** — Run `brownfield.agent.catalog.md` to inventory what exists.
+3. **Initialize Governance** — Run `brownfield.governance.init.md` to create the config foundation.
+4. **Set Up Audit Trail** — Run `brownfield.audit.trail.md` to enable auditable activity.
+5. **Design Your First Experiment** — Run `brownfield.experiment.charter.md` to validate a new agent activity.
+
+---
+
+## Adding a New Playbook
+
+See `docs/extending/how-to-add-a-playbook.md` for the complete process.
+
+In summary:
+1. Create the source prompt in `.specify/prompts/brownfield.[name].md`.
+2. Create the Claude config in `.specify/prompts/brownfield.[name].claude.yaml`.
+3. Create the companion guide in `docs/playbooks/[name].md`.
+4. Update this README.
+5. Add an entry to `config/aispec.config.yaml` if the playbook introduces new config fields.
+
+---
+
+## Template
+
+Use `_playbook-template.md` as the starting point for new playbook source prompts.
+
+---
+
+*Part of the AIS Agentic Engineering Framework.*

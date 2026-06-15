@@ -1,38 +1,73 @@
 # Skills
 
-This directory contains [Agent Skills](https://agentskills.io) — portable, version-controlled folders that give AI agents specialized capabilities. Each skill bundles instructions, scripts, reference materials, and assets that an agent loads on demand to perform a specific task.
+This directory contains **reusable skills** for the AIS Agentic Engineering Framework. Skills are self-contained, invokable capabilities that agents and prompts can reference when performing governed activities.
 
-## Format
+---
 
-Skills follow the open [Agent Skills specification](https://agentskills.io/specification):
+## Purpose
 
-```text
-skill-name/
-├── SKILL.md          # Required: metadata (name, description) + instructions
-├── scripts/          # Optional: executable code
-├── references/       # Optional: documentation
-├── assets/           # Optional: templates, schemas, resources
-└── ...               # Any additional files
+Skills provide bounded, reusable functionality that:
+- Can be invoked from multiple agent prompts without duplication.
+- Have a defined input/output contract documented in `SKILL.md`.
+- Are testable in isolation.
+- Map to one or more AIS Specify lifecycle steps.
+
+Skills are **not pre-sales or client-specific tools.** The AIS branding, proposal, and pre-sales skills have been removed from this repository. This directory now contains only framework-relevant capabilities.
+
+---
+
+## Structure
+
+Each skill follows this structure:
+
+```
+Skills/
+  [skill-name]/
+    SKILL.md       # Required: documents the skill's purpose, inputs, outputs, and usage
+    scripts/       # Required: implementation scripts
+    examples/      # Required: usage examples with expected outputs
+    tests/         # Recommended: validation tests
 ```
 
-Agents discover skills by reading the `name` and `description` from each `SKILL.md` frontmatter at startup. When a task matches, the agent loads the full instructions and executes the skill's workflow — scripts, file reads, and all.
+---
 
 ## Available Skills
 
-| Skill | Description |
-|-------|-------------|
-| [`ais-branding-docx`](ais-branding-docx/SKILL.md) | Generate AIS-branded Word documents (.docx) from structured JSON input. Supports 13 content types including TOC, tables, code blocks, and nested lists. |
-| [`ais-branding-pptx`](ais-branding-pptx/SKILL.md) | *Implicit* — Always active when creating presentations or documents. Enforces AIS brand identity: color palette, typography, logo placement, layout system, and premium design standards. |
-| [`ais-proposal-docx`](ais-proposal-docx/SKILL.md) | Generate AIS-branded proposal Word documents (.docx) from structured JSON input. Fills a branded template preserving exact formatting and built-in styles. |
-| [`ais-proposal-redline-docx`](ais-proposal-redline-docx/SKILL.md) | Modify existing proposal Word drafts by merging red-draft content into pink DOCX forms while preserving formatting, reviewer comments, tracked changes, and comment-response traceability. |
-| [`ais-spec-upgrade`](ais-spec-upgrade/SKILL.md) | Upgrade copied AIS Spec framework files in an existing project repo by comparing versions, reading the changelog, detecting drift, prompting for a decision, and applying safe updates. |
+| Skill | Purpose | AIS Specify Step(s) |
+|---|---|---|
+| *(No framework skills defined yet — add skills as the framework evolves)* | | |
 
-## Creating a New Skill
+Skills are added incrementally as the framework matures. See the extension guide for how to add one.
 
-1. Create a directory under `Skills/` matching the skill name (lowercase, hyphens only).
-2. Add a `SKILL.md` with required frontmatter (`name`, `description`) and instructions.
-3. Bundle any scripts, references, or assets the skill needs.
-4. Test with a compatible agent (e.g., Claude Code, GitHub Copilot, Cursor).
-5. Update the table above.
+---
 
-See the [Agent Skills quickstart](https://agentskills.io/skill-creation/quickstart) and [best practices](https://agentskills.io/skill-creation/best-practices) for guidance.
+## Adding a New Skill
+
+See [`docs/extending/how-to-add-a-skill.md`](../docs/extending/how-to-add-a-skill.md) for the complete process.
+
+In summary:
+1. Create `Skills/[name]/` with the required structure above.
+2. Write `SKILL.md` with purpose, inputs, outputs, and usage examples.
+3. Implement scripts in `Skills/[name]/scripts/`.
+4. Add usage examples to `Skills/[name]/examples/`.
+5. Update this README with the new entry.
+6. If the skill is agent-invoked, update `config/agent-catalog.yaml`.
+
+---
+
+## Framework-Compatible Skill Requirements
+
+To be included in this directory, a skill must:
+
+- ✅ Have a `SKILL.md` that clearly documents its purpose, inputs, and outputs.
+- ✅ Accept inputs via arguments or stdin — never hardcoded paths or values.
+- ✅ Produce deterministic, idempotent outputs.
+- ✅ Not require elevated permissions unless explicitly documented.
+- ✅ Not read files outside the repository root unless configured.
+- ✅ Map to at least one AIS Specify lifecycle step.
+- ❌ Must NOT embed client-specific logic, branding, or pre-sales workflows.
+- ❌ Must NOT contain secrets, credentials, or hardcoded environment values.
+
+---
+
+*Part of the AIS Agentic Engineering Framework.*

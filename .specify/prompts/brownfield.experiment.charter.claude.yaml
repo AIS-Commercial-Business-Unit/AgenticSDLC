@@ -1,0 +1,11 @@
+---
+description: >
+  Experiment charter designer for brownfield teams. Produces a structured
+  experiment charter tied to an AIS Specify lifecycle step. Includes hypothesis,
+  success/failure criteria, autonomy level, metrics, and review gate.
+allowed_tools:
+  - read_file
+  - list_directory
+  - search_files
+output_type: experiment_charter_markdown
+---

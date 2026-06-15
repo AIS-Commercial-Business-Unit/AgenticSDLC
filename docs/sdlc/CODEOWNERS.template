@@ -1,0 +1,92 @@
+# CODEOWNERS Template
+#
+# Copy this file to .github/CODEOWNERS in your repository.
+# Remove this header comment block after customizing.
+#
+# CODEOWNERS defines who is automatically requested for review when a PR
+# touches a matching path. Combined with branch protection requiring code
+# owner review, this ensures governance-sensitive changes always reach the
+# right reviewers — regardless of who opens the PR (including agents).
+#
+# Syntax:
+#   <path-pattern>    @owner1 @owner2
+#   <path-pattern>    @org/team-name
+#
+# Rules:
+# - Patterns are matched from bottom to top. The last matching rule wins.
+# - Teams are specified as @org/team-name.
+# - Multiple owners mean ALL owners are requested for review.
+# - The first line sets the global default for any path not matched below.
+#
+# See: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# ---
+# Global default
+# All files not matched by a more specific rule below are owned by the
+# framework maintainers team. Replace with your organization's team.
+# ---
+*                                           @your-org/framework-maintainers
+
+# ---
+# Framework Core — Governance and Schemas
+# Changes to the governance registry or schemas affect all governed activities
+# across every team using this framework. Require 2 designated owners.
+# Pair with branch protection: "require_code_owner_review: true" and
+# "required_approving_review_count: 2" for these paths via CODEOWNERS routing.
+# ---
+/config/governance-registry.yaml            @your-org/framework-maintainers @your-org/security-leads
+/config/aispec.config.example.yaml          @your-org/framework-maintainers
+/framework/schemas/                         @your-org/framework-maintainers @your-org/security-leads
+
+# ---
+# Documentation
+# Docs owners review all documentation changes. Technical writers or
+# designated docs maintainers should own this path.
+# ---
+/docs/                                      @your-org/docs-maintainers
+/README.md                                  @your-org/docs-maintainers @your-org/framework-maintainers
+/CONTRIBUTING.md                            @your-org/framework-maintainers
+
+# ---
+# SDLC Standards
+# Changes to SDLC standards docs affect all adopting teams. Require
+# framework maintainer review.
+# ---
+/docs/sdlc/                                 @your-org/framework-maintainers
+
+# ---
+# CI/CD — GitHub Actions Workflows
+# Workflow changes can affect security posture (e.g., adding write permissions,
+# changing secret usage, bypassing required checks). Route to security leads
+# and framework maintainers.
+# ---
+/.github/workflows/                         @your-org/framework-maintainers @your-org/security-leads
+/.github/CODEOWNERS                         @your-org/framework-maintainers
+
+# ---
+# Agent Definitions
+# Changes to agent definitions affect governed behavior. Route to the
+# framework maintainers who own the governance registry.
+# ---
+/.github/agents/                            @your-org/framework-maintainers
+/Skills/                                    @your-org/framework-maintainers
+
+# ---
+# Playbooks
+# Adoption playbooks guide teams through onboarding. Changes should be
+# reviewed by someone who has validated the playbook against real repositories.
+# ---
+/docs/playbooks/                            @your-org/framework-maintainers @your-org/docs-maintainers
+
+# ---
+# Website
+# Website source is owned by the docs/web team.
+# ---
+/website/                                   @your-org/docs-maintainers
+
+# ---
+# Tests
+# Test changes are owned by the framework maintainers team.
+# Test coverage reductions require explicit justification in the PR.
+# ---
+/tests/                                     @your-org/framework-maintainers

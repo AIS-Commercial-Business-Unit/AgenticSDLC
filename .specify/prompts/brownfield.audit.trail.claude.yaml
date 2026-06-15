@@ -1,0 +1,12 @@
+---
+description: >
+  Audit trail infrastructure setup for brownfield repositories. Creates audit/
+  directory structure, defines audit record schema, creates initial GitHub Actions
+  audit workflow, and documents what constitutes an auditable event.
+allowed_tools:
+  - read_file
+  - list_directory
+  - write_file
+  - create_directory
+output_type: audit_infrastructure
+---

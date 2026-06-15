@@ -1,0 +1,183 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ais.com/agentic-sdlc/framework/schemas/gap-report.schema.json",
+  "title": "AIS Agentic Engineering Framework — Gap Report",
+  "description": "JSON Schema 2020-12 for a gap report document produced after a brownfield readiness assessment. Organises gaps by severity and provides a phased remediation plan.",
+  "type": "object",
+  "required": ["$schema", "version", "generated_at", "repo", "assessment_ref", "summary", "critical_gaps", "high_gaps", "medium_gaps", "low_gaps", "estimated_initialization_hours", "phase_plan"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "JSON Schema URI for this document."
+    },
+    "version": {
+      "type": "string",
+      "description": "Gap report schema version (semver).",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "generated_at": {
+      "type": "string",
+      "description": "ISO-8601 timestamp when this gap report was generated.",
+      "format": "date-time"
+    },
+    "repo": {
+      "type": "string",
+      "description": "Repository identifier (path or GitHub owner/repo)."
+    },
+    "assessment_ref": {
+      "type": "string",
+      "description": "Relative path to the source readiness-assessment.yaml this gap report was derived from."
+    },
+    "summary": {
+      "type": "string",
+      "description": "2–3 sentence executive summary of the overall gap picture and recommended course of action."
+    },
+    "critical_gaps": {
+      "type": "array",
+      "description": "Gaps with severity=critical. These block safe framework adoption and must be addressed first.",
+      "items": {
+        "$ref": "#/$defs/detailed_gap"
+      }
+    },
+    "high_gaps": {
+      "type": "array",
+      "description": "Gaps with severity=high. Significant impediment to effective agentic workflows.",
+      "items": {
+        "$ref": "#/$defs/detailed_gap"
+      }
+    },
+    "medium_gaps": {
+      "type": "array",
+      "description": "Gaps with severity=medium. Important but not blocking initial adoption.",
+      "items": {
+        "$ref": "#/$defs/detailed_gap"
+      }
+    },
+    "low_gaps": {
+      "type": "array",
+      "description": "Gaps with severity=low. Nice-to-have improvements for a mature implementation.",
+      "items": {
+        "$ref": "#/$defs/detailed_gap"
+      }
+    },
+    "work_management_recommendation": {
+      "type": "object",
+      "description": "Recommended work management provider with configuration guidance.",
+      "required": ["provider", "rationale", "config_path"],
+      "additionalProperties": false,
+      "properties": {
+        "provider": {
+          "type": "string",
+          "description": "Recommended provider identifier.",
+          "enum": ["github-issues", "jira", "azure-devops", "mock"]
+        },
+        "rationale": {
+          "type": "string",
+          "description": "1–2 sentence justification for this recommendation."
+        },
+        "config_path": {
+          "type": "string",
+          "description": "Relative path where the generated work_management config block will be written."
+        }
+      }
+    },
+    "mcp_recommendations": {
+      "type": "array",
+      "description": "MCP server integration recommendations derived from identified gaps.",
+      "items": {
+        "type": "object",
+        "required": ["tool", "rationale", "priority"],
+        "additionalProperties": false,
+        "properties": {
+          "tool": {
+            "type": "string",
+            "description": "MCP tool or server name."
+          },
+          "rationale": {
+            "type": "string",
+            "description": "Why this MCP tool would address identified gaps."
+          },
+          "priority": {
+            "type": "string",
+            "enum": ["low", "medium", "high"]
+          }
+        }
+      }
+    },
+    "estimated_initialization_hours": {
+      "type": "integer",
+      "description": "Total estimated person-hours to complete all remediation steps across all severity levels.",
+      "minimum": 1
+    },
+    "phase_plan": {
+      "type": "array",
+      "description": "Phased remediation plan. Each phase groups related gaps into a coherent delivery increment.",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["phase", "description", "deliverables", "hours"],
+        "additionalProperties": false,
+        "properties": {
+          "phase": {
+            "type": "integer",
+            "description": "Phase number (1 = first phase to execute).",
+            "minimum": 1
+          },
+          "description": {
+            "type": "string",
+            "description": "One-sentence description of this phase's focus."
+          },
+          "deliverables": {
+            "type": "array",
+            "description": "Concrete files, configs, or artifacts this phase produces.",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1
+          },
+          "hours": {
+            "type": "integer",
+            "description": "Estimated person-hours for this phase.",
+            "minimum": 1
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "detailed_gap": {
+      "type": "object",
+      "description": "A detailed gap entry with remediation steps and effort estimate.",
+      "required": ["area", "description", "impact", "remediation_steps", "effort"],
+      "additionalProperties": false,
+      "properties": {
+        "area": {
+          "type": "string",
+          "description": "Assessment dimension or functional area of the gap."
+        },
+        "description": {
+          "type": "string",
+          "description": "Clear statement of what is missing or insufficient."
+        },
+        "impact": {
+          "type": "string",
+          "description": "What breaks or is risky if this gap is not closed."
+        },
+        "remediation_steps": {
+          "type": "array",
+          "description": "Ordered list of concrete actions to close this gap.",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        },
+        "effort": {
+          "type": "integer",
+          "description": "Estimated effort to remediate this gap, in person-hours.",
+          "minimum": 1
+        }
+      }
+    }
+  }
+}

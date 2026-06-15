@@ -1,0 +1,14 @@
+---
+description: >
+  Governance initializer for brownfield repositories. Creates aispec.config.yaml,
+  governance-registry.yaml, agent-catalog.yaml, and audit directory structure.
+  Operates at L2 (Prepare) — proposes all changes and requires explicit human
+  approval before writing any file.
+allowed_tools:
+  - read_file
+  - list_directory
+  - search_files
+  - write_file
+  - create_directory
+output_type: governance_artifacts
+---

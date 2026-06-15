@@ -1,0 +1,160 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ais.com/agentic-sdlc/framework/schemas/agent-catalog.schema.json",
+  "title": "AIS Agent Catalog",
+  "description": "JSON Schema 2020-12 for agent-catalog.yaml. Each entry describes one agent in the Agentic Engineering Framework including its autonomy level, capabilities, tool allowlist, and output contract. Reference: framework.md section 4.",
+  "type": "object",
+  "required": ["agents"],
+  "additionalProperties": false,
+  "properties": {
+    "catalog_version": {
+      "type": "string",
+      "description": "Catalog version string (semver). Increment when adding or removing agents.",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "last_updated": {
+      "type": ["string", "null"],
+      "description": "ISO-8601 date when the catalog was last updated.",
+      "format": "date"
+    },
+    "agents": {
+      "type": "array",
+      "description": "Array of agent definitions.",
+      "items": { "$ref": "#/$defs/AgentEntry" },
+      "minItems": 1
+    }
+  },
+  "$defs": {
+    "AgentEntry": {
+      "type": "object",
+      "description": "Definition of a single agent in the framework.",
+      "required": [
+        "name",
+        "role",
+        "description",
+        "autonomy_level",
+        "capabilities",
+        "allowed_tools",
+        "requires_approval"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Unique machine-readable agent name in kebab-case (e.g., 'architecture-agent', 'qa-test-agent').",
+          "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+        },
+        "display_name": {
+          "type": "string",
+          "description": "Human-readable display name (e.g., 'Architecture Agent', 'QA and Test Agent')."
+        },
+        "role": {
+          "type": "string",
+          "description": "The agent's primary functional role within the framework.",
+          "enum": [
+            "coordination",
+            "discovery",
+            "specification",
+            "architecture",
+            "planning",
+            "backend-engineering",
+            "frontend-engineering",
+            "integration",
+            "devops-platform",
+            "qa-testing",
+            "code-review",
+            "security",
+            "finops",
+            "modernization",
+            "scribe-governance",
+            "intake"
+          ]
+        },
+        "description": {
+          "type": "string",
+          "description": "One-to-three sentence description of what this agent does, what it owns, and what it must not do."
+        },
+        "autonomy_level": {
+          "type": "string",
+          "description": "Default autonomy level for this agent. May be overridden per-activity in governance-registry.yaml.",
+          "enum": ["L0", "L1", "L2", "L3"]
+        },
+        "max_autonomy_level": {
+          "type": "string",
+          "description": "Maximum autonomy level this agent is permitted to reach in any activity.",
+          "enum": ["L0", "L1", "L2", "L3"]
+        },
+        "capabilities": {
+          "type": "array",
+          "description": "List of high-level capability descriptions. Plain English statements of what this agent can do.",
+          "items": { "type": "string" },
+          "minItems": 1
+        },
+        "allowed_tools": {
+          "type": "array",
+          "description": "Explicit allowlist of tool IDs this agent is permitted to invoke. Agents must not invoke tools not on this list.",
+          "items": { "type": "string" },
+          "minItems": 0
+        },
+        "prohibited_actions": {
+          "type": "array",
+          "description": "Explicit list of actions this agent must never perform, regardless of autonomy level or instructions.",
+          "items": { "type": "string" }
+        },
+        "requires_approval": {
+          "type": "boolean",
+          "description": "If true, this agent's outputs require human approval before they become authoritative. Overridden by governance registry entries."
+        },
+        "approval_role": {
+          "type": "string",
+          "description": "Default role or GitHub team that must approve this agent's outputs when requires_approval is true."
+        },
+        "outputs": {
+          "type": "array",
+          "description": "List of artifact types this agent produces.",
+          "items": { "type": "string" }
+        },
+        "process_steps": {
+          "type": "array",
+          "description": "AIS Specify lifecycle steps this agent participates in.",
+          "items": {
+            "type": "string",
+            "enum": ["Intake", "Specify", "Design", "Plan", "Implement", "Verify", "Deploy", "Report", "Learn"]
+          }
+        },
+        "source_prompt": {
+          "type": "string",
+          "description": "Relative path to the canonical source prompt for this agent in .specify/prompts/."
+        },
+        "agent_file": {
+          "type": "string",
+          "description": "Relative path to the generated agent definition file in .github/agents/."
+        },
+        "enabled": {
+          "type": "boolean",
+          "description": "Whether this agent is active. Set false to disable without removing the entry (feature flag).",
+          "default": true
+        },
+        "experimental": {
+          "type": "boolean",
+          "description": "If true, this agent is under experiment and may change without notice.",
+          "default": false
+        },
+        "specialties": {
+          "type": "array",
+          "description": "Optional list of technology or domain specialties. Generic agents should minimize this list.",
+          "items": { "type": "string" }
+        },
+        "governance_entries": {
+          "type": "array",
+          "description": "List of governance registry entry IDs that govern this agent's activities.",
+          "items": { "type": "string" }
+        },
+        "notes": {
+          "type": "string",
+          "description": "Free-form notes, outstanding constraints, or implementation guidance."
+        }
+      }
+    }
+  }
+}

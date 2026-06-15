@@ -1,279 +1,143 @@
-# AIS: Spec-Driven Development
+# Agentic Engineering Framework
 
-[![CI](https://github.com/ais-internal/AIS-spec/actions/workflows/ci.yml/badge.svg)](https://github.com/ais-internal/AIS-spec/actions/workflows/ci.yml)
+[![Version](https://img.shields.io/badge/version-0.22.3-blue.svg)](CHANGELOG.md)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![CI](https://github.com/ais-internal/AgenticSDLC/actions/workflows/ci.yml/badge.svg)](https://github.com/ais-internal/AgenticSDLC/actions/workflows/ci.yml)
 
-AI coding tools are fast but directionless. Without structure, they generate
-code that drifts from requirements, contradicts itself across components, and
-creates rework. This framework gives AI agents a spec-driven workflow —
-requirements in, working software out — so every line of generated code traces
-back to a decision someone actually made.
+**Governance-first agentic engineering for large enterprise software organizations.**
 
-It covers the full project lifecycle: scope and estimate during pre-sales,
-decompose into architecture and specs, then build component-by-component with
-full traceability. Works with Claude Code, GitHub Copilot, Cursor, and Codex.
+Enterprise teams adopting GitHub Copilot and AI agents need more than a better
+autocomplete. They need structure: a defined lifecycle, explicit human/agent
+boundaries, audit trails, and controls that scale across thousands of
+developers. The Agentic Engineering Framework provides that structure.
 
-## Getting Started
+## What It Is
 
-### Prerequisites
+The Agentic Engineering Framework maps AI agent activities to a structured
+9-step lifecycle, defines explicit human/agent boundaries through configurable
+autonomy levels, and provides the governance controls enterprises need to adopt
+agentic engineering safely. It is GitHub-native, works with the AI tools your
+teams already use, and is designed to be installed into existing brownfield
+repositories — not just greenfield projects.
 
-- **[Git](https://git-scm.com/)** — for branching and version control
-- **AI coding tool** — any of the following:
-  - [Claude Code](https://docs.anthropic.com/en/docs/claude-code) — `/ais.*` slash commands
-  - [GitHub Copilot](https://github.com/features/copilot) — custom agents in `.github/agents/`
-  - [Cursor](https://www.cursor.com/) — `/ais.*` slash commands (Skills)
-  - [Codex](https://developers.openai.com/codex/overview) — `AGENTS.md` + `.agents/skills/` skills
-> Commands and repo instructions are generated from shared prompts in `.specify/prompts/`.
-> See **[docs/reference/multi-tool-commands.md](docs/reference/multi-tool-commands.md)** for the editing workflow.
+## Why It Exists
 
-### Try It
+Enterprise engineering organizations are adopting GitHub Copilot and AI agents
+faster than governance frameworks can keep up. The result is:
 
-1. Clone this repo
-2. Open it in your AI coding tool (Claude Code, Copilot, Cursor, or Codex)
-3. Run a demo:
-   - **[Hello World](docs/getting-started/hello-world/)** — Build a Pomodoro timer in 7 commands
-   - **[Pre-Sales Demo](docs/getting-started/pre-sales-demo/)** — Scope an AI project from RFP to SOW
+- **No audit trail.** AI-generated changes land in `main` with no traceability
+  back to requirements.
+- **No defined boundaries.** Agents act with whatever permissions they happen
+  to have, with no policy enforcement.
+- **No onboarding path.** Brownfield repositories have no structured way to
+  discover their current state and begin governed AI-assisted development.
+- **No lifecycle structure.** AI tools are used ad hoc — accelerating individual
+  tasks but not the end-to-end delivery process.
 
-For real projects, create a repo in your project's GitHub org (not here) and
-copy the framework files over. See the
-**[project setup guide](docs/guides/project-setup.md)**. Existing projects can
-use the **[upgrade guide](docs/guides/upgrade.md)** to move between framework
-versions safely.
+This framework provides the structure that those tools lack: a defined
+lifecycle, explicit governance, and a brownfield onboarding path that works
+without requiring a rewrite.
 
-> See **[CONTRIBUTING.md](CONTRIBUTING.md)** for branching conventions and PR process.
+## Core Concepts
 
-## Commands
+| Concept | Description | Docs |
+|---------|-------------|------|
+| **AIS Specify Lifecycle** | 9-step AI-centric SDLC: Intake → Specify → Design → Plan → Implement → Verify → Deploy → Report → Learn | [docs/reference/workflow.md](docs/reference/workflow.md) |
+| **Autonomy Levels (L0–L3)** | Configurable per-activity agent permissions from Observe-only to Execute | [docs/reference/autonomy-levels.md](docs/reference/autonomy-levels.md) |
+| **Governance Registry** | Machine-readable YAML registry of all governed activities, policies, confidence thresholds, and approval requirements | [framework/schemas/](framework/schemas/) |
+| **Brownfield Onboarding** | Read-only discovery phase that inspects a repository, detects its stack, identifies gaps, and proposes a governed initialization plan | [docs/getting-started/brownfield.md](docs/getting-started/brownfield.md) |
+| **Agent Catalog** | Reusable agent definitions covering coordination, architecture, engineering, and assurance roles | [docs/reference/agent-catalog.md](docs/reference/agent-catalog.md) |
 
-> **[Full command reference →](docs/reference/commands.md)** — modes, flags, input
-> requirements, and detailed behavior for every command.
+## Quick Start
 
-### Pre-Sales (scope and estimate)
+```bash
+# 1. Clone the framework
+git clone https://github.com/your-org/AgenticSDLC.git
+cd AgenticSDLC
 
-| Command | What it does |
-|---------|-------------|
-| `/ais.presales.synthesize` | Synthesize client inputs into a What We Heard document |
-| `/ais.presales.propose` | Generate proposal with proposed specs, phasing, and ROM |
-| `/ais.presales.scope` | Produce SOW with deliverables and delivery bridge |
+# 2. Copy and configure
+cp config/aispec.config.example.yaml config/aispec.config.yaml
+# Edit config/aispec.config.yaml — set your repository, autonomy levels, and integrations
 
-### Setup (run once per project)
-
-| Command | What it does |
-|---------|-------------|
-| `/ais.setup.plan` | Read `.project-context/` and produce a project plan with SPEC catalog |
-| `/ais.setup.architecture` | Synthesize solution architecture with C4 diagrams and constitution seed |
-| `/ais.setup.constitution` | Create or amend the project constitution (governance, standards, gates) |
-
-### Spec Lifecycle (per component)
-
-| Command | What it does |
-|---------|-------------|
-| `/ais.spec.brainstorm` | Optionally shape an early idea into a Spec Seed Brief before specification |
-| `/ais.spec.specify` | Create feature spec with YYMM-NNN versioning, QA/UAT readiness, and sub-spec handling |
-| `/ais.spec.design` | Research, data model, contracts, Verification Strategy, and technical decisions |
-| `/ais.spec.tasks` | Generate dependency-ordered tasks and required verification work, with `implementation-plan.md` for larger or riskier work |
-| `/ais.spec.implement` | Execute tasks phase-by-phase with review, QA/UAT, deployment, and evidence gates |
-| `/ais.github.sync` | Bidirectional sync with GitHub (milestones, issues, labels) |
-
-### Reporting (derived from repo state)
-
-| Command | What it does |
-|---------|-------------|
-| `/ais.report.standup` | Internal daily report — active work, blockers, stale specs |
-| `/ais.report.status` | Client-facing status report — progress, decisions, risks |
-| `/ais.report.project` | Comprehensive report — pipeline, team activity, dependency graph |
-| `/ais.report.metrics` | Outcome metrics report — speed, quality, traceability, economics |
-| `/ais.report.retrospective` | Internal retrospective — start/stop/continue adoption and process improvements |
-
-**GitHub Actions**: Reports can run automatically via workflows in `.github/workflows/`.
-See [Automated Reports](#automated-reports) for setup.
-
-### Maintain (ongoing)
-
-| Command | What it does |
-|---------|-------------|
-| `/ais.maintain.clarify` | Smart router: ingest project context OR clarify spec ambiguities |
-| `/ais.maintain.debug` | Diagnose implementation, test, build, integration, or runtime failures before fixing |
-
-> **Status tracking is automatic.** Each spec lifecycle command updates
-> the spec.md frontmatter status. Report commands derive live state from
-> the repo. No manual status updates needed.
->
-> **Alignment stays visible.** The project charter and each spec start with a
-> short Alignment Brief — objective, users/actors, scenarios, and guiding
-> principles — so planning and review conversations can re-anchor quickly.
-
-## Workflow
-
-> **[Full workflow diagram →](docs/reference/workflow.md)**
-
-```mermaid
-flowchart TD
-    classDef input fill:#f9f0ff,stroke:#7c3aed,stroke-width:2px,color:#1e1e1e
-    classDef presales fill:#fff7ed,stroke:#ea580c,stroke-width:2px,color:#1e1e1e
-    classDef setup fill:#dbeafe,stroke:#2563eb,stroke-width:2px,color:#1e1e1e
-    classDef spec fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#1e1e1e
-    classDef maintain fill:#fef9c3,stroke:#ca8a04,stroke-width:2px,color:#1e1e1e
-    classDef sync fill:#ffe4e6,stroke:#e11d48,stroke-width:2px,color:#1e1e1e
-    classDef report fill:#fce7f3,stroke:#db2777,stroke-width:2px,color:#1e1e1e
-
-    CTX["📁 .project-context/"]:::input
-
-    subgraph PRESALES ["💼 Pre-Sales"]
-        SYNTH["/ais.presales.synthesize"]:::presales
-        PROPOSE["/ais.presales.propose"]:::presales
-        SCOPE["/ais.presales.scope"]:::presales
-        SYNTH --> PROPOSE --> SCOPE
-    end
-
-    CTX --> SYNTH
-
-    subgraph SETUP ["🏗️ Project Setup"]
-        PLAN["/ais.setup.plan"]:::setup
-        ARCH["/ais.setup.architecture"]:::setup
-        CONST["/ais.setup.constitution"]:::setup
-        PLAN --> ARCH --> CONST
-    end
-
-    CTX --> PLAN
-    SCOPE -. "SOW → T1" .-> PLAN
-
-    subgraph LIFECYCLE ["🔄 Spec Lifecycle — per component"]
-        BRAIN["/ais.spec.brainstorm<br/><i>optional seed brief</i>"]:::spec
-        SPECIFY["/ais.spec.specify"]:::spec
-        DESIGN["/ais.spec.design"]:::spec
-        TASKS["/ais.spec.tasks"]:::spec
-        PLAN["implementation-plan.md<br/><i>optional for larger work</i>"]:::spec
-        IMPL["/ais.spec.implement"]:::spec
-        BRAIN -. "optional handoff" .-> SPECIFY
-        SPECIFY --> DESIGN --> TASKS --> IMPL
-        TASKS -. "create when needed" .-> PLAN
-        PLAN -. "maintain during delivery" .-> IMPL
-    end
-
-    CONST --> BRAIN
-    CONST --> SPECIFY
-    IMPL --> GHSYNC["/ais.github.sync"]:::sync
-
-    IMPL --> STANDUP["/ais.report.standup"]:::report
-    IMPL --> STATUSRPT["/ais.report.status"]:::report
-    IMPL --> METRICS["/ais.report.metrics"]:::report
-    IMPL --> PROJECTRPT["/ais.report.project"]:::report
-    IMPL --> RETRO["/ais.report.retrospective"]:::report
-
-    CLARIFY["/ais.maintain.clarify"]:::maintain
-    DEBUG["/ais.maintain.debug"]:::maintain
-    CLARIFY -. "new context" .-> CTX
-    CLARIFY -. "spec refinement" .-> SPECIFY
-    IMPL -. "blocking failure" .-> DEBUG
-    DEBUG -. "recovery task" .-> IMPL
+# 3. Run the brownfield assessment
+# In your AI tool (Copilot, Claude Code, Cursor, or Codex):
+/ais.brownfield.assess
 ```
 
-Status updates happen automatically via spec.md frontmatter.
-Each step: defining → planning → ready → in-dev → complete
+Full setup instructions: **[docs/getting-started/](docs/getting-started/)**
 
-## Spec Versioning
+## Brownfield Playbooks
 
-Specs use **YYMM-NNN** IDs based on creation date:
+Structured guides for adopting the framework in existing repositories.
 
-```
-specs/
-  .presales/                        Pre-sales artifacts (what-we-heard, proposal, SOW)
-  .project-plan/                    Project plan (folder)
-  .architecture/                    Solution architecture (folder)
+| Playbook | Description |
+|----------|-------------|
+| [Discovery & Assessment](docs/playbooks/01-discovery-assessment.md) | Read-only repository inspection: detect stack, identify gaps, produce a readiness report |
+| [Governance Initialization](docs/playbooks/02-governance-init.md) | Install the governance registry, configure autonomy levels, and establish approval rules |
+| [Spec Lifecycle Adoption](docs/playbooks/03-spec-lifecycle.md) | Introduce the 9-step SDLC into an active delivery team without disrupting in-flight work |
+| [Agent Onboarding](docs/playbooks/04-agent-onboarding.md) | Register and configure agents against the governance registry for a specific repository |
+| [Metrics & Continuous Improvement](docs/playbooks/05-metrics-improvement.md) | Instrument the SDLC, collect evidence, and run the Learn step to improve over time |
 
-  2602-001-user-auth/               Feb 2026, first spec
-    spec.md
-    design.md
-    implementation-plan.md
-    tasks.md
-  2602-001.1-oauth-flow/            Sub-spec of 2602-001
-    spec.md
-  2602-002-dashboard/               Feb 2026, second spec
-    spec.md
-  2603-001-reporting/               Mar 2026, first spec
-    spec.md
-```
+Full playbook reference: **[docs/playbooks/](docs/playbooks/)**
 
-**Sub-specs** use dot notation: `2602-001.1`, `2602-001.2`
-**Branches** match the spec ID: `2602-001-user-auth`
-
-## Smart Clarify
-
-`/ais.maintain.clarify` detects context automatically:
-
-- **Provide source material** (file, directory, description) → project-level ingestion
-- **On a feature branch** → spec-level ambiguity resolution
-  - Unimplemented tasks → updates spec in place
-  - Implemented tasks → suggests new spec
-
-## File Layout
-
-> See **[CONTRIBUTING.md](CONTRIBUTING.md)** for the full project directory
-> structure including `source/`, `infra/`, `tests/`, and `.github/workflows/`.
+## Repository Structure
 
 ```
-project-root/
-  README.md                         This file
-  PLANS.md                         Rules for implementation-plan.md
-  CONTRIBUTING.md                   Contributor operating model
-  .project-context/                 Raw project inputs (gitignored)
-    .archive/                       Processed files moved here
-  .specify/
-    repo-instructions.md            Shared repo-level instructions (source of truth)
-    prompts/                        Shared command prompts (source of truth)
-    playbooks/                      Domain-specific engagement playbooks
-    memory/
-      constitution.md               Project-wide governance
-    templates/                      Output templates
-    scripts/bash/                   Automation scripts (return JSON)
-  .claude/commands/                 Generated — Claude Code slash commands
-  .agents/skills/                   Generated — Codex Skills ($ais.* and /skills)
-  .github/agents/                   Generated — Copilot custom agents (@ais-*)
-  .cursor/skills/                    Generated — Cursor Skills (/ais.* commands)
-  docs/
-    getting-started/                Demos and quick-start guides
-    reference/                      Command reference, workflow, multi-tool
-    guides/                         Setup, upgrade, pre-sales, delivery, roles, process mapping
-  specs/
-    .presales/                      Pre-sales artifacts (from /ais.presales.*)
-    .project-plan/                  Project plan (from /ais.setup.plan)
-    .architecture/                  Solution architecture (from /ais.setup.architecture)
-    YYMM-NNN-feature/               Per-component specs
-      spec.md
-      design.md
-      implementation-plan.md
-      tasks.md
-      research.md
-      data-model.md
-      contracts/
-      quickstart.md
-      checklists/
-      .github-sync.json            GitHub sync metadata
+AgenticSDLC/
+├── .specify/                     # Framework engine — prompts, templates, scripts
+│   ├── prompts/                  # Shared command prompts (source of truth)
+│   ├── playbooks/                # Domain-specific engagement playbooks
+│   ├── templates/                # Spec, design, task, and report templates
+│   └── scripts/                  # Automation scripts
+├── .github/
+│   ├── agents/                   # Copilot custom agent definitions
+│   └── workflows/                # GitHub Actions: CI, reports, governance checks
+├── config/
+│   ├── aispec.config.example.yaml  # Configuration template
+│   └── governance-registry.yaml    # Governed activity registry (source of truth)
+├── docs/
+│   ├── getting-started/          # Quick-start guides, brownfield onboarding
+│   ├── guides/                   # Deep-dive guides (setup, upgrade, roles, process)
+│   ├── playbooks/                # Brownfield adoption playbooks (5)
+│   ├── reference/                # Commands, workflow, autonomy levels, agent catalog
+│   └── sdlc/                     # Enterprise SDLC standards: branching, PRs, maturity
+├── framework/
+│   └── schemas/                  # JSON schemas for governance registry and config
+├── Skills/                       # Reusable agent Skills (agentskills.io format)
+├── specs/                        # Spec-driven development artifacts
+│   ├── .project-plan/            # Project plan and SPEC catalog
+│   └── YYMM-NNN-feature/         # Per-component spec working areas
+├── tests/                        # Framework validation tests
+├── scripts/                      # Developer and CI utility scripts
+└── website/                      # Product website source
 ```
 
-## Automated Reports
+## Enterprise SDLC
 
-GitHub Actions workflows generate reports on demand or on a schedule. They use
-Claude Code via [Azure AI Foundry](https://ai.azure.com/) and commit reports
-to `specs/.project-plan/reports/`.
+The framework enforces engineering discipline at the process level, not just
+the tooling level. Every change flows through a structured lifecycle:
+requirements in, evidence-backed delivery out.
 
-| Workflow | Trigger | What it runs |
-|----------|---------|-------------|
-| Report: Daily Standup | Weekdays 9 AM UTC + manual | `/ais.report.standup` |
-| Report: Client Status | Manual | `/ais.report.status` |
-| Report: Project Overview | Manual | `/ais.report.project` |
-| Report: Outcome Metrics | Manual | `/ais.report.metrics` |
-| Report: Project Retrospective | Manual | `/ais.report.retrospective` |
-| Report: All Reports | Manual | All five sequentially |
+Recommended practices are documented in **[docs/sdlc/](docs/sdlc/)**:
 
-### Setup
+- **[Branching Strategy](docs/sdlc/branching-strategy.md)** — trunk-based
+  development with feature flags, branch protection rules, and naming
+  conventions for enterprise scale
+- **[Pull Request Standards](docs/sdlc/pull-request-standards.md)** — PR size
+  guidelines, review SLAs, draft/ready states, and auto-merge conditions
+- **[Maturity Checklist](docs/sdlc/maturity-checklist.md)** — self-assessment
+  across branch management, PR process, code review, CI/CD, documentation,
+  governance, and security
+- **[PR Template](docs/sdlc/pr-template.md)** — standard PR description
+  template with governance checklist
+- **[CODEOWNERS Template](docs/sdlc/CODEOWNERS.template)** — ownership
+  patterns for framework core, docs, and CI
 
-Add three secrets to your GitHub repo (Settings > Secrets and variables > Actions):
+## Contributing
 
-| Secret | Description |
-|--------|-------------|
-| `ANTHROPIC_FOUNDRY_API_KEY` | API key for your Azure AI Foundry deployment |
-| `ANTHROPIC_FOUNDRY_BASE_URL` | Foundry endpoint URL (e.g. `https://<resource>.services.ai.azure.com/anthropic`) |
-| `CLAUDE_MODEL` | Deployed model name (e.g. `claude-sonnet-4-5`) |
+See **[CONTRIBUTING.md](CONTRIBUTING.md)** for branching conventions, PR
+standards, governance controls, and how to extend the framework.
 
-Once configured, trigger any report from the Actions tab or let the standup
-run on its daily schedule.
+## License
+
+License terms to be determined. See [LICENSE](LICENSE) for current status.

@@ -1,0 +1,19 @@
+---
+description: >
+  Work management provider selection advisor (L2 autonomy — Prepare). Explains the four
+  providers: GitHub Issues (fully implemented), Jira (config stub, Phase 6), Azure DevOps
+  (config stub, Phase 6), and Mock (local/offline). Asks 4 decision questions to determine
+  the best fit. Produces the work_management config block for aispec.config.yaml and merges
+  it on APPROVE. Clearly explains what "stub" means — config is validated and stored, but
+  live API calls require Phase 6 implementation.
+allowed_tools:
+  - read_file
+  - list_directory
+  - write_file
+  - create_file
+output_type: yaml_config_update
+autonomy_level: L2
+specify_step: Intake
+requires_approval: true
+approval_keyword: APPROVE
+---

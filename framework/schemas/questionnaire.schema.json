@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ais.com/agentic-sdlc/framework/schemas/questionnaire.schema.json",
+  "title": "AIS Agentic Engineering Framework — Initialization Questionnaire State",
+  "description": "JSON Schema 2020-12 for tracking the state of an interactive brownfield initialization questionnaire session. This file persists incremental progress so a session can be resumed after interruption.",
+  "type": "object",
+  "required": ["$schema", "version", "started_at", "repo", "status", "answers", "pending_questions"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "JSON Schema URI for this document."
+    },
+    "version": {
+      "type": "string",
+      "description": "Questionnaire schema version (semver).",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "started_at": {
+      "type": "string",
+      "description": "ISO-8601 timestamp when this questionnaire session was started.",
+      "format": "date-time"
+    },
+    "completed_at": {
+      "type": ["string", "null"],
+      "description": "ISO-8601 timestamp when all questions were answered and the session closed. Null if still in progress.",
+      "format": "date-time"
+    },
+    "repo": {
+      "type": "string",
+      "description": "Path or GitHub owner/repo identifier for the repository being initialized."
+    },
+    "status": {
+      "type": "string",
+      "description": "Current lifecycle status of this questionnaire session.",
+      "enum": ["not_started", "in_progress", "complete", "abandoned"]
+    },
+    "answers": {
+      "type": "object",
+      "description": "Map of question IDs to answer objects. Keys are string question IDs (e.g. 'q01_repo_name'). New answers are appended; never overwrite a recorded answer — create a new entry with a revision suffix instead.",
+      "additionalProperties": {
+        "$ref": "#/$defs/answer"
+      }
+    },
+    "derived_config": {
+      "type": "object",
+      "description": "Partial aispec.config.yaml content built incrementally as answers are recorded. This is the working draft that becomes the final config on completion.",
+      "additionalProperties": true
+    },
+    "pending_questions": {
+      "type": "array",
+      "description": "Ordered list of question IDs that have not yet been answered. Remove a question ID from this list when it is answered or skipped.",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "$defs": {
+    "answer": {
+      "type": "object",
+      "description": "A recorded answer to a single questionnaire question.",
+      "required": ["value", "answered_at"],
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "description": "The answer value. Type varies by question — may be a string, boolean, integer, or array.",
+          "oneOf": [
+            { "type": "string" },
+            { "type": "boolean" },
+            { "type": "integer" },
+            { "type": "array", "items": {} },
+            { "type": "null" }
+          ]
+        },
+        "answered_at": {
+          "type": "string",
+          "description": "ISO-8601 timestamp when this answer was recorded.",
+          "format": "date-time"
+        },
+        "skipped": {
+          "type": "boolean",
+          "description": "True if the user skipped this question. A skipped question has a null value and will not contribute to derived_config.",
+          "default": false
+        },
+        "note": {
+          "type": ["string", "null"],
+          "description": "Optional free-text note the user or agent attached to this answer."
+        }
+      }
+    }
+  }
+}

@@ -1,331 +1,313 @@
-# Contributing
+# Contributing to the Agentic Engineering Framework
 
-This document outlines how we manage our work, branches, pull requests, and merge responsibilities to keep the project maintainable, predictable, and stable.
-
----
-
-# 1. How We Work: Spec-Driven Development
-
-All feature work follows the **AIS spec-driven development workflow**. Raw project inputs are decomposed into a plan, architecture, and constitution during project setup. Individual features are then developed through a repeatable lifecycle: specify, design, task, implement.
-
-See the **[README](README.md)** for the full command reference and workflow diagram, and **[docs/reference/workflow.md](docs/reference/workflow.md)** for the visual flowchart.
+This document covers how to contribute to and extend the Agentic Engineering
+Framework — whether you are maintaining the framework itself or building on top
+of it within your organization.
 
 ---
 
-# 2. Project Structure
+## Who This Is For
 
-```
-/(repo root)
-|
-├── .claude/                           # Claude Code configuration
-│   ├── commands/                      # AIS workflow commands (ais.*)
-│   └── settings.json                  # Agent settings
-|
-├── .project-context/                  # Raw project inputs (gitignored)
-│   └── .archive/                      # Processed files moved here
-|
-├── .specify/                          # AIS workflow engine
-│   ├── VERSION                        # Framework version copied into project repos
-│   ├── playbooks/                     # Technology-specific implementation guidelines
-│   ├── scripts/                       # Automation scripts
-│   └── templates/                     # Markdown templates for specs, designs, implementation plans, and tasks
-|
-├── docs/                              # Documentation (Markdown)
-│   ├── reference/workflow.md          # AIS workflow diagram
-│   ├── {quickstart}.md               # Developer quick start guide
-│   ├── {architecture guides}.md      # Architecture description documents
-│   ├── {other guides}.md             # Other useful guides
-│   └── media/                         # Images and media linked from docs
-│       └── *.png, *.jpg, ...
-|
-├── infra/                             # Infrastructure as Code
-│   ├── modules/                       # Reusable IaC modules
-│   ├── environments/                  # Environment-specific variable files
-│   └── layers/                        # Infrastructure layers (see below)
-|
-├── .github/                           # GitHub configuration
-│   ├── workflows/                     # GitHub Actions CI/CD pipelines
-│   │   └── ci.yml                     # Lint, test, build on PRs and pushes to main
-│   └── pull_request_template.md       # Default PR description template
-|
-├── CHANGELOG.md                       # Framework release notes
-├── VERSION                            # Release automation version for this framework repo
-|
-├── source/                            # Application source code
-│   ├── apis/                          # RESTful APIs
-│   ├── web/                           # Web front-ends (SPA, SSR)
-│   ├── agents/                        # AI agents
-│   ├── mcp-servers/                   # MCP servers
-│   └── {other}/                       # Other application types as needed
-|
-├── specs/                             # Spec-driven development output
-│   ├── constitution.md                # Non-negotiable project standards
-│   ├── .project-plan/                 # Project plan and SPEC catalog
-│   │   └── reports/                   # Persisted reports (dated, sortable)
-│   ├── .architecture/                 # Solution architecture artifacts
-│   └── YYMM-NNN-feature-name/        # Per-component spec working area
-│       ├── spec.md                    # Feature specification
-│       ├── design.md                  # Technical design
-│       ├── implementation-plan.md    # Living plan for larger or riskier work
-│       ├── tasks.md                   # Dependency-ordered task list
-│       ├── research.md                # Research findings
-│       ├── data-model.md             # Data model documentation
-│       ├── contracts/                 # API contracts
-│       └── quickstart.md             # Component quick start
-|
-├── tests/                             # Tests (mirrors source/ structure)
-│   ├── apis/
-│   ├── web/
-│   └── {other}/
-|
-├── tools/                             # Development and deployment scripts
-├── Skills/                            # Agent Skills (https://agentskills.io)
-│   ├── README.md                      # Skills overview and catalog
-│   └── {skill-name}/                  # Per-skill directory
-│       ├── SKILL.md                   # Metadata + instructions
-│       ├── scripts/                   # Executable code
-│       ├── references/                # Documentation
-│       └── assets/                    # Templates, schemas, resources
-├── PLANS.md                           # Rules for implementation-plan.md
-├── CONTRIBUTING.md                    # This file
-└── README.md                          # Project overview and AIS command reference
-```
+- **Framework maintainers** — engineers and architects contributing to the core
+  framework, governance schemas, agent definitions, and tooling.
+- **Adopting teams** — engineering teams integrating the framework into their
+  repositories and extending it with organization-specific configuration,
+  playbooks, or agents.
 
-### Infrastructure Layers (When Applicable)
-
-Infrastructure code uses a layered approach. The specific IaC tool (Terraform, Bicep, Pulumi, etc.) depends on the project, but the layering pattern is consistent:
-
-| Layer Range | Purpose | Deploy Frequency |
-|-------------|---------|-----------------|
-| **000** | Pre-existing resources (already in the environment) | Reference only |
-| **100-00 to 100-30** | Baseline infrastructure (networking, core services) | Infrequent |
-| **100-40-{workload}** | Workload-specific resources | With each workload deploy |
-| **200** | Development-only resources (sandboxes, emulators) | As needed |
-
-### CI/CD Pipelines
-
-Pipeline definitions live in `.github/workflows/`. The CI workflow (`ci.yml`) runs on all PRs to `main` and pushes to `main`:
-
-| Job | Purpose |
-|-----|---------|
-| **Markdown Lint** | Validates formatting across all `.md` files (specs, docs, contributing) |
-| **Spec Frontmatter Lint** | Validates YAML frontmatter in `specs/*/spec.md` — required fields, enums, ID format, dates, dependencies |
-| **Release Label Lint** | Requires every PR to include one release label and a usable release note |
-| **Generated Command Drift** | Confirms generated command files match the shared prompts and repo instructions |
-| **Shell Script Lint** | Validates Bash scripts with `bash -n` and ShellCheck error-level findings |
-| **Workflow Lint** | Validates GitHub Actions workflow syntax with actionlint |
-
-All checks are required to pass before a PR can merge. Concurrency is managed per-branch — pushing a new commit cancels the previous in-progress run. Lint rules are configured in `.markdownlint.jsonc` at the repo root. Frontmatter validation rules are defined in `.specify/scripts/bash/validate-frontmatter.sh`. Release validation rules are defined in `.specify/scripts/bash/validate-release-pr.sh`.
-Generated command drift is checked with `bash .specify/scripts/bash/generate-commands.sh --check`.
+Both audiences follow the same branching, PR, and governance standards
+described here.
 
 ---
 
-# 3. Spec Versioning and Branching
+## Development Setup
 
-## 3.1 Spec IDs
+### Prerequisites
 
-Specs use **YYMM-NNN** identifiers based on creation date:
+- **Git** 2.40 or later
+- **Node.js** 20 LTS or later (for schema validation tooling)
+- **GitHub CLI** (`gh`) 2.x or later — used for PR creation and workflow
+  management
+- An AI coding tool: GitHub Copilot, Claude Code, Cursor, or Codex
 
-- `2602-001` = February 2026, first spec
-- `2602-002` = February 2026, second spec
-- `2603-001` = March 2026, first spec
+### Clone and Install
 
-**Sub-specs** use dot notation: `2602-001.1`, `2602-001.2`
+```bash
+git clone https://github.com/your-org/AgenticSDLC.git
+cd AgenticSDLC
 
-## 3.2 Branch Naming
+# Install tooling dependencies (once package.json is present)
+npm install
 
-Branch names **match the spec ID** with a short description suffix:
-
+# Copy and configure
+cp config/aispec.config.example.yaml config/aispec.config.yaml
 ```
-YYMM-NNN-short-description
+
+### Verify Setup
+
+```bash
+# Validate governance registry schema
+npm run validate:governance
+
+# Run framework tests
+npm test
+
+# Lint markdown
+npm run lint:md
 ```
+
+---
+
+## Branching Strategy
+
+### Branch Naming
+
+All branches follow `type/brief-description`:
+
+| Prefix | Use for |
+|--------|---------|
+| `feat/` | New framework capabilities, agents, or commands |
+| `fix/` | Bug fixes in tooling, schemas, or generated output |
+| `docs/` | Documentation-only changes |
+| `chore/` | Maintenance, dependency updates, CI configuration |
+| `test/` | Test additions or corrections |
 
 Examples:
-- `2602-001-core-api-data-model`
-- `2602-002-dashboard-ui`
-- `2602-001.1-oauth-flow`
+- `feat/brownfield-assessment-command`
+- `fix/governance-registry-schema-validation`
+- `docs/autonomy-levels-reference`
+- `chore/update-node-dependencies`
 
-For non-spec work, use conventional prefixes:
+### Protected Branches
 
-- `feature/<short-description>`
-- `bugfix/<short-description>`
-- `chore/<short-description>`
-- `docs/<short-description>`
+| Branch | Protection |
+|--------|-----------|
+| `main` | Direct commits prohibited. PRs required. Minimum 2 reviewers for governance and security changes. CI must pass. |
+| `dev` | Direct commits prohibited. PRs required. Minimum 1 reviewer. CI must pass. |
 
-Use matching labels on your PR (`feature`, `bugfix`, `chore`, `docs`, `breaking-change`).
+See [docs/sdlc/branch-protection-ruleset.json](docs/sdlc/branch-protection-ruleset.json)
+for the GitHub ruleset definition and how to apply it.
 
-## 3.3 Feature Directory
+### Branch Discipline
 
-Each spec branch gets a corresponding directory under `specs/`:
+- **Branch from `main`** for framework work. If your organization uses a `dev`
+  integration branch, branch from and target `dev`.
+- **One concern per branch.** A branch that fixes a schema bug and adds a new
+  command will be asked to split.
+- **Short-lived branches.** Branches should be open for days, not weeks. Split
+  large work into independent increments.
+- **Keep branches current.** Rebase or merge from the target branch before
+  requesting review if your branch is more than a few days old.
 
-```
-specs/2602-001-core-api-data-model/
-  spec.md
-  design.md
-  implementation-plan.md   # optional, for larger or riskier work
-  tasks.md
-  ...
-```
+### Merge Strategy
 
-The `create-new-feature` script automates branch creation, numbering, and directory setup.
-
----
-
-# 4. Framework Releases
-
-The AIS Spec framework uses Semantic Versioning for the repository itself.
-Spec IDs still use `YYMM-NNN`; semantic versions describe framework releases
-published through GitHub Releases.
-
-Every pull request to `main` must include exactly one release label:
-
-| Label | Use for |
-|-------|---------|
-| `release:patch` | Docs, wording fixes, generated output refreshes, small bug fixes, and routine maintenance |
-| `release:minor` | New backwards-compatible commands, templates, playbooks, workflows, scripts, or behavior |
-| `release:major` | Breaking workflow, file layout, prompt contract, command behavior, template, generated artifact, or CI contract changes |
-
-Each PR must also fill in the `## Release note` section of the PR template.
-That content is copied into `CHANGELOG.md` and the GitHub Release after merge.
-
-Breaking changes must use `release:major` and include a line in the release
-note that starts with:
-
-```
-BREAKING CHANGE: Describe what downstream teams must change.
-```
-
-No maintainer creates release tags manually. After a PR merges to `main`, the
-release workflow reads the PR label, bumps `VERSION` and `.specify/VERSION`,
-prepends `CHANGELOG.md`, commits those release files back to `main`, and creates
-the GitHub Release tag `vX.Y.Z`.
-
-Release automation uses a dedicated GitHub App installation token. The app must
-be installed on this repository, have `Contents: read/write` and
-`Pull requests: read`, and be configured as the bypass actor for the `main`
-ruleset. The workflow expects repo variable `AIS_RELEASE_APP_CLIENT_ID` and repo
-secret `AIS_RELEASE_APP_PRIVATE_KEY`.
-
-If Release Label Lint fails, add one release label and fill in the release note:
-
-```
-## Release note
-Adds automated semantic release enforcement for every pull request.
-```
+| Target | Strategy | Notes |
+|--------|----------|-------|
+| `main` / `dev` feature work | Squash and merge | One commit per feature for a clean history |
+| Release commits | Merge commit | Preserves release tagging context |
 
 ---
 
-# 5. Backlog Management
+## Pull Request Standards
 
-Work is tracked through the **project plan** (`specs/.project-plan/`) and individual spec task lists (`specs/YYMM-NNN-feature/tasks.md`).
+### PR Title Format
 
-- The project plan contains the **SPEC catalog** — the master list of all components with owners, scope, dependencies, and effort estimates.
-- Each spec's `tasks.md` contains the implementation task breakdown, generated by `/ais.spec.tasks`.
-- Larger or riskier specs may also include `implementation-plan.md` — a living execution document maintained during implementation.
-- `/ais.github.sync` creates GitHub milestones and issues from the spec catalog and task lists for tracking in GitHub Projects.
+Titles follow [Conventional Commits](https://www.conventionalcommits.org/):
 
-### Priority and Ordering
+```
+type(scope): short description
+```
 
-- Specs are ordered by dependency (the project plan documents the dependency map and critical path).
-- Tasks within a spec are dependency-ordered; tasks marked `[P]` can be parallelized.
-- Work on the highest-priority unblocked spec first.
+| Type | Use for |
+|------|---------|
+| `feat` | New capability |
+| `fix` | Bug fix |
+| `docs` | Documentation only |
+| `chore` | Maintenance |
+| `test` | Test changes |
+| `refactor` | Refactoring without behavior change |
+| `break` | Breaking change (also add `BREAKING CHANGE:` in body) |
 
----
+Examples:
+- `feat(governance): add confidence-threshold validation to registry schema`
+- `fix(ci): correct markdown lint path exclusion for specs directory`
+- `docs(sdlc): add trunk-based branching guide`
 
-# 6. Branch and Pull Request Management
+### Reviewers
 
-## 6.1 Branch Policy
+| Change type | Minimum reviewers |
+|-------------|------------------|
+| Standard changes | 1 |
+| Governance registry (`governance-registry.yaml`) | 2 |
+| Security-related changes | 2 |
+| Schema changes that affect generated output | 2 |
+| `main` branch releases | 2 |
 
-The `main` branch follows these rules:
+### CI Requirements
 
-- All changes require a pull request.
-- Each pull request requires **one approval** from a member of the designated maintainer group.
-- Direct commits to `main` are not permitted.
-- We prefer **Squash and Merge** when integrating changes into `main`.
+All CI checks must pass before merge:
 
-These requirements are enforced by the `main release-protected` repository ruleset.
-See **[docs/reference/repository-hardening.md](docs/reference/repository-hardening.md)** for the maintained control summary.
+- Markdown lint
+- Schema validation (governance registry and config)
+- Framework tests
+- Generated command drift check (if applicable)
+- Workflow lint
 
-## 6.2 Pull Request Expectations
+### What a Complete PR Looks Like
 
-Before opening a pull request:
+Before opening a PR for review:
 
-- Ensure your branch is up to date with `main`.
-- Keep the pull request scoped to one logical feature or fix (typically one spec or one task group).
-- Complete the PR template before opening the PR so reviewers can see the scope, traceability, release impact, and validation evidence up front.
-- For AIS Spec framework changes, use GitHub issue IDs as the traceability record because issues are the framework repo's specs (for example, `#142`).
-- For downstream project repos, reference the repo-local spec ID or task reference the project uses (for example, `2602-001`, `T014`).
-- Summarize task coverage when listing every task ID would add noise; use `N/A` with a short rationale when no spec/task artifact applies.
-- Remove unrelated or accidental changes.
-- Add exactly one release label to the PR: `release:patch`, `release:minor`, or `release:major`.
-- Fill in the `## Release note` section with text suitable for the changelog.
-- Fill in `## Validation evidence` with commands, checks, or manual review completed before requesting review.
-- Confirm touched spec frontmatter reflects the current status; if a spec is `complete`, every task in its `tasks.md` should be checked off before the PR lands.
+- [ ] PR title follows `type(scope): description` format
+- [ ] Description uses the [PR template](docs/sdlc/pr-template.md)
+- [ ] Linked issues referenced in the description
+- [ ] Testing section documents what was validated and how
+- [ ] If docs were affected, they are updated in the same PR
+- [ ] If the governance registry was changed, the governance checklist is completed
+- [ ] One release label applied: `release:patch`, `release:minor`, or `release:major`
+- [ ] Release note section filled in (content used in `CHANGELOG.md`)
 
-During review:
+### Draft vs. Ready
 
-- Address feedback directly in the PR.
-- Push updates as needed.
-- Use the PR conversation for questions or clarification.
-
-## 6.3 Responsibilities of the Developer Raising the PR
-
-The developer who opens the pull request is responsible for the **entire lifecycle**:
-
-### Before merging
-
-- Shepherd the PR through review.
-- Ensure the branch stays updated with `main`.
-
-### After approval
-
-- Perform the merge using Squash and Merge.
-- Confirm the merge completes cleanly.
-
-### After merging
-
-- Monitor CI/CD pipelines triggered by the change.
-- Investigate and resolve issues caused by the merge.
-- Submit follow-up PRs if needed.
-
-Ownership ends **only when `main` is stable** after the change.
-
-## 6.4 Asking Questions
-
-If anything is unclear, ask in the pull request or team channel.
-Early clarification prevents rework.
+Use **Draft PRs** for work-in-progress that needs early visibility or
+async feedback. Convert to ready only when CI passes and the PR is complete.
+Do not request formal review on a Draft PR.
 
 ---
 
-# 7. Code and Quality Standards
+## Code Review Standards
 
-## 7.1 Constitution Compliance
+### What Reviewers Check
 
-Every project maintains a **constitution** (`specs/constitution.md`) that defines non-negotiable standards: technology choices, quality gates, and integration patterns. All designs and implementations must comply with the constitution. If a violation is necessary, it must be justified and documented.
+- **Correctness** — Does the change do what the PR description claims?
+- **Governance compliance** — Does the change comply with the governance
+  registry? If it changes governance rules, are 2 approvals obtained?
+- **Schema validity** — Are YAML/JSON files valid against their schemas?
+- **Test coverage** — Are new behaviors covered by tests?
+- **Documentation** — Are user-facing changes reflected in docs?
+- **Breaking changes** — Is the impact on existing adopters documented?
 
-## 7.2 General Guidelines
+### Approve vs. Request Changes
 
-- **Keep changes small and focused.** One spec, one PR. Break large specs into sub-specs if needed.
-- **Follow existing patterns.** Before introducing a new pattern, check the constitution and existing code.
-- **Write tests.** Tests live in `tests/` mirroring the `source/` structure.
-- **Document decisions.** Architecture Decision Records (ADRs) live in the architecture artifacts. If you make a significant technical choice, record it.
-- **Migrations must be idempotent and backwards-compatible** to support rolling deploys.
-- **Secrets and credentials** must never be committed. Use environment variables or secret managers.
-- GitHub secret scanning and push protection should remain enabled for this repository.
+- **Approve** when the change is correct, complete, and safe to merge.
+- **Request changes** when there is a correctness issue, a governance concern,
+  missing evidence, or a breaking change not documented.
+- **Comment only** (not blocking) for suggestions that do not affect
+  correctness or safety.
 
-## 7.3 Commit Messages
+### Handling Disagreement
 
-Write clear, concise commit messages. Since we squash-merge, the PR title and description become the commit message on `main` — make them count.
+When reviewers disagree, the PR author and reviewers resolve the disagreement
+in the PR thread. If consensus cannot be reached within 2 business days, a
+framework maintainer (or designated architect) makes the call and documents
+the decision in the PR thread.
 
 ---
 
-# 8. Summary
+## Governance Controls
 
-By following this operating model, we maintain:
+### Governance Registry Changes
 
-- A clean, stable `main` branch
-- A predictable, spec-driven flow of work
-- Clear traceability from requirements through specs to implementation
-- Reduced WIP and higher throughput
-- Clear ownership at each stage
-- A consistent experience for all contributors
+Any change to `config/governance-registry.yaml` requires:
+
+1. **2 reviewers** — one of whom must be a framework maintainer or designated
+   architect.
+2. **Justification** in the PR description explaining what policy changed and
+   why.
+3. **Updated documentation** if the change affects user-facing behavior or
+   approved autonomy levels.
+
+### Schema Changes
+
+Changes to files in `framework/schemas/` require:
+
+- A corresponding schema validation test update in `tests/`.
+- Documentation update if the schema change affects configuration or registry
+  structure.
+
+### Agent Definition Changes
+
+Changes to agent definitions (in `.github/agents/`, `Skills/`, or agent
+catalog docs) require:
+
+- Updated agent documentation reflecting the change.
+- Review by someone familiar with the governance registry to confirm the agent
+  still operates within its configured bounds.
+
+---
+
+## Extending the Framework
+
+The framework is designed to be extended:
+
+- **Custom playbooks** — Add organization-specific playbooks in
+  `docs/playbooks/` following the existing format.
+- **Custom agents** — Add agent definitions in `.github/agents/` and register
+  governed activities in the governance registry.
+- **Custom Skills** — Add reusable Skills in `Skills/` following the
+  agentskills.io format.
+- **Configuration overrides** — Adjust autonomy levels and approval requirements
+  in `config/aispec.config.yaml` without modifying the framework core.
+
+See **[docs/extending/](docs/extending/)** for detailed extension guides.
+
+---
+
+## Commit Message Format
+
+Commits use [Conventional Commits](https://www.conventionalcommits.org/):
+
+```
+type(scope): short description
+
+Optional body explaining why, not what. The what is in the diff.
+
+Optional footer:
+BREAKING CHANGE: description of breaking change and migration path
+Refs: #123
+Co-authored-by: Name <email>
+```
+
+**Examples:**
+
+```
+feat(brownfield): add repository language detection to assessment command
+
+fix(governance): reject registry entries with missing requiredEvidence field
+
+docs(sdlc): add PR size guidelines and review SLA recommendations
+
+chore(ci): upgrade actionlint to 1.7.1
+
+BREAKING CHANGE: governance-registry.yaml now requires `processStep` on all
+entries. Existing registries without this field will fail schema validation.
+```
+
+Since we squash-merge, the **PR title and description become the commit on
+`main`**. Write them to stand alone as the permanent record of the change.
+
+---
+
+## Project Structure
+
+```
+AgenticSDLC/
+├── .specify/                     # Framework engine — prompts, templates, scripts
+├── .github/
+│   ├── agents/                   # Copilot custom agent definitions
+│   └── workflows/                # GitHub Actions: CI, reports, governance checks
+├── config/
+│   ├── aispec.config.example.yaml
+│   └── governance-registry.yaml
+├── docs/
+│   ├── getting-started/
+│   ├── guides/
+│   ├── playbooks/
+│   ├── reference/
+│   └── sdlc/                     # Enterprise SDLC standards
+├── framework/
+│   └── schemas/                  # JSON schemas for governance registry and config
+├── Skills/                       # Reusable agent Skills
+├── specs/                        # Spec-driven artifacts
+├── tests/                        # Framework validation tests
+├── scripts/                      # Developer and CI utility scripts
+└── website/                      # Product website source
+```

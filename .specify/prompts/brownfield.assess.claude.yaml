@@ -1,0 +1,19 @@
+---
+description: >
+  Read-only brownfield repository assessor (L0 autonomy — Observe only). Scans the target
+  repository across 6 dimensions (AI Governance 25%, Agent Management 20%, CI/CD 20%,
+  Documentation 15%, Branch Management 10%, PR Process 10%). Checks docs/input/ for
+  supplemental context. Produces a readiness-assessment.yaml conforming to
+  readiness-assessment.schema.json and a human-readable summary with score, maturity tier,
+  top gaps, and next steps. NEVER writes to the target repository.
+allowed_tools:
+  - read_file
+  - list_directory
+  - search_files
+  - grep
+  - glob
+  - get_file_contents
+output_type: yaml_and_markdown_report
+autonomy_level: L0
+specify_step: Intake
+---
