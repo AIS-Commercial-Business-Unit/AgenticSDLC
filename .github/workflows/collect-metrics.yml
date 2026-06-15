@@ -13,9 +13,6 @@ on:
       target_repo:
         description: 'Target repo (owner/repo). Defaults to current repo.'
         required: false
-  push:
-    branches:
-      - main
 
 permissions:
   contents: write

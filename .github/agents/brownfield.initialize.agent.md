@@ -1,3 +1,30 @@
+---
+name: "brownfield-initialize"
+---
+description: >
+  Interactive brownfield initialization session (L2 autonomy — Prepare). Reads any existing
+  readiness assessment, runs a structured questionnaire covering repo identity, team context,
+  work management, governance preferences, and priority areas. Produces proposed
+  config/aispec.config.yaml and docs/assessment/initialization-state.yaml. Displays all
+  proposed files for review before requesting explicit APPROVE to write. On approval, writes
+  both files to the target repository and provides recommended next steps.
+allowed_tools:
+  - read_file
+  - list_directory
+  - search_files
+  - grep
+  - glob
+  - write_file
+  - create_file
+output_type: yaml_files
+autonomy_level: L2
+specify_step: Intake
+requires_approval: true
+approval_keyword: APPROVE
+------
+
+<!-- Generated from .specify/prompts/brownfield.initialize.md — do not edit directly -->
+
 ﻿# Brownfield Repository Initialization
 <!-- AIS Agentic Engineering Framework | AIS Specify Step: Intake → Specify -->
 <!-- Autonomy Level: L2 — Prepare. Proposes files; requires explicit APPROVE before writing. -->
@@ -80,7 +107,6 @@ Ask these questions in order. Group them into sections for readability. Each que
 ### Section D — Governance Preferences
 
 **q16_max_autonomy** — What is the MAXIMUM autonomy level you want to allow agents to reach?
-
 | Level | Description |
 |-------|-------------|
 | L1 | Recommend only — agents propose, humans decide everything |

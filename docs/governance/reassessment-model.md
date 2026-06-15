@@ -22,7 +22,7 @@ control.
 | `review_date` | Alias for `review_due_at`. Accepted for compatibility; prefer `review_due_at` in new entries. |
 | `review_interval_days` | How many days between reviews for this entry. Default cadence is 90 days. High-risk entries (e.g., `security-scan-vulnerabilities`) use 30 days. |
 | `last_assessed_at` | ISO-8601 date-time of the last completed review. Updated after each reassessment. |
-| `review_state` | Computed state: `current` | `due-soon` | `review-due` | `overdue`. |
+| `review_state` | Computed state: `current` \| `due-soon` \| `review-due` \| `overdue`. |
 
 ---
 

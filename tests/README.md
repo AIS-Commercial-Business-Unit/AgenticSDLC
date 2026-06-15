@@ -1,4 +1,4 @@
-# Tests — Agentic Engineering Framework
+﻿# Tests — Agentic Engineering Framework
 
 ## Overview
 
@@ -116,9 +116,9 @@ Temp directories are created per suite in `os.tmpdir()` and cleaned up in `after
 
 | Suite | What it covers |
 |---|---|
-| **Output structure** | Output is a non-empty string starting with `# `; contains `overall_score`, `target_repo`, and `maturity_tier` values |
+| **Output structure** | Output is a non-empty string starting with `#`; contains `overall_score`, `target_repo`, and `maturity_tier` values |
 | **Gap section** | Output matches `/gap\|critical\|improvement/i`; at least one high-severity gap title from the assessment appears |
-| **Zero gaps** | An assessment with `gaps: []` produces output matching `/no critical gaps\|no gaps\|all clear\|✅/i`; still starts with `# ` |
+| **Zero gaps** | An assessment with `gaps: []` produces output matching `/no critical gaps\|no gaps\|all clear\|✅/i`; still starts with `#` |
 
 Uses `tests/fixtures/sample-assessment.json` as the primary test fixture.
 
@@ -182,7 +182,7 @@ A Phase 2 test run is considered **green** when all of the following are true:
 1. `npm test` exits with code `0`
 2. All Phase 2 vitest tests pass (24 additional tests across 3 files)
 3. `samples/brownfield-sample/` exists and the scanner returns `overall_score` between 0 and 40 for it
-4. `generateGapReport` produces valid Markdown with a `# ` heading for the sample assessment fixture
+4. `generateGapReport` produces valid Markdown with a `#` heading for the sample assessment fixture
 5. No `SKIP` or `TODO` items remain in test output
 
 Per QA charter — test evidence must include:

@@ -1,13 +1,9 @@
 name: Validate Schemas
 
 on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+  workflow_dispatch:
 
-permissions:
-  contents: read
+# Covered by ci.yml on push/PR. This file exists for manual reruns.
 
 jobs:
   validate-schemas:

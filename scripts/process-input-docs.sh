@@ -24,7 +24,7 @@ skipped=0
 failed=0
 
 for ext in "${SUPPORTED_EXTENSIONS[@]}"; do
-  for src in "${INPUT_DIR}"/*.${ext} 2>/dev/null; do
+  for src in "${INPUT_DIR}"/*.${ext}; do
     [[ -f "${src}" ]] || continue
     filename="$(basename "${src}" ".${ext}")"
     dest="${OUTPUT_DIR}/${filename}.md"

@@ -113,7 +113,8 @@ if (!existsSync(configSchemaPath)) {
 
   if (schema && exampleDoc !== null && exampleDoc !== undefined) {
     try {
-      const validate = ajv.compile(schema)
+      // Schema was already compiled in step 1 — reuse rather than re-add
+      const validate = ajv.getSchema(schema.$id) ?? ajv.compile(schema)
       const valid = validate(exampleDoc)
       if (valid) {
         pass('aispec.config.example.yaml validates against config.schema.json')
