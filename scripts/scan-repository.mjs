@@ -651,6 +651,9 @@ if (dryRun) {
   mkdirSync(outputDir, { recursive: true })
   writeFileSync(outputFile, JSON.stringify(assessment, null, 2) + '\n', 'utf8')
   console.log(`✅  Assessment written to: ${outputFile}`)
+  const assessedDate = new Date().toISOString().slice(0, 10)
+  const datedFile = join(outputDir, `${assessedDate}-readiness-assessment.json`)
+  writeFileSync(datedFile, JSON.stringify(assessment, null, 2) + '\n', 'utf8')
 
   // Generate HTML report
   try {

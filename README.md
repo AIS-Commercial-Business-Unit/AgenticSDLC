@@ -132,6 +132,14 @@ Step-by-step guides for common adoption scenarios:
 
 ---
 
+## Future Enhancements
+
+| Enhancement | Description | Issue |
+|-------------|-------------|-------|
+| Enterprise roll-up dashboard | Aggregates `readiness-assessment.json` from all repos across an org into a single GitHub Pages dashboard. Each repo pushes its assessment to a central aggregator. Shows all teams with scores and drill-down. | [#9](https://github.com/AIS-Commercial-Business-Unit/AgenticSDLC/issues/9) |
+
+---
+
 ## Contributing
 
 See **[CONTRIBUTING.md](CONTRIBUTING.md)** for branching conventions, PR standards, and how to extend the framework.

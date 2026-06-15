@@ -75,6 +75,8 @@ const scriptsToCopy = [
   { src: 'scripts/scan-repository.mjs', dest: 'scripts/aef-scan.mjs' },
   { src: 'scripts/generate-report.mjs', dest: 'scripts/generate-report.mjs' }, // required import by aef-scan.mjs
   { src: 'scripts/generate-report.mjs', dest: 'scripts/aef-report.mjs' },       // named entry for npm script
+  { src: 'scripts/check-adoption.mjs', dest: 'scripts/aef-check-adoption.mjs' },
+  { src: 'scripts/collect-metrics.mjs', dest: 'scripts/aef-collect-metrics.mjs' },
 ]
 
 for (const { src, dest } of scriptsToCopy) {
@@ -85,6 +87,10 @@ for (const { src, dest } of scriptsToCopy) {
     continue
   }
   copyFileSync(srcPath, destPath)
+  if (dest === 'scripts/aef-collect-metrics.mjs') {
+    const content = readFileSync(destPath, 'utf8').replace("'./check-adoption.mjs'", "'./aef-check-adoption.mjs'")
+    writeFileSync(destPath, content, 'utf8')
+  }
   console.log(`  📄 Copied: ${dest}`)
 }
 
@@ -102,6 +108,13 @@ for (const file of ghawFiles) {
     copyFileSync(srcPath, destPath)
     console.log(`  📄 Copied: ${file}`)
   }
+}
+
+const metricsWorkflow = join(frameworkRoot, '.github', 'workflows', 'collect-metrics.yml')
+const metricsWorkflowDest = join(target, '.github', 'workflows', 'aef-collect-metrics.yml')
+if (existsSync(metricsWorkflow) && !existsSync(metricsWorkflowDest)) {
+  copyFileSync(metricsWorkflow, metricsWorkflowDest)
+  console.log(`  📄 Copied: .github/workflows/aef-collect-metrics.yml`)
 }
 
 // If the compiled .yml wasn't available, try to compile fresh in the target
@@ -169,6 +182,8 @@ const pkgPath = join(target, 'package.json')
 const aefScripts = {
   'aef:scan':   'node scripts/aef-scan.mjs --target .',
   'aef:report': 'node scripts/aef-report.mjs --assessment docs/assessment/readiness-assessment.json',
+  'aef:metrics': 'node scripts/aef-collect-metrics.mjs',
+  'aef:adoption': 'node scripts/aef-check-adoption.mjs',
 }
 
 if (existsSync(pkgPath)) {

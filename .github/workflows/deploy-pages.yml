@@ -61,6 +61,16 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
+      - name: Copy metrics data into website artifact
+        run: |
+          mkdir -p ./website/metrics/reports
+          if [ -f "metrics/reports/latest.json" ]; then
+            cp metrics/reports/latest.json ./website/metrics/reports/latest.json
+          fi
+          if [ -d "metrics/reports" ]; then
+            cp metrics/reports/*.json ./website/metrics/reports/ 2>/dev/null || true
+          fi
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

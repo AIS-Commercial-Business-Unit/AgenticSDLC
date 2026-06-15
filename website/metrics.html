@@ -546,6 +546,63 @@
 
       const AIS_STEPS = ['intake','specify','design','build','test','review','deploy','operate','learn'];
 
+      // ---- Normalize collect-metrics.mjs output to the shape render() expects ----
+      function normalize(d) {
+        const audit = d.auditEvents || {};
+        const total = audit.totalEvents ?? 0;
+        const manualRatio = audit.manualToGovernedRatio ?? 0;
+        const manualCount = total > 0 && manualRatio != null
+          ? Math.round(total * (manualRatio / (1 + manualRatio)))
+          : (d.manual_count ?? 0);
+        const governedCount = total - manualCount;
+
+        function mapAdoption(cats) {
+          if (!cats) return {};
+          return Object.fromEntries(
+            Object.entries(cats).map(([k, v]) => {
+              if (typeof v === 'object') {
+                return [k, { adopted: v.score ?? v.adopted ?? 0, total: v.max ?? v.total ?? 1 }];
+              }
+              return [k, { adopted: v, total: 1 }];
+            })
+          );
+        }
+
+        function mapHealth(gh) {
+          if (!gh) return {};
+          if ('healthy' in gh || 'overdue' in gh) return gh;
+          return {
+            healthy: gh.status === 'green' ? (gh.score ?? 100) : 0,
+            due_soon: gh.status === 'amber' ? 1 : 0,
+            overdue: gh.status === 'red' ? 1 : 0,
+          };
+        }
+
+        const adoptionSrc = d.adoption || {};
+        const ghSrc = d.github || {};
+
+        return {
+          generated_at: d.generatedAt ?? d.generated_at,
+          period_start: d.period?.from ?? d.period_start,
+          period_end: d.period?.to ?? d.period_end,
+          repo: d.repository ?? d.repo,
+          total_events: total,
+          events_by_agent: audit.byAgent ?? d.events_by_agent ?? {},
+          events_by_step: audit.byStep ?? d.events_by_step ?? {},
+          autonomy_distribution: audit.byAutonomyLevel ?? d.autonomy_distribution ?? d.autonomy_dist ?? {},
+          manual_count: manualCount,
+          governed_count: governedCount,
+          framework_adoption_pct: adoptionSrc.adoptionPercent ?? adoptionSrc.overall_percentage ?? d.framework_adoption_pct ?? 0,
+          framework_adoption: mapAdoption(adoptionSrc.categories ?? d.adoption_breakdown ?? {}),
+          governance_health: mapHealth(d.governanceHealth ?? d.governance_health),
+          maturity_scores: d.maturityHistory ?? d.maturity_scores ?? [],
+          avg_maturity: d.latestMaturity?.score ?? d.avg_maturity ?? null,
+          pr_merge_hours: ghSrc.prMergeTimesAvgHours,
+          issue_close_hours: ghSrc.issueCloseTimesAvgHours,
+          workflow_success_pct: ghSrc.workflowSuccessRate,
+        };
+      }
+
       // ---- Fallback ----
       function showFallback() {
         document.getElementById('metrics-root').innerHTML = `
@@ -882,14 +939,25 @@
           </section>`;
       }
 
-      // ---- Fetch ----
-      fetch('../metrics/reports/latest.json')
-        .then(res => {
-          if (!res.ok) throw new Error(`HTTP ${res.status}`);
-          return res.json();
-        })
-        .then(data => render(data))
-        .catch(() => showFallback());
+      // ---- Fetch with path fallback (GitHub Pages vs local dev) ----
+      const DATA_PATHS = [
+        'metrics/reports/latest.json',
+        '../metrics/reports/latest.json',
+      ];
+
+      (async function loadMetrics() {
+        for (const path of DATA_PATHS) {
+          try {
+            const res = await fetch(path);
+            if (res.ok) {
+              const raw = await res.json();
+              render(normalize(raw));
+              return;
+            }
+          } catch { /* try next */ }
+        }
+        showFallback();
+      })();
     })();
   </script>
 

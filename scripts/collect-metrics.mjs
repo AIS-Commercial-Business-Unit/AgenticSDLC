@@ -203,8 +203,42 @@ async function buildReport() {
     console.log('  GitHub API skipped (no --token provided)')
   }
 
+  // Source 4: Maturity history from assessment files
+  const assessmentDir = join(frameworkRoot, 'docs', 'assessment')
+  const maturityHistory = []
+  let latestMaturity = null
+
+  if (existsSync(assessmentDir)) {
+    const datedFiles = readdirSync(assessmentDir)
+      .filter(f => f.match(/^\d{4}-\d{2}-\d{2}-readiness-assessment\.json$/))
+      .sort()
+    for (const file of datedFiles) {
+      try {
+        const a = JSON.parse(readFileSync(join(assessmentDir, file), 'utf8'))
+        const score = a.overall?.score ?? a.overall_score ?? null
+        const date = file.slice(0, 10)
+        if (score != null) maturityHistory.push({ date, score, tier: a.overall?.tier ?? a.maturity_tier })
+      } catch { /* skip malformed */ }
+    }
+  }
+
+  const latestPath = join(assessmentDir, 'readiness-assessment.json')
+  if (existsSync(latestPath)) {
+    try {
+      const a = JSON.parse(readFileSync(latestPath, 'utf8'))
+      const score = a.overall?.score ?? a.overall_score ?? null
+      const date = (a.assessedAt ?? a.generated_at ?? new Date().toISOString()).slice(0, 10)
+      latestMaturity = { date, score, tier: a.overall?.tier ?? a.maturity_tier }
+      if (score != null && !maturityHistory.find(h => h.date === date)) {
+        maturityHistory.push({ date, score, tier: latestMaturity.tier })
+      }
+    } catch { /* skip */ }
+  }
+  maturityHistory.sort((a, b) => a.date.localeCompare(b.date))
+
   // Source 3: Framework adoption
-  const adoption = checkAdoption(frameworkRoot)
+  const adoption = await checkAdoption(frameworkRoot)
+  const adoptionPercent = adoption.adoptionPercent ?? adoption.overall_percentage ?? 0
 
   const topAgents = Object.entries(auditAgg.byAgent)
     .sort((a, b) => b[1] - a[1])
@@ -226,13 +260,15 @@ async function buildReport() {
     },
     github: githubMetrics,
     adoption: {
-      adoptionPercent: adoption.adoptionPercent,
+      adoptionPercent,
       summary: adoption.summary,
       categories: Object.fromEntries(
-        Object.entries(adoption.categories).map(([k, v]) => [k, { score: v.score, max: v.max }])
+        Object.entries(adoption.categories ?? {}).map(([k, v]) => [k, { score: v.score ?? v.adopted ?? 0, max: v.max ?? v.total ?? 0 }])
       ),
     },
     governanceHealth: deriveGovernanceHealth(auditAgg, adoption),
+    maturityHistory,
+    latestMaturity,
   }
 
   return report
@@ -240,7 +276,7 @@ async function buildReport() {
 
 function deriveGovernanceHealth(auditAgg, adoption) {
   const governedRatio = auditAgg.manualToGovernedRatio
-  const adoptionPct = adoption.adoptionPercent
+  const adoptionPct = adoption.adoptionPercent ?? adoption.overall_percentage ?? 0
 
   // Simple health score: blend of adoption % and governed activity ratio
   let score = adoptionPct
