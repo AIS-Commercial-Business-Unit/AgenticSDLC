@@ -16,9 +16,7 @@ jobs:
   release:
     name: Create GitHub Release
     if: ${{ !contains(github.event.head_commit.message, '[skip release]') }}
-    runs-on:
-  workflow_dispatch:  # manually only — configure GitHub App first
-  # push: ubuntu-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Validate release app credentials
         env:

@@ -43,7 +43,7 @@ run-name: "AEF Maturity Scanner"
 
 jobs:
   activation:
-    runs-on: ubuntu-slim
+    runs-on: ubuntu-latest
     permissions:
       contents: read
     outputs:
@@ -949,7 +949,7 @@ jobs:
       - agent
       - safe_outputs
     if: (always()) && (needs.agent.result != 'skipped')
-    runs-on: ubuntu-slim
+    runs-on: ubuntu-latest
     permissions:
       contents: write
       issues: write
@@ -1066,7 +1066,7 @@ jobs:
       - activation
       - agent
     if: ((!cancelled()) && (needs.agent.result != 'skipped')) && (needs.agent.outputs.detection_success == 'true')
-    runs-on: ubuntu-slim
+    runs-on: ubuntu-latest
     permissions:
       contents: write
       issues: write
