@@ -15,6 +15,7 @@
     "process-docs": "bash scripts/process-input-docs.sh",
     "scan": "node scripts/scan-repository.mjs",
     "report": "node scripts/generate-report.mjs",
+    "install-framework": "node scripts/install.mjs",
     "initialize": "node scripts/initialize.mjs",
     "gap-report": "node scripts/generate-gap-report.mjs",
     "governance-grid": "node scripts/generate-governance-grid.mjs",

@@ -589,7 +589,6 @@ function getArg(flag) {
 }
 
 const targetPath = getArg('--target')
-const outputDir  = getArg('--output') ?? join(frameworkRoot, 'docs', 'assessment')
 const dryRun     = args.includes('--dry-run')
 
 if (!targetPath) {
@@ -597,7 +596,9 @@ if (!targetPath) {
   process.exit(1)
 }
 
-const target = resolve(targetPath)
+const target    = resolve(targetPath)
+// Default output goes INTO the scanned repo, not the framework source
+const outputDir = getArg('--output') ?? join(target, 'docs', 'assessment')
 
 if (!existsSync(target)) {
   console.error(`Error: target path does not exist: ${target}`)
