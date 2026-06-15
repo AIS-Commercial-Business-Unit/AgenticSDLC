@@ -10,7 +10,9 @@
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
     "test": "jest --forceExit",
-    "test:coverage": "jest --coverage --forceExit"
+    "test:coverage": "jest --coverage --forceExit",
+    "aef:scan": "node scripts/aef-scan.mjs --target .",
+    "aef:report": "node scripts/aef-report.mjs --assessment docs/assessment/readiness-assessment.json"
   },
   "dependencies": {
     "express": "^4.18.2",
