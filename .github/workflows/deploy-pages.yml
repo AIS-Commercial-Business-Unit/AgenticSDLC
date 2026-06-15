@@ -1,35 +1,70 @@
 name: Deploy to GitHub Pages
+# Source: website/ directory on main branch
+# Note: All actions should be pinned to commit SHAs in production environments.
+#       Current tags (v4/v5) are used here for readability; replace with SHAs before hardening.
+#       Example: actions/checkout@v4 → actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
 
 on:
   push:
     branches: [main]
+    paths:
+      - 'website/**'
+  workflow_dispatch:
 
 permissions:
+  contents: read
   pages: write
   id-token: write
-  contents: read
 
 concurrency:
   group: pages
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
+  validate:
+    name: Validate Site Files
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verify site directory exists and contains files
+        run: |
+          if [ ! -d "./website" ]; then
+            echo "::error::website/ directory does not exist"
+            exit 1
+          fi
+
+          file_count=$(find ./website -type f | wc -l)
+          echo "Found $file_count file(s) in website/"
+
+          if [ "$file_count" -lt 1 ]; then
+            echo "::error::website/ directory is empty — nothing to deploy"
+            exit 1
+          fi
+
+          echo "::notice::Site validation passed. $file_count file(s) ready for deployment."
+
   deploy:
     name: Deploy to GitHub Pages
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: validate
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - name: Checkout
+        uses: actions/checkout@v4
 
       - name: Setup Pages
-        uses: actions/configure-pages@v4
+        uses: actions/configure-pages@v5
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: website/
+          path: './website'
 
       - name: Deploy to GitHub Pages
         id: deployment
