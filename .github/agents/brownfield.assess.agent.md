@@ -74,6 +74,7 @@ Evaluate the target repository across these six dimensions. For each dimension, 
 - Commit history or branch listing — evidence of long-lived branches, naming patterns
 
 **Scoring guide:**
+
 | Score | Meaning |
 |-------|---------|
 | 0–19 | No branching strategy evident; no protection config; chaotic branch history |
@@ -91,6 +92,7 @@ Evaluate the target repository across these six dimensions. For each dimension, 
 - Sampled merged PR descriptions (if accessible) — evidence of quality
 
 **Scoring guide:**
+
 | Score | Meaning |
 |-------|---------|
 | 0–19 | No template, no CODEOWNERS, no documented process |
@@ -110,6 +112,7 @@ Evaluate the target repository across these six dimensions. For each dimension, 
 - `docs/input/` — any supplemental governance docs?
 
 **Scoring guide:**
+
 | Score | Meaning |
 |-------|---------|
 | 0–9 | No AI governance artefacts of any kind |
@@ -130,6 +133,7 @@ Evaluate the target repository across these six dimensions. For each dimension, 
 - Any other AI surface files (`.codex/`, `copilot-setup-steps.yml`)
 
 **Scoring guide:**
+
 | Score | Meaning |
 |-------|---------|
 | 0–9 | No agent definitions anywhere; entirely ad-hoc |
@@ -149,6 +153,7 @@ Evaluate the target repository across these six dimensions. For each dimension, 
 - Check for integration test stages
 
 **Scoring guide:**
+
 | Score | Meaning |
 |-------|---------|
 | 0–19 | No CI/CD workflows present |
@@ -169,6 +174,7 @@ Evaluate the target repository across these six dimensions. For each dimension, 
 - `CHANGELOG.md` — release history
 
 **Scoring guide:**
+
 | Score | Meaning |
 |-------|---------|
 | 0–19 | No meaningful documentation; README absent or placeholder only |
@@ -194,6 +200,7 @@ overall_score = round(
 ```
 
 **Maturity tier assignment:**
+
 | overall_score | maturity_tier |
 |---|---|
 | 0–24 | Foundation |
@@ -288,4 +295,3 @@ At the end of every assessment session, output this exact statement:
 ---
 
 *AIS Agentic Engineering Framework — brownfield.assess | AIS Specify Step: Intake | Autonomy: L0*
-

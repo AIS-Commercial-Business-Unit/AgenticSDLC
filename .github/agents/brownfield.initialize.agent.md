@@ -107,6 +107,7 @@ Ask these questions in order. Group them into sections for readability. Each que
 ### Section D — Governance Preferences
 
 **q16_max_autonomy** — What is the MAXIMUM autonomy level you want to allow agents to reach?
+
 | Level | Description |
 |-------|-------------|
 | L1 | Recommend only — agents propose, humans decide everything |
