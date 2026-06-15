@@ -206,19 +206,19 @@
               </label>
               <label class="checklist-item">
                 <input type="checkbox" data-section="governance" />
-                <span class="checklist-item__label">We maintain a governance registry of agent configurations, policies, and approved tool lists</span>
+                <span class="checklist-item__label">We maintain a governance registry of agent configurations, policies, and approved tool lists; all entries carry a review date and are updated at least quarterly</span>
               </label>
               <label class="checklist-item">
                 <input type="checkbox" data-section="governance" />
-                <span class="checklist-item__label">Human approval is required for high-risk agent actions; agents cannot self-approve</span>
+                <span class="checklist-item__label">We have defined workflow gates (RED → GREEN transitions) with required evidence artifacts for each stage; high-risk transitions require explicit human approval before the agent can advance</span>
               </label>
               <label class="checklist-item">
                 <input type="checkbox" data-section="governance" />
-                <span class="checklist-item__label">We have tested agents against prompt injection, hallucination, and cascading failure scenarios</span>
+                <span class="checklist-item__label">We have automated governance checks that continuously validate agent outputs — unit tests, security scans, integration tests, and requirement traceability — without relying solely on manual review</span>
               </label>
               <label class="checklist-item">
                 <input type="checkbox" data-section="governance" />
-                <span class="checklist-item__label">We review and update governance policies on a defined schedule (at least quarterly)</span>
+                <span class="checklist-item__label">We have a defined escalation path for decisions beyond an agent's configured autonomy; escalations are routed to the appropriate human, logged, and reviewed to refine future policies</span>
               </label>
             </div>
           </section>
@@ -238,11 +238,11 @@
             <div class="checklist-section__body">
               <label class="checklist-item">
                 <input type="checkbox" data-section="context" />
-                <span class="checklist-item__label">Requirements and specifications are committed to source control before implementation begins</span>
+                <span class="checklist-item__label">Requirements use a structured syntax (e.g., EARS) committed to source control before implementation begins; format is precise enough for agents to generate tests and tasks directly from requirements</span>
               </label>
               <label class="checklist-item">
                 <input type="checkbox" data-section="context" />
-                <span class="checklist-item__label">We use Architecture Decision Records (ADRs) to document significant design choices</span>
+                <span class="checklist-item__label">We maintain an append-only decision log capturing the WHY behind all significant choices — architecture, scope, agent constraints — accessible to agents as authoritative context for future work</span>
               </label>
               <label class="checklist-item">
                 <input type="checkbox" data-section="context" />
@@ -250,7 +250,7 @@
               </label>
               <label class="checklist-item">
                 <input type="checkbox" data-section="context" />
-                <span class="checklist-item__label">We have a defined context-loading strategy — agents load only artifacts relevant to the current task</span>
+                <span class="checklist-item__label">We have a living context layer (MCP servers, RAG, or vector search) that provides agents with current project state; agents load only artifacts relevant to the current task</span>
               </label>
               <label class="checklist-item">
                 <input type="checkbox" data-section="context" />
@@ -258,7 +258,7 @@
               </label>
               <label class="checklist-item">
                 <input type="checkbox" data-section="context" />
-                <span class="checklist-item__label">We have a brownfield repository assessment identifying existing AI-readiness gaps</span>
+                <span class="checklist-item__label">We have a Strategic Entry Point (SEP) intake gate where items are assessed for scope, agent-readiness, and ambiguity before entering the pipeline; all repositories have a brownfield AI-readiness assessment</span>
               </label>
             </div>
           </section>
@@ -298,7 +298,7 @@
               </label>
               <label class="checklist-item">
                 <input type="checkbox" data-section="agents" />
-                <span class="checklist-item__label">We support multi-agent orchestration with defined handoff protocols and conflict-resolution rules</span>
+                <span class="checklist-item__label">We use coordinator + specialist agent patterns where a lead agent routes to domain specialists (architect, backend, QA, security) with defined handoff protocols and conflict-resolution rules</span>
               </label>
             </div>
           </section>
@@ -318,7 +318,7 @@
             <div class="checklist-section__body">
               <label class="checklist-item">
                 <input type="checkbox" data-section="workflow" />
-                <span class="checklist-item__label">Agents generate PR descriptions automatically — structured, consistent, and traceable</span>
+                <span class="checklist-item__label">Agents generate structured PR descriptions and Merge-Readiness Packs (evidence checklists covering tests, security, and reviewers) automatically; PRs lacking a pack are blocked from merge</span>
               </label>
               <label class="checklist-item">
                 <input type="checkbox" data-section="workflow" />
@@ -338,7 +338,7 @@
               </label>
               <label class="checklist-item">
                 <input type="checkbox" data-section="workflow" />
-                <span class="checklist-item__label">Agents participate in deployment or release automation with defined approval gates</span>
+                <span class="checklist-item__label">Agents support pre-refinement by generating structured clarification packs for ambiguous requirements before work begins; unresolved items are routed async through pull requests rather than unstructured meetings</span>
               </label>
             </div>
           </section>
@@ -374,7 +374,7 @@
               </label>
               <label class="checklist-item">
                 <input type="checkbox" data-section="metrics" />
-                <span class="checklist-item__label">We run structured experiments to validate new agentic workflows before scaling them</span>
+                <span class="checklist-item__label">Agents produce automatic effort estimates for backlog items; estimates are tracked in project management tooling and compared against actuals to improve planning accuracy over time</span>
               </label>
               <label class="checklist-item">
                 <input type="checkbox" data-section="metrics" />
