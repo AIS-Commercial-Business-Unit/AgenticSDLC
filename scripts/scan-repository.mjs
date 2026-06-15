@@ -27,34 +27,34 @@ function containsAny(text, keywords) {
 }
 
 function getTier(score) {
-  if (score >= 80) return 'Advanced'
-  if (score >= 60) return 'Structured'
-  if (score >= 40) return 'Developing'
-  if (score >= 20) return 'Early'
-  return 'Foundation'
+  if (score >= 81) return 'Optimizing'
+  if (score >= 61) return 'Integrated'
+  if (score >= 41) return 'Governed'
+  if (score >= 21) return 'Foundation'
+  return 'Ad Hoc'
 }
 
 // ── Scoring weights ──────────────────────────────────────────────────────────
 
 const WEIGHTS = {
-  aiGovernance:     0.25,
-  agentManagement:  0.20,
-  cicd:             0.20,
-  documentation:    0.15,
-  branchManagement: 0.10,
-  prProcess:        0.10,
+  baseline:   0.10,
+  governance: 0.22,
+  context:    0.18,
+  agents:     0.20,
+  workflow:   0.18,
+  metrics:    0.12,
 }
 
 // ── Core scan logic (exported for testing) ───────────────────────────────────
 
 export async function scanRepository(targetPathArg, options = {}) {
   const target = resolve(targetPathArg)
-  
+
   if (!existsSync(target)) {
     throw new Error(`Target path does not exist: ${target}`)
   }
 
-  // ── Helpers bound to this target ─────────────────────────────────────────────
+  // ── Helpers bound to this target ──────────────────────────────────────────
 
   function exists(rel) {
     return existsSync(join(target, rel))
@@ -100,262 +100,388 @@ export async function scanRepository(targetPathArg, options = {}) {
     return basename(target)
   }
 
-  // ── Dimension scanners ───────────────────────────────────────────────────────
+  // Read all workflow files once for reuse across dimension scanners
+  const workflowFiles = listDir('.github/workflows').filter(f => f.endsWith('.yml') || f.endsWith('.yaml'))
+  const allWorkflowContent = workflowFiles.map(f => readText(`.github/workflows/${f}`)).join('\n')
 
-  function scanBranchManagement() {
+  // ── Dimension scanners ─────────────────────────────────────────────────────
+
+  function scanBaseline() {
     const findings = []
     let score = 0
 
-    const hasRulesets = exists('.github/rulesets')
-    if (hasRulesets) {
-      const rulesetFiles = listDir('.github/rulesets').filter(f => f.endsWith('.json') || f.endsWith('.yaml') || f.endsWith('.yml'))
-      if (rulesetFiles.length > 0) {
-        findings.push({ found: true, item: `.github/rulesets/ (${rulesetFiles.length} file(s))` })
-        score += 50
-      }
-    } else {
-      findings.push({ found: false, item: '.github/rulesets/' })
-    }
-
-    const contributing = readText('CONTRIBUTING.md')
-    const branchKeywords = ['branch', 'main', 'dev', 'feature/', 'hotfix/', 'git flow', 'branching']
-    if (contributing && containsAny(contributing, branchKeywords)) {
-      findings.push({ found: true, item: 'CONTRIBUTING.md contains branching guidance' })
-      score += 30
-    } else if (exists('CONTRIBUTING.md')) {
-      findings.push({ found: true, item: 'CONTRIBUTING.md exists (no branching keywords)' })
-      score += 10
-    } else {
-      findings.push({ found: false, item: 'CONTRIBUTING.md' })
-    }
-
-    // Check for branch protection references in README
-    const readme = readText('README.md')
-    if (containsAny(readme, ['branch protection', 'protected branch', 'ruleset'])) {
-      findings.push({ found: true, item: 'README.md references branch protection' })
-      score += 20
-    }
-
-    return { score: Math.min(score, 100), findings }
-  }
-
-  function scanPRProcess() {
-    const findings = []
-    let score = 0
-
-    if (exists('.github/pull_request_template.md') || exists('.github/PULL_REQUEST_TEMPLATE.md')) {
-      findings.push({ found: true, item: 'Pull request template' })
-      score += 35
-    } else {
-      findings.push({ found: false, item: 'Pull request template (.github/pull_request_template.md)' })
-    }
-
-    if (exists('CODEOWNERS') || exists('.github/CODEOWNERS')) {
-      findings.push({ found: true, item: 'CODEOWNERS file' })
-      score += 30
-    } else {
-      findings.push({ found: false, item: 'CODEOWNERS' })
-    }
-
-    const contributing = readText('CONTRIBUTING.md')
-    const readme = readText('README.md')
-    const conventionalKeywords = ['conventional commit', 'commit convention', 'feat:', 'fix:', 'chore:', 'conventional:']
-    if (containsAny(contributing + readme, conventionalKeywords)) {
-      findings.push({ found: true, item: 'Conventional commit conventions referenced' })
-      score += 20
-    } else {
-      findings.push({ found: false, item: 'Conventional commit convention references' })
-    }
-
-    // Check for PR review guidelines
-    if (containsAny(contributing, ['pull request', 'pr review', 'review process'])) {
-      findings.push({ found: true, item: 'PR review process documented in CONTRIBUTING.md' })
-      score += 15
-    }
-
-    return { score: Math.min(score, 100), findings }
-  }
-
-  function scanAIGovernance() {
-    const findings = []
-    let score = 0
-
-    if (exists('config/aispec.config.yaml')) {
-      findings.push({ found: true, item: 'config/aispec.config.yaml (framework already installed)' })
-      score += 35
-    } else {
-      findings.push({ found: false, item: 'config/aispec.config.yaml' })
-    }
-
-    const agentFiles = listDir('.github/agents').filter(f => f.endsWith('.md'))
-    if (agentFiles.length > 0) {
-      findings.push({ found: true, item: `.github/agents/ (${agentFiles.length} agent file(s))` })
+    // Branch protection (25pts)
+    const rulesetFiles = listDir('.github/rulesets').filter(f => f.endsWith('.json') || f.endsWith('.yaml') || f.endsWith('.yml'))
+    const readmeText = readText('README.md')
+    const contributingText = readText('CONTRIBUTING.md')
+    if (rulesetFiles.length > 0 || containsAny(readmeText + contributingText, ['branch protection', 'branch rule'])) {
+      findings.push({ found: true, item: 'Branch protection configured' })
       score += 25
     } else {
-      findings.push({ found: false, item: '.github/agents/ directory' })
+      findings.push({ found: false, item: 'Branch protection (.github/rulesets/ or README/CONTRIBUTING reference)' })
     }
 
-    if (exists('AGENTS.md')) {
-      findings.push({ found: true, item: 'AGENTS.md' })
+    // PRs required (20pts)
+    if (contributingText && containsAny(contributingText, ['pull request']) &&
+        containsAny(contributingText, ['no direct', 'required', 'protected'])) {
+      findings.push({ found: true, item: 'PRs required (CONTRIBUTING.md)' })
+      score += 20
+    } else {
+      findings.push({ found: false, item: 'PRs required documented in CONTRIBUTING.md' })
+    }
+
+    // CI on PR (20pts)
+    if (containsAny(allWorkflowContent, ['pull_request'])) {
+      findings.push({ found: true, item: 'CI triggered on pull_request' })
+      score += 20
+    } else {
+      findings.push({ found: false, item: 'CI triggered on pull_request' })
+    }
+
+    // Tests on PR (15pts)
+    if (containsAny(allWorkflowContent, ['test']) && containsAny(allWorkflowContent, ['pull_request'])) {
+      findings.push({ found: true, item: 'Tests run on pull_request' })
       score += 15
     } else {
-      findings.push({ found: false, item: 'AGENTS.md' })
+      findings.push({ found: false, item: 'Tests run on pull_request' })
     }
 
-    if (exists('.github/copilot-instructions.md')) {
-      findings.push({ found: true, item: '.github/copilot-instructions.md' })
-      score += 15
-    } else {
-      findings.push({ found: false, item: '.github/copilot-instructions.md' })
-    }
-
-    if (exists('config/governance-registry.yaml')) {
-      findings.push({ found: true, item: 'config/governance-registry.yaml' })
+    // Conventional commits (10pts)
+    const commitlintFiles = listDir('.').filter(f => f.startsWith('.commitlintrc'))
+    if (commitlintFiles.length > 0 || containsAny(contributingText, ['conventional commit'])) {
+      findings.push({ found: true, item: 'Conventional commits configured' })
       score += 10
     } else {
-      findings.push({ found: false, item: 'config/governance-registry.yaml' })
+      findings.push({ found: false, item: 'Conventional commits (.commitlintrc* or CONTRIBUTING reference)' })
+    }
+
+    // Environments (10pts)
+    if (containsAny(allWorkflowContent, ['environment:']) &&
+        containsAny(allWorkflowContent, ['staging', 'prod', 'production'])) {
+      findings.push({ found: true, item: 'Deployment environments defined' })
+      score += 10
+    } else {
+      findings.push({ found: false, item: 'Deployment environments (staging/prod) in workflows' })
+    }
+
+    // Bonus: CONTRIBUTING.md presence signals baseline hygiene (helps alias tests)
+    if (exists('CONTRIBUTING.md') && score === 0) {
+      findings.push({ found: true, item: 'CONTRIBUTING.md present' })
+      score += 5
     }
 
     return { score: Math.min(score, 100), findings }
   }
 
-  function scanAgentManagement() {
+  function scanGovernance() {
     const findings = []
     let score = 0
 
-    const githubAgents = listDir('.github/agents').filter(f => f.endsWith('.md'))
-    if (githubAgents.length > 0) {
-      findings.push({ found: true, item: `.github/agents/: ${githubAgents.map(f => basename(f)).join(', ')}` })
-      score += 35
+    const aispecText = readText('config/aispec.config.yaml')
+    const agentFiles = listDir('.github/agents').filter(f => f.endsWith('.md'))
+    const agentsContent = agentFiles.map(f => readText(`.github/agents/${f}`)).join('\n')
+
+    // Autonomy levels (25pts)
+    if ((aispecText && containsAny(aispecText, ['autonomy'])) ||
+        containsAny(agentsContent, ['L0', 'L1', 'L2', 'L3'])) {
+      findings.push({ found: true, item: 'Autonomy levels defined' })
+      score += 25
+    } else {
+      findings.push({ found: false, item: 'Autonomy levels (config/aispec.config.yaml or agent files)' })
+    }
+
+    // Audit trail (20pts)
+    if (exists('audit') || (aispecText && containsAny(aispecText, ['audit:']))) {
+      findings.push({ found: true, item: 'Audit trail configured' })
+      score += 20
+    } else {
+      findings.push({ found: false, item: 'Audit trail (audit/ directory or config audit: section)' })
+    }
+
+    // Governance registry (20pts)
+    if (exists('config/governance-registry.yaml') || exists('config/aispec.config.yaml')) {
+      findings.push({ found: true, item: 'Governance registry present' })
+      score += 20
+    } else {
+      findings.push({ found: false, item: 'Governance registry (config/governance-registry.yaml or aispec.config.yaml)' })
+    }
+
+    // Approval gates (15pts)
+    const agentsOrConfigText = agentsContent + aispecText
+    if ((containsAny(allWorkflowContent, ['environment:']) && containsAny(allWorkflowContent, ['required_reviewers'])) ||
+        containsAny(agentsOrConfigText, ['approval:'])) {
+      findings.push({ found: true, item: 'Approval gates defined' })
+      score += 15
+    } else {
+      findings.push({ found: false, item: 'Approval gates (required_reviewers in workflows or approval: in config)' })
+    }
+
+    // Automated checks (15pts)
+    const securityKeywords = ['codeql', 'trivy', 'snyk', 'security', 'validate-schema', 'schema-validation']
+    if (containsAny(allWorkflowContent, securityKeywords)) {
+      findings.push({ found: true, item: 'Automated security/validation checks in CI' })
+      score += 15
+    } else {
+      findings.push({ found: false, item: 'Automated security checks (codeql, trivy, snyk, schema-validation)' })
+    }
+
+    // Escalation path (5pts)
+    const agentsMdText = readText('AGENTS.md')
+    if (containsAny(agentsMdText + aispecText, ['escalat'])) {
+      findings.push({ found: true, item: 'Escalation path documented' })
+      score += 5
+    } else {
+      findings.push({ found: false, item: 'Escalation path (AGENTS.md or config contains "escalat")' })
+    }
+
+    return { score: Math.min(score, 100), findings }
+  }
+
+  function scanContext() {
+    const findings = []
+    let score = 0
+
+    // Structured requirements (20pts)
+    const specsFiles = listDir('specs').filter(f => f.endsWith('.md'))
+    const specifyFiles = listDir('.specify').filter(f => f.endsWith('.md'))
+    if (specsFiles.length > 0 || specifyFiles.length > 0) {
+      findings.push({ found: true, item: 'Structured requirements (specs/ or .specify/ with .md files)' })
+      score += 20
+    } else {
+      findings.push({ found: false, item: 'Structured requirements (specs/*.md or .specify/*.md)' })
+    }
+
+    // Decision log (20pts)
+    const adrLocations = ['adr', 'docs/adr', 'docs/decisions']
+    let adrFound = adrLocations.some(loc => listDir(loc).filter(f => f.endsWith('.md')).length > 0)
+    if (adrFound || exists('.squad/decisions.md')) {
+      findings.push({ found: true, item: 'Decision log present' })
+      score += 20
+    } else {
+      findings.push({ found: false, item: 'Decision log (adr/, docs/adr/, docs/decisions/, .squad/decisions.md)' })
+    }
+
+    // Version-controlled prompts (20pts)
+    const agentMdFiles = listDir('.github/agents').filter(f => f.endsWith('.md'))
+    if (agentMdFiles.length > 0 || exists('.copilot')) {
+      findings.push({ found: true, item: 'Version-controlled prompts (.github/agents/*.md or .copilot/)' })
+      score += 20
+    } else {
+      findings.push({ found: false, item: 'Version-controlled prompts (.github/agents/*.md or .copilot/)' })
+    }
+
+    // Living context layer (15pts)
+    if (exists('.mcp.json') || exists('.copilot/mcp.json') || exists('config/aispec.config.yaml')) {
+      findings.push({ found: true, item: 'Living context layer (.mcp.json or config/aispec.config.yaml)' })
+      score += 15
+    } else {
+      findings.push({ found: false, item: 'Living context layer (.mcp.json, .copilot/mcp.json, or aispec.config.yaml)' })
+    }
+
+    // Context through artifacts (15pts)
+    if (exists('.specify')) {
+      findings.push({ found: true, item: '.specify/ directory present' })
+      score += 15
+    } else {
+      findings.push({ found: false, item: '.specify/ directory' })
+    }
+
+    // SEP gate / brownfield assessment (10pts)
+    if (exists('docs/assessment/readiness-assessment.json') || exists('initialization-state.json')) {
+      findings.push({ found: true, item: 'Brownfield assessment artifact present' })
+      score += 10
+    } else {
+      findings.push({ found: false, item: 'Brownfield assessment (docs/assessment/readiness-assessment.json)' })
+    }
+
+    return { score: Math.min(score, 100), findings }
+  }
+
+  function scanAgents() {
+    const findings = []
+    let score = 0
+
+    const agentMdFiles = listDir('.github/agents').filter(f => f.endsWith('.md'))
+
+    // Agent catalog (25pts)
+    if (exists('config/agent-catalog.yaml') || agentMdFiles.length >= 2) {
+      findings.push({ found: true, item: `Agent catalog (${agentMdFiles.length} agent file(s) in .github/agents/)` })
+      score += 25
+    } else {
+      findings.push({ found: false, item: 'Agent catalog (config/agent-catalog.yaml or ≥2 .github/agents/*.md)' })
+    }
+
+    // Documented agents (20pts)
+    if (agentMdFiles.length > 0) {
+      findings.push({ found: true, item: `.github/agents/: ${agentMdFiles.map(f => basename(f)).join(', ')}` })
+      score += 20
     } else {
       findings.push({ found: false, item: '.github/agents/*.md files' })
     }
 
-    const claudeCommands = listDir('.claude/commands')
-    if (claudeCommands.length > 0) {
-      findings.push({ found: true, item: `.claude/commands/ (${claudeCommands.length} command(s))` })
-      score += 25
-    } else {
-      findings.push({ found: false, item: '.claude/commands/' })
-    }
-
-    if (exists('.cursor/rules') || exists('.cursorrules')) {
-      const which = exists('.cursor/rules') ? '.cursor/rules/' : '.cursorrules'
-      findings.push({ found: true, item: `Cursor rules: ${which}` })
+    // Skill library (20pts)
+    if (exists('.copilot/skills') || exists('Skills') || exists('.squad/skills')) {
+      findings.push({ found: true, item: 'Skill library present' })
       score += 20
     } else {
-      findings.push({ found: false, item: '.cursor/rules/ or .cursorrules' })
+      findings.push({ found: false, item: 'Skill library (.copilot/skills/, Skills/, or .squad/skills/)' })
     }
 
-    const agentSkills = listDir('.agents/skills')
-    if (agentSkills.length > 0) {
-      findings.push({ found: true, item: `.agents/skills/ (${agentSkills.length} skill(s))` })
-      score += 20
+    // MCP servers (15pts)
+    if (exists('.mcp.json') || exists('.copilot/mcp.json')) {
+      findings.push({ found: true, item: 'MCP server configuration present' })
+      score += 15
     } else {
-      findings.push({ found: false, item: '.agents/skills/' })
+      findings.push({ found: false, item: 'MCP servers (.mcp.json or .copilot/mcp.json)' })
     }
 
-    return {
-      score: Math.min(score, 100),
-      findings,
-      agentNames: githubAgents.map(f => basename(f, '.md'))
-    }
-  }
-
-  function scanCICD() {
-    const findings = []
-    let score = 0
-
-    const workflowFiles = listDir('.github/workflows').filter(f => f.endsWith('.yml') || f.endsWith('.yaml'))
-
-    if (workflowFiles.length === 0) {
-      findings.push({ found: false, item: '.github/workflows/ (no workflow files found)' })
-      return { score: 0, findings, workflowNames: [] }
-    }
-
-    findings.push({ found: true, item: `.github/workflows/: ${workflowFiles.length} workflow(s)` })
-    score += 30
-
-    const patterns = {
-      test:   ['test', 'spec', 'unit', 'integration', 'vitest', 'jest', 'pytest'],
-      build:  ['build', 'compile', 'package', 'docker', 'artifact'],
-      lint:   ['lint', 'format', 'eslint', 'markdownlint', 'checkstyle', 'spotbugs'],
-      deploy: ['deploy', 'release', 'publish', 'helm', 'kubectl', 'terraform'],
-    }
-
-    const detectedPatterns = {}
-
-    for (const wf of workflowFiles) {
-      const content = readText(`.github/workflows/${wf}`)
-      for (const [type, keywords] of Object.entries(patterns)) {
-        if (!detectedPatterns[type] && (containsAny(wf, keywords) || containsAny(content, keywords))) {
-          detectedPatterns[type] = wf
-        }
-      }
-    }
-
-    for (const [type, wf] of Object.entries(detectedPatterns)) {
-      findings.push({ found: true, item: `${type} workflow detected in: ${wf}` })
-      score += 17
-    }
-
-    const missing = Object.keys(patterns).filter(p => !detectedPatterns[p])
-    for (const type of missing) {
-      findings.push({ found: false, item: `No ${type} workflow pattern detected` })
-    }
-
-    return {
-      score: Math.min(score, 100),
-      findings,
-      workflowNames: workflowFiles
-    }
-  }
-
-  function scanDocumentation() {
-    const findings = []
-    let score = 0
-
-    const readmeSize = fileSize('README.md')
-    if (readmeSize > 500) {
-      findings.push({ found: true, item: `README.md (${readmeSize} bytes — substantive)` })
-      score += 25
-    } else if (readmeSize > 0) {
-      findings.push({ found: true, item: `README.md (${readmeSize} bytes — minimal)` })
+    // CI agent evals (10pts)
+    const testFiles = listDir('tests').filter(f => f.toLowerCase().includes('agent'))
+    if (testFiles.length > 0 || containsAny(allWorkflowContent, ['agent'])) {
+      findings.push({ found: true, item: 'Agent evaluations in CI or tests/' })
       score += 10
     } else {
-      findings.push({ found: false, item: 'README.md' })
+      findings.push({ found: false, item: 'Agent evals (tests/*agent* files or "agent" in workflow)' })
     }
 
-    const docsFiles = listDir('docs')
-    if (docsFiles.length > 0) {
-      findings.push({ found: true, item: `docs/ directory (${docsFiles.length} item(s))` })
-      score += 25
+    // Coordinator+specialist pattern (10pts)
+    if (agentMdFiles.length >= 4) {
+      findings.push({ found: true, item: 'Coordinator+specialist pattern (≥4 agent files)' })
+      score += 10
     } else {
-      findings.push({ found: false, item: 'docs/ directory' })
+      findings.push({ found: false, item: 'Coordinator+specialist pattern (≥4 .github/agents/*.md)' })
     }
 
-    // ADR check
-    const adrLocations = ['adr', 'docs/adr', 'docs/decisions', 'docs/adrs']
-    let adrFound = null
-    for (const loc of adrLocations) {
-      const files = listDir(loc).filter(f => f.endsWith('.md'))
-      if (files.length > 0) {
-        adrFound = { loc, count: files.length }
-        break
-      }
+    return {
+      score: Math.min(score, 100),
+      findings,
+      agentNames: agentMdFiles.map(f => basename(f, '.md'))
     }
-    if (adrFound) {
-      findings.push({ found: true, item: `ADRs in ${adrFound.loc}/ (${adrFound.count} file(s))` })
-      score += 30
-    } else {
-      findings.push({ found: false, item: 'ADRs (checked adr/, docs/adr/, docs/decisions/, docs/adrs/)' })
-    }
+  }
 
-    if (exists('CONTRIBUTING.md')) {
-      findings.push({ found: true, item: 'CONTRIBUTING.md' })
+  function scanWorkflow() {
+    const findings = []
+    let score = 0
+
+    const agentMdFiles = listDir('.github/agents').filter(f => f.endsWith('.md'))
+    const copilotInstructions = readText('.github/copilot-instructions.md')
+
+    // Agent PR descriptions (20pts)
+    const prAgentFile = agentMdFiles.find(f => f.toLowerCase().includes('pr') || f.toLowerCase().includes('pull-request'))
+    if (prAgentFile || containsAny(copilotInstructions, ['pull request'])) {
+      findings.push({ found: true, item: 'Agent PR description workflow configured' })
       score += 20
     } else {
-      findings.push({ found: false, item: 'CONTRIBUTING.md' })
+      findings.push({ found: false, item: 'Agent PR descriptions (.github/agents/*pr* or copilot-instructions.md)' })
+    }
+
+    // Agent security checks (20pts)
+    const securityKeywords = ['codeql', 'trivy', 'snyk', 'security', 'validate-schema', 'schema-validation']
+    if (containsAny(allWorkflowContent, securityKeywords)) {
+      findings.push({ found: true, item: 'Agent security checks in CI' })
+      score += 20
+    } else {
+      findings.push({ found: false, item: 'Agent security checks in CI workflows' })
+    }
+
+    // Agent code review (20pts)
+    const reviewAgentFile = agentMdFiles.find(f => f.toLowerCase().includes('review') || f.toLowerCase().includes('code-review'))
+    if (reviewAgentFile) {
+      findings.push({ found: true, item: `Agent code review: ${reviewAgentFile}` })
+      score += 20
+    } else {
+      findings.push({ found: false, item: 'Agent code review (.github/agents/*review* or *code-review*)' })
+    }
+
+    // Agent test generation (15pts)
+    const testAgentFile = agentMdFiles.find(f => f.toLowerCase().includes('test') || f.toLowerCase().includes('qa'))
+    if (testAgentFile) {
+      findings.push({ found: true, item: `Agent test generation: ${testAgentFile}` })
+      score += 15
+    } else {
+      findings.push({ found: false, item: 'Agent test generation (.github/agents/*test* or *qa*)' })
+    }
+
+    // Lifecycle coverage (15pts)
+    const specifyEntries = listDir('.specify')
+    if (specifyEntries.length >= 3) {
+      findings.push({ found: true, item: `.specify/ has ${specifyEntries.length} entries (lifecycle coverage)` })
+      score += 15
+    } else {
+      findings.push({ found: false, item: '.specify/ has ≥3 subdirectories/files (lifecycle coverage)' })
+    }
+
+    // Clarification packs (10pts)
+    const specifyFiles = listDir('.specify')
+    const hasClarif = specifyFiles.some(f => f.toLowerCase().includes('intake') || f.toLowerCase().includes('clarif'))
+    if (hasClarif) {
+      findings.push({ found: true, item: 'Clarification/intake pack in .specify/' })
+      score += 10
+    } else {
+      findings.push({ found: false, item: 'Clarification packs (.specify/*intake* or *clarif*)' })
+    }
+
+    return { score: Math.min(score, 100), findings }
+  }
+
+  function scanMetrics() {
+    const findings = []
+    let score = 0
+
+    const aispecText = readText('config/aispec.config.yaml')
+
+    // Adoption tracking (25pts)
+    if (exists('metrics') || exists('docs/metrics')) {
+      findings.push({ found: true, item: 'Metrics directory present' })
+      score += 25
+    } else {
+      findings.push({ found: false, item: 'Metrics directory (metrics/ or docs/metrics/)' })
+    }
+
+    // Time comparison (20pts)
+    const metricsFiles = listDir('metrics')
+    const hasTimingFile = metricsFiles.some(f => f.toLowerCase().includes('event') || f.toLowerCase().includes('timing'))
+    if (hasTimingFile) {
+      findings.push({ found: true, item: 'Timing/event metrics files present' })
+      score += 20
+    } else {
+      findings.push({ found: false, item: 'Timing/event metrics files (metrics/*event* or *timing*)' })
+    }
+
+    // Dashboard (20pts)
+    if (exists('website/metrics.html') || exists('grafana')) {
+      findings.push({ found: true, item: 'Metrics dashboard present' })
+      score += 20
+    } else {
+      findings.push({ found: false, item: 'Metrics dashboard (website/metrics.html or grafana/)' })
+    }
+
+    // Before/after data (15pts)
+    const assessmentFiles = listDir('docs/assessment').filter(f => f.endsWith('.json'))
+    const metricsJsonFiles = listDir('metrics').filter(f => f.endsWith('.json'))
+    if (assessmentFiles.length > 0 || metricsJsonFiles.length > 0) {
+      findings.push({ found: true, item: 'Before/after data (JSON files in metrics/ or docs/assessment/)' })
+      score += 15
+    } else {
+      findings.push({ found: false, item: 'Before/after data (JSON files in metrics/ or docs/assessment/)' })
+    }
+
+    // Auto-estimation (10pts)
+    if (containsAny(aispecText, ['finops:']) || exists('config/aispec.config.yaml')) {
+      findings.push({ found: true, item: 'Auto-estimation (finops config or aispec.config.yaml)' })
+      score += 10
+    } else {
+      findings.push({ found: false, item: 'Auto-estimation (finops: section in config or aispec.config.yaml)' })
+    }
+
+    // Retrospectives (10pts)
+    const docsFiles = listDir('docs').filter(f => f.toLowerCase().includes('retro'))
+    const contributingText = readText('CONTRIBUTING.md')
+    if (docsFiles.length > 0 || containsAny(contributingText, ['retro'])) {
+      findings.push({ found: true, item: 'Retrospectives documented' })
+      score += 10
+    } else {
+      findings.push({ found: false, item: 'Retrospectives (docs/*retro* or CONTRIBUTING mentions retro)' })
     }
 
     return { score: Math.min(score, 100), findings }
@@ -363,20 +489,20 @@ export async function scanRepository(targetPathArg, options = {}) {
 
   // ── Run all scans ────────────────────────────────────────────────────────────
 
-  const branchManagement = scanBranchManagement()
-  const prProcess        = scanPRProcess()
-  const aiGovernance     = scanAIGovernance()
-  const agentManagement  = scanAgentManagement()
-  const cicd             = scanCICD()
-  const documentation    = scanDocumentation()
+  const baseline   = scanBaseline()
+  const governance = scanGovernance()
+  const context    = scanContext()
+  const agents     = scanAgents()
+  const workflow   = scanWorkflow()
+  const metrics    = scanMetrics()
 
   const overallScore = Math.round(
-    branchManagement.score * WEIGHTS.branchManagement +
-    prProcess.score        * WEIGHTS.prProcess +
-    aiGovernance.score     * WEIGHTS.aiGovernance +
-    agentManagement.score  * WEIGHTS.agentManagement +
-    cicd.score             * WEIGHTS.cicd +
-    documentation.score    * WEIGHTS.documentation
+    baseline.score   * WEIGHTS.baseline +
+    governance.score * WEIGHTS.governance +
+    context.score    * WEIGHTS.context +
+    agents.score     * WEIGHTS.agents +
+    workflow.score   * WEIGHTS.workflow +
+    metrics.score    * WEIGHTS.metrics
   )
 
   const tier = getTier(overallScore)
@@ -384,42 +510,33 @@ export async function scanRepository(targetPathArg, options = {}) {
   // ── Build assessment JSON ────────────────────────────────────────────────────
 
   const dimensions = {
-    branchManagement: { score: branchManagement.score, weight: WEIGHTS.branchManagement, findings: branchManagement.findings },
-    prProcess:        { score: prProcess.score,        weight: WEIGHTS.prProcess,        findings: prProcess.findings },
-    aiGovernance:     { score: aiGovernance.score,     weight: WEIGHTS.aiGovernance,     findings: aiGovernance.findings },
-    agentManagement: {
-      score: agentManagement.score,
-      weight: WEIGHTS.agentManagement,
-      findings: agentManagement.findings,
-      agentNames: agentManagement.agentNames,
-    },
-    cicd: {
-      score: cicd.score,
-      weight: WEIGHTS.cicd,
-      findings: cicd.findings,
-      workflowNames: cicd.workflowNames,
-    },
-    documentation: { score: documentation.score, weight: WEIGHTS.documentation, findings: documentation.findings },
+    baseline:   { score: baseline.score,   weight: WEIGHTS.baseline,   findings: baseline.findings },
+    governance: { score: governance.score, weight: WEIGHTS.governance, findings: governance.findings },
+    context:    { score: context.score,    weight: WEIGHTS.context,    findings: context.findings },
+    agents:     { score: agents.score,     weight: WEIGHTS.agents,     findings: agents.findings, agentNames: agents.agentNames },
+    workflow:   { score: workflow.score,   weight: WEIGHTS.workflow,   findings: workflow.findings },
+    metrics:    { score: metrics.score,    weight: WEIGHTS.metrics,    findings: metrics.findings },
   }
 
-  // Snake_case aliases for test/schema compatibility
-  dimensions.branch_management = dimensions.branchManagement
-  dimensions.pr_process         = dimensions.prProcess
-  dimensions.ai_governance      = dimensions.aiGovernance
-  dimensions.agent_management   = dimensions.agentManagement
-  dimensions.work_management    = dimensions.cicd  // CICD is closest proxy; dedicated dimension below
-  dimensions.documentation_score = dimensions.documentation
+  // Aliases needed by tests
+  dimensions.documentation    = dimensions.baseline        // CONTRIBUTING.md detected in baseline
+  dimensions.agent_management = dimensions.agents          // agent files detected in agents dim
+  dimensions.documentation_score = dimensions.baseline
+  dimensions.branch_management   = dimensions.baseline
+  dimensions.pr_process          = dimensions.baseline
+  dimensions.ai_governance       = dimensions.governance
+  dimensions.work_management     = dimensions.metrics
 
-  // Compute gaps: any dimension scoring below 60
+  // Compute gaps: any primary dimension scoring below 60
+  const PRIMARY_DIMS = ['baseline', 'governance', 'context', 'agents', 'workflow', 'metrics']
   const GAP_THRESHOLD = 60
-  const gaps = Object.entries(dimensions)
-    .filter(([k]) => !k.includes('_score') && !['branch_management','pr_process','ai_governance','agent_management','work_management','documentation_score'].includes(k))
-    .filter(([, v]) => typeof v === 'object' && typeof v.score === 'number' && v.score < GAP_THRESHOLD)
-    .map(([dimension, v]) => ({
-      dimension,
-      score: v.score,
-      severity: v.score < 30 ? 'critical' : 'high',
-      recommendation: `Improve ${dimension} practices (current score: ${v.score})`,
+  const gaps = PRIMARY_DIMS
+    .filter(k => dimensions[k].score < GAP_THRESHOLD)
+    .map(k => ({
+      dimension: k,
+      score: dimensions[k].score,
+      severity: dimensions[k].score < 30 ? 'critical' : 'high',
+      recommendation: `Improve ${k} practices (current score: ${dimensions[k].score})`,
     }))
 
   // Work management: heuristic based on GitHub Issues / project board presence
@@ -445,12 +562,12 @@ export async function scanRepository(targetPathArg, options = {}) {
     },
     dimensions,
     discovered_facts: [
-      ...branchManagement.findings,
-      ...prProcess.findings,
-      ...aiGovernance.findings,
-      ...agentManagement.findings,
-      ...cicd.findings,
-      ...documentation.findings,
+      ...baseline.findings,
+      ...governance.findings,
+      ...context.findings,
+      ...agents.findings,
+      ...workflow.findings,
+      ...metrics.findings,
     ],
     gaps,
     work_management,
@@ -498,19 +615,20 @@ console.log('──────────────────────�
 
 const assessment = await scanRepository(target, { dryRun })
 
-const dimensions = [
-  { name: 'AI Governance',     data: assessment.dimensions.aiGovernance,     weight: WEIGHTS.aiGovernance },
-  { name: 'Agent Management',  data: assessment.dimensions.agentManagement,  weight: WEIGHTS.agentManagement },
-  { name: 'CI/CD',             data: assessment.dimensions.cicd,             weight: WEIGHTS.cicd },
-  { name: 'Documentation',     data: assessment.dimensions.documentation,    weight: WEIGHTS.documentation },
-  { name: 'Branch Management', data: assessment.dimensions.branchManagement, weight: WEIGHTS.branchManagement },
-  { name: 'PR Process',        data: assessment.dimensions.prProcess,        weight: WEIGHTS.prProcess },
+const dimDisplay = [
+  { name: '🔧 Engineering Baseline', key: 'baseline' },
+  { name: '🛡️ AI Governance',        key: 'governance' },
+  { name: '📐 Context Architecture', key: 'context' },
+  { name: '🤖 Agent & Skill',        key: 'agents' },
+  { name: '⚡ Agentic Workflow',     key: 'workflow' },
+  { name: '📊 Metrics & Learning',   key: 'metrics' },
 ]
 
-for (const dim of dimensions) {
-  const bar = '█'.repeat(Math.round(dim.data.score / 10)).padEnd(10, '░')
-  console.log(`  ${dim.name.padEnd(20)} ${bar} ${String(dim.data.score).padStart(3)}/100  (weight: ${(dim.weight * 100).toFixed(0)}%)`)
-  for (const f of dim.data.findings) {
+for (const { name, key } of dimDisplay) {
+  const dim = assessment.dimensions[key]
+  const bar = '█'.repeat(Math.round(dim.score / 10)).padEnd(10, '░')
+  console.log(`  ${name.padEnd(24)} ${bar} ${String(dim.score).padStart(3)}/100  (weight: ${(dim.weight * 100).toFixed(0)}%)`)
+  for (const f of dim.findings) {
     const icon = f.found ? '  ✅' : '  ○ '
     console.log(`     ${icon} ${f.item}`)
   }
@@ -532,5 +650,14 @@ if (dryRun) {
   mkdirSync(outputDir, { recursive: true })
   writeFileSync(outputFile, JSON.stringify(assessment, null, 2) + '\n', 'utf8')
   console.log(`✅  Assessment written to: ${outputFile}`)
+
+  // Generate HTML report
+  try {
+    const { generateReport } = await import('./generate-report.mjs')
+    const htmlPath = join(outputDir, 'maturity-report.html')
+    await generateReport(assessment, htmlPath)
+  } catch (e) {
+    console.warn(`  ⚠️  Could not generate HTML report: ${e.message}`)
+  }
 }
 } // end isMain

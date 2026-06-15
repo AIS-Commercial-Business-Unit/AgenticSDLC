@@ -1,179 +1,595 @@
 {
   "schemaVersion": "1.0.0",
-  "assessedAt": "2026-06-13T16:33:34.427Z",
+  "assessedAt": "2026-06-15T13:42:02.405Z",
   "repository": "AIS-Commercial-Business-Unit/AgenticSDLC",
-  "targetPath": "C:\\Dev\\AIS-Commercial-Business-Unit\\AgenticSDLC",
+  "targetPath": "C:\\Dev\\AIS-Commercial-Business-Unit\\AgenticSDLC\\samples\\brownfield-sample",
+  "overall_score": 4,
+  "maturity_tier": "Ad Hoc",
   "overall": {
-    "score": 59,
-    "tier": "Developing"
+    "score": 4,
+    "tier": "Ad Hoc"
   },
   "dimensions": {
-    "branchManagement": {
-      "score": 50,
-      "weight": 0.1,
-      "findings": [
-        {
-          "found": false,
-          "item": ".github/rulesets/"
-        },
-        {
-          "found": true,
-          "item": "CONTRIBUTING.md contains branching guidance"
-        },
-        {
-          "found": true,
-          "item": "README.md references branch protection"
-        }
-      ]
-    },
-    "prProcess": {
-      "score": 70,
-      "weight": 0.1,
-      "findings": [
-        {
-          "found": true,
-          "item": "Pull request template"
-        },
-        {
-          "found": false,
-          "item": "CODEOWNERS"
-        },
-        {
-          "found": true,
-          "item": "Conventional commit conventions referenced"
-        },
-        {
-          "found": true,
-          "item": "PR review process documented in CONTRIBUTING.md"
-        }
-      ]
-    },
-    "aiGovernance": {
-      "score": 40,
-      "weight": 0.25,
-      "findings": [
-        {
-          "found": false,
-          "item": "config/aispec.config.yaml"
-        },
-        {
-          "found": true,
-          "item": ".github/agents/ (16 agent file(s))"
-        },
-        {
-          "found": true,
-          "item": "AGENTS.md"
-        },
-        {
-          "found": false,
-          "item": ".github/copilot-instructions.md"
-        },
-        {
-          "found": false,
-          "item": "config/governance-registry.yaml"
-        }
-      ]
-    },
-    "agentManagement": {
+    "baseline": {
       "score": 35,
-      "weight": 0.2,
+      "weight": 0.1,
       "findings": [
         {
+          "found": false,
+          "item": "Branch protection (.github/rulesets/ or README/CONTRIBUTING reference)"
+        },
+        {
+          "found": false,
+          "item": "PRs required documented in CONTRIBUTING.md"
+        },
+        {
           "found": true,
-          "item": ".github/agents/: ais.github.sync.agent.md, ais.maintain.clarify.agent.md, ais.maintain.debug.agent.md, ais.report.metrics.agent.md, ais.report.project.agent.md, ais.report.retrospective.agent.md, ais.report.standup.agent.md, ais.report.status.agent.md, ais.setup.architecture.agent.md, ais.setup.constitution.agent.md, ais.setup.plan.agent.md, ais.spec.brainstorm.agent.md, ais.spec.design.agent.md, ais.spec.implement.agent.md, ais.spec.specify.agent.md, ais.spec.tasks.agent.md"
+          "item": "CI triggered on pull_request"
+        },
+        {
+          "found": true,
+          "item": "Tests run on pull_request"
         },
         {
           "found": false,
-          "item": ".claude/commands/"
+          "item": "Conventional commits (.commitlintrc* or CONTRIBUTING reference)"
         },
         {
           "found": false,
-          "item": ".cursor/rules/ or .cursorrules"
-        },
-        {
-          "found": false,
-          "item": ".agents/skills/"
+          "item": "Deployment environments (staging/prod) in workflows"
         }
-      ],
-      "agentNames": [
-        "ais.github.sync.agent",
-        "ais.maintain.clarify.agent",
-        "ais.maintain.debug.agent",
-        "ais.report.metrics.agent",
-        "ais.report.project.agent",
-        "ais.report.retrospective.agent",
-        "ais.report.standup.agent",
-        "ais.report.status.agent",
-        "ais.setup.architecture.agent",
-        "ais.setup.constitution.agent",
-        "ais.setup.plan.agent",
-        "ais.spec.brainstorm.agent",
-        "ais.spec.design.agent",
-        "ais.spec.implement.agent",
-        "ais.spec.specify.agent",
-        "ais.spec.tasks.agent"
       ]
     },
-    "cicd": {
-      "score": 98,
+    "governance": {
+      "score": 0,
+      "weight": 0.22,
+      "findings": [
+        {
+          "found": false,
+          "item": "Autonomy levels (config/aispec.config.yaml or agent files)"
+        },
+        {
+          "found": false,
+          "item": "Audit trail (audit/ directory or config audit: section)"
+        },
+        {
+          "found": false,
+          "item": "Governance registry (config/governance-registry.yaml or aispec.config.yaml)"
+        },
+        {
+          "found": false,
+          "item": "Approval gates (required_reviewers in workflows or approval: in config)"
+        },
+        {
+          "found": false,
+          "item": "Automated security checks (codeql, trivy, snyk, schema-validation)"
+        },
+        {
+          "found": false,
+          "item": "Escalation path (AGENTS.md or config contains \"escalat\")"
+        }
+      ]
+    },
+    "context": {
+      "score": 0,
+      "weight": 0.18,
+      "findings": [
+        {
+          "found": false,
+          "item": "Structured requirements (specs/*.md or .specify/*.md)"
+        },
+        {
+          "found": false,
+          "item": "Decision log (adr/, docs/adr/, docs/decisions/, .squad/decisions.md)"
+        },
+        {
+          "found": false,
+          "item": "Version-controlled prompts (.github/agents/*.md or .copilot/)"
+        },
+        {
+          "found": false,
+          "item": "Living context layer (.mcp.json, .copilot/mcp.json, or aispec.config.yaml)"
+        },
+        {
+          "found": false,
+          "item": ".specify/ directory"
+        },
+        {
+          "found": false,
+          "item": "Brownfield assessment (docs/assessment/readiness-assessment.json)"
+        }
+      ]
+    },
+    "agents": {
+      "score": 0,
       "weight": 0.2,
       "findings": [
         {
-          "found": true,
-          "item": ".github/workflows/: 11 workflow(s)"
+          "found": false,
+          "item": "Agent catalog (config/agent-catalog.yaml or ≥2 .github/agents/*.md)"
         },
         {
-          "found": true,
-          "item": "test workflow detected in: ci.yml"
+          "found": false,
+          "item": ".github/agents/*.md files"
         },
         {
-          "found": true,
-          "item": "build workflow detected in: ci.yml"
+          "found": false,
+          "item": "Skill library (.copilot/skills/, Skills/, or .squad/skills/)"
         },
         {
-          "found": true,
-          "item": "lint workflow detected in: ci.yml"
+          "found": false,
+          "item": "MCP servers (.mcp.json or .copilot/mcp.json)"
         },
         {
-          "found": true,
-          "item": "deploy workflow detected in: ci.yml"
+          "found": false,
+          "item": "Agent evals (tests/*agent* files or \"agent\" in workflow)"
+        },
+        {
+          "found": false,
+          "item": "Coordinator+specialist pattern (≥4 .github/agents/*.md)"
         }
       ],
-      "workflowNames": [
-        "ci.yml",
-        "deploy-pages.yml",
-        "release.yml",
-        "report-all.yml",
-        "report-metrics.yml",
-        "report-project.yml",
-        "report-retrospective.yml",
-        "report-standup.yml",
-        "report-status.yml",
-        "test.yml",
-        "validate-schemas.yml"
+      "agentNames": []
+    },
+    "workflow": {
+      "score": 0,
+      "weight": 0.18,
+      "findings": [
+        {
+          "found": false,
+          "item": "Agent PR descriptions (.github/agents/*pr* or copilot-instructions.md)"
+        },
+        {
+          "found": false,
+          "item": "Agent security checks in CI workflows"
+        },
+        {
+          "found": false,
+          "item": "Agent code review (.github/agents/*review* or *code-review*)"
+        },
+        {
+          "found": false,
+          "item": "Agent test generation (.github/agents/*test* or *qa*)"
+        },
+        {
+          "found": false,
+          "item": ".specify/ has ≥3 subdirectories/files (lifecycle coverage)"
+        },
+        {
+          "found": false,
+          "item": "Clarification packs (.specify/*intake* or *clarif*)"
+        }
+      ]
+    },
+    "metrics": {
+      "score": 0,
+      "weight": 0.12,
+      "findings": [
+        {
+          "found": false,
+          "item": "Metrics directory (metrics/ or docs/metrics/)"
+        },
+        {
+          "found": false,
+          "item": "Timing/event metrics files (metrics/*event* or *timing*)"
+        },
+        {
+          "found": false,
+          "item": "Metrics dashboard (website/metrics.html or grafana/)"
+        },
+        {
+          "found": false,
+          "item": "Before/after data (JSON files in metrics/ or docs/assessment/)"
+        },
+        {
+          "found": false,
+          "item": "Auto-estimation (finops: section in config or aispec.config.yaml)"
+        },
+        {
+          "found": false,
+          "item": "Retrospectives (docs/*retro* or CONTRIBUTING mentions retro)"
+        }
       ]
     },
     "documentation": {
-      "score": 70,
-      "weight": 0.15,
+      "score": 35,
+      "weight": 0.1,
       "findings": [
         {
-          "found": true,
-          "item": "README.md (7976 bytes — substantive)"
-        },
-        {
-          "found": true,
-          "item": "docs/ directory (11 item(s))"
+          "found": false,
+          "item": "Branch protection (.github/rulesets/ or README/CONTRIBUTING reference)"
         },
         {
           "found": false,
-          "item": "ADRs (checked adr/, docs/adr/, docs/decisions/, docs/adrs/)"
+          "item": "PRs required documented in CONTRIBUTING.md"
         },
         {
           "found": true,
-          "item": "CONTRIBUTING.md"
+          "item": "CI triggered on pull_request"
+        },
+        {
+          "found": true,
+          "item": "Tests run on pull_request"
+        },
+        {
+          "found": false,
+          "item": "Conventional commits (.commitlintrc* or CONTRIBUTING reference)"
+        },
+        {
+          "found": false,
+          "item": "Deployment environments (staging/prod) in workflows"
+        }
+      ]
+    },
+    "agent_management": {
+      "score": 0,
+      "weight": 0.2,
+      "findings": [
+        {
+          "found": false,
+          "item": "Agent catalog (config/agent-catalog.yaml or ≥2 .github/agents/*.md)"
+        },
+        {
+          "found": false,
+          "item": ".github/agents/*.md files"
+        },
+        {
+          "found": false,
+          "item": "Skill library (.copilot/skills/, Skills/, or .squad/skills/)"
+        },
+        {
+          "found": false,
+          "item": "MCP servers (.mcp.json or .copilot/mcp.json)"
+        },
+        {
+          "found": false,
+          "item": "Agent evals (tests/*agent* files or \"agent\" in workflow)"
+        },
+        {
+          "found": false,
+          "item": "Coordinator+specialist pattern (≥4 .github/agents/*.md)"
+        }
+      ],
+      "agentNames": []
+    },
+    "documentation_score": {
+      "score": 35,
+      "weight": 0.1,
+      "findings": [
+        {
+          "found": false,
+          "item": "Branch protection (.github/rulesets/ or README/CONTRIBUTING reference)"
+        },
+        {
+          "found": false,
+          "item": "PRs required documented in CONTRIBUTING.md"
+        },
+        {
+          "found": true,
+          "item": "CI triggered on pull_request"
+        },
+        {
+          "found": true,
+          "item": "Tests run on pull_request"
+        },
+        {
+          "found": false,
+          "item": "Conventional commits (.commitlintrc* or CONTRIBUTING reference)"
+        },
+        {
+          "found": false,
+          "item": "Deployment environments (staging/prod) in workflows"
+        }
+      ]
+    },
+    "branch_management": {
+      "score": 35,
+      "weight": 0.1,
+      "findings": [
+        {
+          "found": false,
+          "item": "Branch protection (.github/rulesets/ or README/CONTRIBUTING reference)"
+        },
+        {
+          "found": false,
+          "item": "PRs required documented in CONTRIBUTING.md"
+        },
+        {
+          "found": true,
+          "item": "CI triggered on pull_request"
+        },
+        {
+          "found": true,
+          "item": "Tests run on pull_request"
+        },
+        {
+          "found": false,
+          "item": "Conventional commits (.commitlintrc* or CONTRIBUTING reference)"
+        },
+        {
+          "found": false,
+          "item": "Deployment environments (staging/prod) in workflows"
+        }
+      ]
+    },
+    "pr_process": {
+      "score": 35,
+      "weight": 0.1,
+      "findings": [
+        {
+          "found": false,
+          "item": "Branch protection (.github/rulesets/ or README/CONTRIBUTING reference)"
+        },
+        {
+          "found": false,
+          "item": "PRs required documented in CONTRIBUTING.md"
+        },
+        {
+          "found": true,
+          "item": "CI triggered on pull_request"
+        },
+        {
+          "found": true,
+          "item": "Tests run on pull_request"
+        },
+        {
+          "found": false,
+          "item": "Conventional commits (.commitlintrc* or CONTRIBUTING reference)"
+        },
+        {
+          "found": false,
+          "item": "Deployment environments (staging/prod) in workflows"
+        }
+      ]
+    },
+    "ai_governance": {
+      "score": 0,
+      "weight": 0.22,
+      "findings": [
+        {
+          "found": false,
+          "item": "Autonomy levels (config/aispec.config.yaml or agent files)"
+        },
+        {
+          "found": false,
+          "item": "Audit trail (audit/ directory or config audit: section)"
+        },
+        {
+          "found": false,
+          "item": "Governance registry (config/governance-registry.yaml or aispec.config.yaml)"
+        },
+        {
+          "found": false,
+          "item": "Approval gates (required_reviewers in workflows or approval: in config)"
+        },
+        {
+          "found": false,
+          "item": "Automated security checks (codeql, trivy, snyk, schema-validation)"
+        },
+        {
+          "found": false,
+          "item": "Escalation path (AGENTS.md or config contains \"escalat\")"
+        }
+      ]
+    },
+    "work_management": {
+      "score": 0,
+      "weight": 0.12,
+      "findings": [
+        {
+          "found": false,
+          "item": "Metrics directory (metrics/ or docs/metrics/)"
+        },
+        {
+          "found": false,
+          "item": "Timing/event metrics files (metrics/*event* or *timing*)"
+        },
+        {
+          "found": false,
+          "item": "Metrics dashboard (website/metrics.html or grafana/)"
+        },
+        {
+          "found": false,
+          "item": "Before/after data (JSON files in metrics/ or docs/assessment/)"
+        },
+        {
+          "found": false,
+          "item": "Auto-estimation (finops: section in config or aispec.config.yaml)"
+        },
+        {
+          "found": false,
+          "item": "Retrospectives (docs/*retro* or CONTRIBUTING mentions retro)"
         }
       ]
     }
+  },
+  "discovered_facts": [
+    {
+      "found": false,
+      "item": "Branch protection (.github/rulesets/ or README/CONTRIBUTING reference)"
+    },
+    {
+      "found": false,
+      "item": "PRs required documented in CONTRIBUTING.md"
+    },
+    {
+      "found": true,
+      "item": "CI triggered on pull_request"
+    },
+    {
+      "found": true,
+      "item": "Tests run on pull_request"
+    },
+    {
+      "found": false,
+      "item": "Conventional commits (.commitlintrc* or CONTRIBUTING reference)"
+    },
+    {
+      "found": false,
+      "item": "Deployment environments (staging/prod) in workflows"
+    },
+    {
+      "found": false,
+      "item": "Autonomy levels (config/aispec.config.yaml or agent files)"
+    },
+    {
+      "found": false,
+      "item": "Audit trail (audit/ directory or config audit: section)"
+    },
+    {
+      "found": false,
+      "item": "Governance registry (config/governance-registry.yaml or aispec.config.yaml)"
+    },
+    {
+      "found": false,
+      "item": "Approval gates (required_reviewers in workflows or approval: in config)"
+    },
+    {
+      "found": false,
+      "item": "Automated security checks (codeql, trivy, snyk, schema-validation)"
+    },
+    {
+      "found": false,
+      "item": "Escalation path (AGENTS.md or config contains \"escalat\")"
+    },
+    {
+      "found": false,
+      "item": "Structured requirements (specs/*.md or .specify/*.md)"
+    },
+    {
+      "found": false,
+      "item": "Decision log (adr/, docs/adr/, docs/decisions/, .squad/decisions.md)"
+    },
+    {
+      "found": false,
+      "item": "Version-controlled prompts (.github/agents/*.md or .copilot/)"
+    },
+    {
+      "found": false,
+      "item": "Living context layer (.mcp.json, .copilot/mcp.json, or aispec.config.yaml)"
+    },
+    {
+      "found": false,
+      "item": ".specify/ directory"
+    },
+    {
+      "found": false,
+      "item": "Brownfield assessment (docs/assessment/readiness-assessment.json)"
+    },
+    {
+      "found": false,
+      "item": "Agent catalog (config/agent-catalog.yaml or ≥2 .github/agents/*.md)"
+    },
+    {
+      "found": false,
+      "item": ".github/agents/*.md files"
+    },
+    {
+      "found": false,
+      "item": "Skill library (.copilot/skills/, Skills/, or .squad/skills/)"
+    },
+    {
+      "found": false,
+      "item": "MCP servers (.mcp.json or .copilot/mcp.json)"
+    },
+    {
+      "found": false,
+      "item": "Agent evals (tests/*agent* files or \"agent\" in workflow)"
+    },
+    {
+      "found": false,
+      "item": "Coordinator+specialist pattern (≥4 .github/agents/*.md)"
+    },
+    {
+      "found": false,
+      "item": "Agent PR descriptions (.github/agents/*pr* or copilot-instructions.md)"
+    },
+    {
+      "found": false,
+      "item": "Agent security checks in CI workflows"
+    },
+    {
+      "found": false,
+      "item": "Agent code review (.github/agents/*review* or *code-review*)"
+    },
+    {
+      "found": false,
+      "item": "Agent test generation (.github/agents/*test* or *qa*)"
+    },
+    {
+      "found": false,
+      "item": ".specify/ has ≥3 subdirectories/files (lifecycle coverage)"
+    },
+    {
+      "found": false,
+      "item": "Clarification packs (.specify/*intake* or *clarif*)"
+    },
+    {
+      "found": false,
+      "item": "Metrics directory (metrics/ or docs/metrics/)"
+    },
+    {
+      "found": false,
+      "item": "Timing/event metrics files (metrics/*event* or *timing*)"
+    },
+    {
+      "found": false,
+      "item": "Metrics dashboard (website/metrics.html or grafana/)"
+    },
+    {
+      "found": false,
+      "item": "Before/after data (JSON files in metrics/ or docs/assessment/)"
+    },
+    {
+      "found": false,
+      "item": "Auto-estimation (finops: section in config or aispec.config.yaml)"
+    },
+    {
+      "found": false,
+      "item": "Retrospectives (docs/*retro* or CONTRIBUTING mentions retro)"
+    }
+  ],
+  "gaps": [
+    {
+      "dimension": "baseline",
+      "score": 35,
+      "severity": "high",
+      "recommendation": "Improve baseline practices (current score: 35)"
+    },
+    {
+      "dimension": "governance",
+      "score": 0,
+      "severity": "critical",
+      "recommendation": "Improve governance practices (current score: 0)"
+    },
+    {
+      "dimension": "context",
+      "score": 0,
+      "severity": "critical",
+      "recommendation": "Improve context practices (current score: 0)"
+    },
+    {
+      "dimension": "agents",
+      "score": 0,
+      "severity": "critical",
+      "recommendation": "Improve agents practices (current score: 0)"
+    },
+    {
+      "dimension": "workflow",
+      "score": 0,
+      "severity": "critical",
+      "recommendation": "Improve workflow practices (current score: 0)"
+    },
+    {
+      "dimension": "metrics",
+      "score": 0,
+      "severity": "critical",
+      "recommendation": "Improve metrics practices (current score: 0)"
+    }
+  ],
+  "work_management": {
+    "detected": "none",
+    "confidence": 0.3,
+    "recommendation": "No issue templates detected — add GitHub Issue templates and project boards."
   }
 }

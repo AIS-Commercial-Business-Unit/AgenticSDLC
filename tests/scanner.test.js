@@ -92,10 +92,10 @@ describe('scanRepository — empty directory', () => {
     expect(result.overall_score).toBeLessThanOrEqual(10)
   })
 
-  it('maturity_tier is "Foundation" for an empty directory', async () => {
+  it('maturity_tier is "Ad Hoc" for an empty directory', async () => {
     requireScanner()
     const result = await scanRepository(tempDir)
-    expect(result.maturity_tier).toBe('Foundation')
+    expect(result.maturity_tier).toBe('Ad Hoc')
   })
 })
 
