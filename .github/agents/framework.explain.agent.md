@@ -1,6 +1,7 @@
 ---
 name: "framework-explain"
 description: ""
+
 ---
 
 <!-- Generated from .specify/prompts/framework.explain.md — do not edit directly -->

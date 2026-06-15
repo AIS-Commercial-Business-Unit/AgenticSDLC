@@ -10,6 +10,7 @@ handoffs:
     agent: ais-report-standup
     prompt: Generate an internal standup report
     send: true
+
 ---
 
 <!-- Generated from .specify/prompts/ais.report.retrospective.md — do not edit directly -->

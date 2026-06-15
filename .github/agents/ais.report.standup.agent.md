@@ -10,6 +10,7 @@ handoffs:
     agent: ais-report-project
     prompt: Generate a comprehensive project report
     send: true
+
 ---
 
 <!-- Generated from .specify/prompts/ais.report.standup.md — do not edit directly -->

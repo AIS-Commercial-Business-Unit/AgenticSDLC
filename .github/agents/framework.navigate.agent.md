@@ -1,6 +1,7 @@
 ---
 name: "framework-navigate"
 description: ""
+
 ---
 
 <!-- Generated from .specify/prompts/framework.navigate.md — do not edit directly -->

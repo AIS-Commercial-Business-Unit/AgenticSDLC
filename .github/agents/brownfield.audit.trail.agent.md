@@ -12,6 +12,7 @@ allowed_tools:
   - create_directory
 output_type: audit_infrastructure
 ---
+
 ---
 
 <!-- Generated from .specify/prompts/brownfield.audit.trail.md — do not edit directly -->

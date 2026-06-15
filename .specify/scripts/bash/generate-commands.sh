@@ -147,6 +147,7 @@ for prompt_file in "$PROMPTS_DIR"/*.md; do
     if [[ -f "$claude_yaml" ]]; then
       echo "---"
       cat "$claude_yaml"
+      echo ""
       echo "---"
     fi
     echo ""
@@ -173,6 +174,7 @@ for prompt_file in "$PROMPTS_DIR"/*.md; do
         echo "description: \"$description\""
       fi
     fi
+    echo ""
     echo "---"
     echo ""
     echo "<!-- Generated from .specify/prompts/$name.md — do not edit directly -->"

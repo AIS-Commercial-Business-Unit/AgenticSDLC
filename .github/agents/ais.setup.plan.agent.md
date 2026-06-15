@@ -1,6 +1,7 @@
 ---
 name: "ais-setup-plan"
 description: Read .project-context/ and produce a Project Plan — the work breakdown that decomposes the project into assignable component specs
+
 ---
 
 <!-- Generated from .specify/prompts/ais.setup.plan.md — do not edit directly -->

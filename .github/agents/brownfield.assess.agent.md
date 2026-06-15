@@ -19,6 +19,7 @@ output_type: yaml_and_markdown_report
 autonomy_level: L0
 specify_step: Intake
 ---
+
 ---
 
 <!-- Generated from .specify/prompts/brownfield.assess.md — do not edit directly -->

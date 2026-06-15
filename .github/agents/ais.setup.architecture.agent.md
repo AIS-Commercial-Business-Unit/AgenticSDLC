@@ -1,6 +1,7 @@
 ---
 name: "ais-setup-architecture"
 description: Synthesize solution architecture from project context and project plan. Produces specs/.architecture/ folder with Wardley Map, C4 diagrams, bounded contexts, sequence diagrams, data flow, and ADRs.
+
 ---
 
 <!-- Generated from .specify/prompts/ais.setup.architecture.md — do not edit directly -->

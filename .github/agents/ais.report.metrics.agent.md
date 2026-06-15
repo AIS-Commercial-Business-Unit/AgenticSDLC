@@ -10,6 +10,7 @@ handoffs:
     agent: ais-report-status
     prompt: Generate a client-facing status report with the latest delivery outcomes rollup
     send: true
+
 ---
 
 <!-- Generated from .specify/prompts/ais.report.metrics.md — do not edit directly -->

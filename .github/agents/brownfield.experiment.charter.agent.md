@@ -11,6 +11,7 @@ allowed_tools:
   - search_files
 output_type: experiment_charter_markdown
 ---
+
 ---
 
 <!-- Generated from .specify/prompts/brownfield.experiment.charter.md — do not edit directly -->

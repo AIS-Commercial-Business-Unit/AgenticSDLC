@@ -13,6 +13,7 @@ allowed_tools:
   - glob
 output_type: agent_catalog_yaml
 ---
+
 ---
 
 <!-- Generated from .specify/prompts/brownfield.agent.catalog.md — do not edit directly -->

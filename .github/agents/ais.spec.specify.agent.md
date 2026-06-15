@@ -9,6 +9,7 @@ handoffs:
     agent: ais-maintain-clarify
     prompt: Clarify specification requirements
     send: true
+
 ---
 
 <!-- Generated from .specify/prompts/ais.spec.specify.md — do not edit directly -->

@@ -10,6 +10,7 @@ handoffs:
     agent: ais-report-status
     prompt: Generate a client-facing status report
     send: true
+
 ---
 
 <!-- Generated from .specify/prompts/ais.report.project.md — do not edit directly -->

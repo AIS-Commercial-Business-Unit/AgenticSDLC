@@ -1,6 +1,7 @@
 ---
 name: "framework-extend"
 description: ""
+
 ---
 
 <!-- Generated from .specify/prompts/framework.extend.md — do not edit directly -->

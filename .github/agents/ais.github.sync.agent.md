@@ -1,6 +1,7 @@
 ---
 name: "ais-github-sync"
 description: "Bidirectional sync of specs, stories, and tasks with GitHub milestones and issues."
+
 ---
 
 <!-- Generated from .specify/prompts/ais.github.sync.md — do not edit directly -->

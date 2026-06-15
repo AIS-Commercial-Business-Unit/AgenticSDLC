@@ -6,6 +6,7 @@ handoffs:
     agent: ais-spec-specify
     prompt: Create a feature specification from this Spec Seed Brief.
     send: true
+
 ---
 
 <!-- Generated from .specify/prompts/ais.spec.brainstorm.md — do not edit directly -->

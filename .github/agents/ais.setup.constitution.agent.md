@@ -10,6 +10,7 @@ handoffs:
     agent: ais-setup-plan
     prompt: Refresh the project plan to reflect updated constitutional standards.
     send: false
+
 ---
 
 <!-- Generated from .specify/prompts/ais.setup.constitution.md — do not edit directly -->

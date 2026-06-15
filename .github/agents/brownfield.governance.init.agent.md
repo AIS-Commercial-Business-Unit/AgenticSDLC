@@ -14,6 +14,7 @@ allowed_tools:
   - create_directory
 output_type: governance_artifacts
 ---
+
 ---
 
 <!-- Generated from .specify/prompts/brownfield.governance.init.md — do not edit directly -->

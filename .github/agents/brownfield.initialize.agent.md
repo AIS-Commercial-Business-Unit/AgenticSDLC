@@ -21,7 +21,8 @@ autonomy_level: L2
 specify_step: Intake
 requires_approval: true
 approval_keyword: APPROVE
-------
+---
+---
 
 <!-- Generated from .specify/prompts/brownfield.initialize.md — do not edit directly -->
 

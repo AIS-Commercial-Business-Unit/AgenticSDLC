@@ -14,6 +14,7 @@ handoffs:
     agent: ais-spec-design
     prompt: Create a technical design for the current spec.
     send: false
+
 ---
 
 <!-- Generated from .specify/prompts/ais.maintain.clarify.md — do not edit directly -->
