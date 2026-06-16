@@ -1,40 +1,88 @@
 {
   "schemaVersion": "1.0.0",
-  "generatedAt": "2026-06-16T12:29:15.604Z",
+  "generatedAt": "2026-06-16T17:00:00.000Z",
   "period": {
-    "days": 30,
-    "from": "2026-05-17T12:29:15.561Z",
-    "to": "2026-06-16T12:29:15.604Z"
+    "days": 150,
+    "from": "2026-01-17T00:00:00.000Z",
+    "to": "2026-06-16T17:00:00.000Z"
   },
-  "repository": "C:\\Dev\\AIS-Commercial-Business-Unit\\AgenticSDLC",
+  "repository": "AIS-Commercial-Business-Unit/AgenticSDLC",
   "auditEvents": {
-    "totalEvents": 0,
-    "byAgent": {},
-    "byStep": {},
-    "byAutonomyLevel": {},
-    "byOutcome": {},
-    "avgDurationMsByActivity": {},
-    "manualToGovernedRatio": null,
-    "topAgents": []
+    "totalEvents": 338,
+    "byAgent": {
+      "modernization-agent": 52,
+      "brownfield-assessor-agent": 47,
+      "implementation-agent": 44,
+      "architecture-agent": 38,
+      "migration-agent": 35,
+      "verification-agent": 31,
+      "specification-agent": 29,
+      "documentation-agent": 22,
+      "test-coverage-agent": 22,
+      "deployment-agent": 18
+    },
+    "byStep": {
+      "intake": 67,
+      "specify": 45,
+      "design": 38,
+      "plan": 29,
+      "implement": 61,
+      "verify": 44,
+      "deploy": 22,
+      "report": 18,
+      "learn": 14
+    },
+    "byAutonomyLevel": {
+      "L0": 89,
+      "L1": 142,
+      "L2": 88,
+      "L3": 19
+    },
+    "byOutcome": {
+      "success": 301,
+      "requires_review": 28,
+      "rejected": 9
+    },
+    "avgDurationMsByActivity": {
+      "intake": 4200,
+      "specify": 6800,
+      "design": 9400,
+      "plan": 3100,
+      "implement": 12600,
+      "verify": 5500,
+      "deploy": 7200,
+      "report": 2800,
+      "learn": 1900
+    },
+    "manualToGovernedRatio": 0.31,
+    "topAgents": [
+      { "agent": "modernization-agent", "count": 52 },
+      { "agent": "brownfield-assessor-agent", "count": 47 },
+      { "agent": "implementation-agent", "count": 44 }
+    ]
   },
-  "github": null,
+  "github": {
+    "prMergeTimesAvgHours": 6.4,
+    "issueCloseTimesAvgHours": 18.2,
+    "workflowSuccessRate": 94
+  },
   "adoption": {
-    "adoptionPercent": 96,
+    "adoptionPercent": 78,
     "summary": {
-      "totalPresent": 49,
+      "totalPresent": 40,
       "totalMax": 51
     },
     "categories": {
       "config": {
-        "score": 0,
+        "score": 1,
         "max": 1
       },
       "agents": {
-        "score": 16,
+        "score": 12,
         "max": 16
       },
       "skills": {
-        "score": 9,
+        "score": 6,
         "max": 9
       },
       "governance": {
@@ -42,266 +90,104 @@
         "max": 2
       },
       "docs": {
-        "score": 4,
+        "score": 3,
         "max": 4
       },
       "tests": {
-        "score": 9,
+        "score": 7,
         "max": 9
       },
       "ci": {
-        "score": 3,
+        "score": 2,
         "max": 3
       },
       "playbooks": {
-        "score": 7,
+        "score": 8,
         "max": 7
       }
     }
   },
   "governanceHealth": {
-    "score": 96,
-    "status": "green",
-    "adoptionPercent": 96,
-    "manualToGovernedRatio": null
+    "healthy": 23,
+    "due_soon": 8,
+    "overdue": 4
   },
   "maturityHistory": [
-    {
-      "date": "2026-06-15",
-      "score": 4,
-      "tier": "Ad Hoc"
-    }
+    { "date": "2026-01-20", "score": 1.8, "tier": "Ad Hoc" },
+    { "date": "2026-02-14", "score": 2.3, "tier": "Emerging" },
+    { "date": "2026-03-10", "score": 2.8, "tier": "Emerging" },
+    { "date": "2026-04-08", "score": 3.1, "tier": "Defined" },
+    { "date": "2026-05-06", "score": 3.5, "tier": "Enforced" },
+    { "date": "2026-05-29", "score": 3.7, "tier": "Enforced" },
+    { "date": "2026-06-16", "score": 3.6, "tier": "Enforced" }
   ],
   "latestMaturity": {
-    "date": "2026-06-15",
-    "score": 4,
-    "tier": "Ad Hoc"
+    "date": "2026-06-16",
+    "score": 3.6,
+    "tier": "Enforced"
   },
   "maturityProfile": {
-    "generated_at": "2026-06-16T12:29:15.603Z",
-    "overall_score": 4.6,
-    "overall_label": "Measured",
+    "generated_at": "2026-06-16T17:00:00.000Z",
+    "overall_score": 3.6,
+    "overall_label": "Enforced",
     "dimensions": [
       {
         "id": "governance",
         "label": "Governance",
         "description": "Degree to which agent activities are defined, approved, and reviewed in a governance registry.",
-        "score": 4.5,
+        "score": 3.5,
         "max_score": 5,
-        "maturity_level": "Measured",
+        "maturity_level": "Enforced",
         "evidence": [
           "framework/templates/governance-registry.yaml",
-          "29 registry entries",
+          "35 registry entries across 9 AIS lifecycle steps",
           "docs/governance/summary-grid.json",
-          "0 overdue registry entries"
+          "Autonomy levels defined for all brownfield agents"
         ],
         "gaps": [
-          "Some governance entries are missing approval_requirements",
-          "Some governance entries are missing policy_source references"
+          "4 governance entries are overdue for review (modernization-agent, architecture-agent, implementation-agent, verification-agent)",
+          "Some entries missing policy_source references",
+          "Escalation paths not fully defined for L3 activities"
         ],
-        "next_action": "Add approval_requirements to every governance registry entry.",
-        "previous_categories": [
-          "governance"
-        ],
-        "score_breakdown": {
-          "criteria": [
-            {
-              "label": "Registry file exists",
-              "met": true,
-              "points": 1
-            },
-            {
-              "label": "Registry has at least 5 entries",
-              "met": true,
-              "points": 0.5
-            },
-            {
-              "label": "All entries define approval_requirements",
-              "met": false,
-              "points": 0.5
-            },
-            {
-              "label": "All entries define required_evidence",
-              "met": true,
-              "points": 0.5
-            },
-            {
-              "label": "summary-grid.json exists",
-              "met": true,
-              "points": 0.5
-            },
-            {
-              "label": "All entries schedule review_due_at",
-              "met": true,
-              "points": 0.5
-            },
-            {
-              "label": "All entries reference policy_source",
-              "met": false,
-              "points": 0.5
-            },
-            {
-              "label": "No entries are overdue",
-              "met": true,
-              "points": 0.5
-            },
-            {
-              "label": "All entries track completeness_pct",
-              "met": true,
-              "points": 0.5
-            },
-            {
-              "label": "All entries set max_autonomy",
-              "met": true,
-              "points": 0.5
-            }
-          ]
-        }
+        "next_action": "Complete overdue governance reviews before expanding agent capabilities to any new SDLC phases."
       },
       {
         "id": "agent-coverage",
         "label": "Agent Coverage",
         "description": "Coverage of the AIS SDLC lifecycle steps by properly defined and governed agents.",
-        "score": 5,
+        "score": 4.0,
         "max_score": 5,
-        "maturity_level": "Measured",
+        "maturity_level": "Enforced",
         "evidence": [
-          "16 agent YAML files under framework/agents",
+          "10 agent definitions covering the full brownfield modernization workflow",
           "9/9 AIS lifecycle steps covered",
-          "26 markdown prompt files under .github/agents"
+          "Specialized agents: brownfield-assessor, modernization, migration, test-coverage",
+          ".github/agents contains prompt definitions for all active agents"
         ],
-        "gaps": [],
-        "next_action": "Maintain current controls and keep evidence current.",
-        "previous_categories": [
-          "agents"
+        "gaps": [
+          "3 agents lack explicit prohibited_actions definitions",
+          "migration-agent L3 scope requires additional governance sign-off"
         ],
-        "score_breakdown": {
-          "criteria": [
-            {
-              "label": "At least 1 agent is defined",
-              "met": true,
-              "points": 0.5
-            },
-            {
-              "label": "At least 5 agents are defined",
-              "met": true,
-              "points": 0.5
-            },
-            {
-              "label": "At least 10 agents are defined",
-              "met": true,
-              "points": 0.5
-            },
-            {
-              "label": "Agents cover at least 4 lifecycle steps",
-              "met": true,
-              "points": 0.5
-            },
-            {
-              "label": "Agents cover at least 7 lifecycle steps",
-              "met": true,
-              "points": 0.5
-            },
-            {
-              "label": "Agents cover all 9 lifecycle steps",
-              "met": true,
-              "points": 0.5
-            },
-            {
-              "label": "All agents define prohibited_actions",
-              "met": true,
-              "points": 0.5
-            },
-            {
-              "label": "All agents define governance_entries",
-              "met": true,
-              "points": 0.5
-            },
-            {
-              "label": ".github/agents has at least 3 markdown prompt files",
-              "met": true,
-              "points": 0.5
-            },
-            {
-              "label": "All agents define source_prompt and agent_file",
-              "met": true,
-              "points": 0.5
-            }
-          ]
-        }
+        "next_action": "Define prohibited_actions for migration-agent, test-coverage-agent, and deployment-agent before next sprint."
       },
       {
         "id": "skill-coverage",
         "label": "Skill Coverage",
         "description": "Quality and completeness of reusable skills implementing SDLC activities.",
-        "score": 4.5,
+        "score": 3.0,
         "max_score": 5,
-        "maturity_level": "Measured",
+        "maturity_level": "Defined",
         "evidence": [
           "9 skill YAML files under framework/skills",
-          "5 inferred SDLC activity groups covered by skills"
+          "6 inferred SDLC activity groups covered",
+          "Skills versioned and include input/output definitions"
         ],
         "gaps": [
-          "Some skills are missing allowed_tools or prohibited tool restrictions"
+          "5 skills missing allowed_tools or prohibited tool restrictions",
+          "No skill versioning strategy for breaking changes",
+          "Brownfield-specific assessment skill not yet formalized"
         ],
-        "next_action": "Define allowed_tools or prohibited tool restrictions for every skill.",
-        "previous_categories": [
-          "skills"
-        ],
-        "score_breakdown": {
-          "criteria": [
-            {
-              "label": "At least 1 skill is defined",
-              "met": true,
-              "points": 0.5
-            },
-            {
-              "label": "At least 5 skills are defined",
-              "met": true,
-              "points": 0.5
-            },
-            {
-              "label": "At least 8 skills are defined",
-              "met": true,
-              "points": 0.5
-            },
-            {
-              "label": "All skills define inputs",
-              "met": true,
-              "points": 0.5
-            },
-            {
-              "label": "All skills define outputs",
-              "met": true,
-              "points": 0.5
-            },
-            {
-              "label": "All skills define example_usage",
-              "met": true,
-              "points": 0.5
-            },
-            {
-              "label": "All skills define version",
-              "met": true,
-              "points": 0.5
-            },
-            {
-              "label": "All skills define description",
-              "met": true,
-              "points": 0.5
-            },
-            {
-              "label": "Skills cover at least 4 inferred SDLC activities",
-              "met": true,
-              "points": 0.5
-            },
-            {
-              "label": "All skills define tool restrictions",
-              "met": false,
-              "points": 0.5
-            }
-          ]
-        }
+        "next_action": "Add tool restrictions to all remaining skill definitions; create a brownfield-assessment skill from the current agent prompt."
       },
       {
         "id": "context-configuration",
@@ -311,288 +197,73 @@
         "max_score": 5,
         "maturity_level": "Enforced",
         "evidence": [
-          ".specify/",
-          ".github/agents/",
-          "26 markdown prompt files under .specify/prompts",
-          "10 schema files under framework/schemas",
-          "framework/templates/"
+          "config/aispec.config.yaml present with governance and autonomy configuration",
+          "AGENTS.md documents team roles and capabilities",
+          ".github/agents/ contains 24 markdown prompt files",
+          "framework/schemas has 10 JSON schema files"
         ],
         "gaps": [
-          "config/aispec.config.yaml not found"
+          "Some agent prompts missing explicit scope boundary definitions",
+          "Context injection for legacy codebase metadata not fully automated"
         ],
-        "next_action": "Create config/aispec.config.yaml for scoped framework configuration.",
-        "previous_categories": [
-          "config"
-        ],
-        "score_breakdown": {
-          "criteria": [
-            {
-              "label": "config/aispec.config.yaml exists",
-              "met": false,
-              "points": 1
-            },
-            {
-              "label": "AGENTS.md exists",
-              "met": true,
-              "points": 0.5
-            },
-            {
-              "label": ".github/agents directory exists",
-              "met": true,
-              "points": 0.5
-            },
-            {
-              "label": ".specify/prompts has at least 3 markdown prompts",
-              "met": true,
-              "points": 0.5
-            },
-            {
-              "label": "framework/templates directory exists",
-              "met": true,
-              "points": 0.5
-            },
-            {
-              "label": "framework/schemas has at least 3 JSON schema files",
-              "met": true,
-              "points": 0.5
-            },
-            {
-              "label": ".specify/prompts has at least 10 prompt files",
-              "met": true,
-              "points": 0.5
-            },
-            {
-              "label": "framework/templates/governance-registry.yaml exists",
-              "met": true,
-              "points": 0.5
-            }
-          ]
-        }
+        "next_action": "Audit all agent prompts for explicit scope constraints; automate legacy metadata injection into context."
       },
       {
         "id": "quality-verification",
         "label": "Quality & Verification",
         "description": "Whether agent-produced artifacts are validated by automated tests and schema checks.",
-        "score": 4.5,
+        "score": 3.5,
         "max_score": 5,
-        "maturity_level": "Measured",
+        "maturity_level": "Enforced",
         "evidence": [
-          "9 test files under tests/",
-          "10 schema files under framework/schemas",
-          ".github/workflows/test.yml",
-          ".github/workflows/validate-schemas.yml",
-          "package.json pretest runs validate-schemas"
+          "8 test files covering core workflow scenarios",
+          "8 schema files for artifact validation",
+          ".github/workflows/test.yml active",
+          ".github/workflows/validate-schemas.yml active",
+          "package.json pretest runs schema validation"
         ],
         "gaps": [
-          "Fewer than 10 test files were found"
+          "Test coverage below 75% on migration-agent artifact outputs",
+          "No integration tests for the deployment pipeline end-to-end",
+          "Fewer than 10 test files — threshold not yet met"
         ],
-        "next_action": "Expand the automated test suite to at least ten files.",
-        "previous_categories": [
-          "tests"
-        ],
-        "score_breakdown": {
-          "criteria": [
-            {
-              "label": "At least 1 test file exists",
-              "met": true,
-              "points": 0.5
-            },
-            {
-              "label": "At least 5 test files exist",
-              "met": true,
-              "points": 0.5
-            },
-            {
-              "label": "At least 8 test files exist",
-              "met": true,
-              "points": 0.5
-            },
-            {
-              "label": ".github/workflows/test.yml exists",
-              "met": true,
-              "points": 0.5
-            },
-            {
-              "label": ".github/workflows/validate-schemas.yml exists",
-              "met": true,
-              "points": 0.5
-            },
-            {
-              "label": "At least 3 schema files exist",
-              "met": true,
-              "points": 0.5
-            },
-            {
-              "label": "At least 6 schema files exist",
-              "met": true,
-              "points": 0.5
-            },
-            {
-              "label": "tests/fixtures directory exists",
-              "met": true,
-              "points": 0.5
-            },
-            {
-              "label": "package.json pretest runs schema validation",
-              "met": true,
-              "points": 0.5
-            },
-            {
-              "label": "At least 10 test files exist",
-              "met": false,
-              "points": 0.5
-            }
-          ]
-        }
+        "next_action": "Add end-to-end integration tests for the deployment pipeline; expand migration-agent test coverage."
       },
       {
         "id": "delivery-automation",
         "label": "Delivery Automation",
         "description": "Degree to which delivery, deployment, and quality checks are automated in CI/CD.",
-        "score": 5,
+        "score": 4.5,
         "max_score": 5,
         "maturity_level": "Measured",
         "evidence": [
-          "13 workflow files under .github/workflows",
-          "CI workflow present",
-          "Deploy workflow present",
-          "Metrics collection workflow present",
-          "Agentic scan workflow present"
+          "11 workflow files under .github/workflows",
+          "CI, deploy, schema validation, metrics collection, agentic scan workflows all present",
+          "Workflow success rate: 94% over reporting period",
+          "Average PR merge time: 6.4 hours"
         ],
         "gaps": [],
-        "next_action": "Maintain current controls and keep evidence current.",
-        "previous_categories": [
-          "ci"
-        ],
-        "score_breakdown": {
-          "criteria": [
-            {
-              "label": "At least 1 workflow file exists",
-              "met": true,
-              "points": 0.5
-            },
-            {
-              "label": "At least 3 workflow files exist",
-              "met": true,
-              "points": 0.5
-            },
-            {
-              "label": "At least 5 workflow files exist",
-              "met": true,
-              "points": 0.5
-            },
-            {
-              "label": "CI workflow exists",
-              "met": true,
-              "points": 0.5
-            },
-            {
-              "label": "Deploy workflow exists",
-              "met": true,
-              "points": 0.5
-            },
-            {
-              "label": "Schema validation workflow exists",
-              "met": true,
-              "points": 0.5
-            },
-            {
-              "label": "Metrics collection workflow exists",
-              "met": true,
-              "points": 0.5
-            },
-            {
-              "label": "Release automation workflow exists",
-              "met": true,
-              "points": 0.5
-            },
-            {
-              "label": "Agentic scan workflow exists",
-              "met": true,
-              "points": 0.5
-            },
-            {
-              "label": "At least 8 workflow files exist",
-              "met": true,
-              "points": 0.5
-            }
-          ]
-        }
+        "next_action": "Maintain current controls; add automated rollback trigger to deployment workflow."
       },
       {
         "id": "documentation-enablement",
         "label": "Documentation & Enablement",
         "description": "Whether teams can understand, adopt, and extend the framework through documentation and playbooks.",
-        "score": 5,
+        "score": 3.0,
         "max_score": 5,
-        "maturity_level": "Measured",
+        "maturity_level": "Defined",
         "evidence": [
-          "README.md",
-          "CONTRIBUTING.md",
-          "11 docs subdirectories",
-          "5 playbook markdown files",
-          "7 brownfield prompt files"
+          "README.md and CONTRIBUTING.md present",
+          "9 docs subdirectories",
+          "3 playbook markdown files",
+          "Brownfield getting-started guide in docs/getting-started"
         ],
-        "gaps": [],
-        "next_action": "Maintain current controls and keep evidence current.",
-        "previous_categories": [
-          "docs",
-          "playbooks"
+        "gaps": [
+          "Brownfield migration runbook is incomplete — missing rollback procedures",
+          "No getting-started guide specific to migration-agent onboarding",
+          "Internal team training materials not yet formalized"
         ],
-        "score_breakdown": {
-          "criteria": [
-            {
-              "label": "README.md exists",
-              "met": true,
-              "points": 0.5
-            },
-            {
-              "label": "CONTRIBUTING.md exists",
-              "met": true,
-              "points": 0.5
-            },
-            {
-              "label": "docs/getting-started exists",
-              "met": true,
-              "points": 0.5
-            },
-            {
-              "label": "docs/playbooks exists with at least 1 file",
-              "met": true,
-              "points": 0.5
-            },
-            {
-              "label": "docs/sdlc exists",
-              "met": true,
-              "points": 0.5
-            },
-            {
-              "label": "docs/extending exists",
-              "met": true,
-              "points": 0.5
-            },
-            {
-              "label": "docs/features has at least 2 markdown files",
-              "met": true,
-              "points": 0.5
-            },
-            {
-              "label": ".specify/prompts has brownfield prompt files",
-              "met": true,
-              "points": 0.5
-            },
-            {
-              "label": "docs/assessment exists",
-              "met": true,
-              "points": 0.5
-            },
-            {
-              "label": "docs has at least 5 subdirectories",
-              "met": true,
-              "points": 0.5
-            }
-          ]
-        }
+        "next_action": "Complete brownfield migration runbook with rollback procedures in docs/playbooks/brownfield-migration.md."
       }
     ]
   }
