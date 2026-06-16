@@ -8,7 +8,7 @@
   <title>Engineering Metrics — Agentic Engineering Framework</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
   <style>
@@ -993,7 +993,7 @@
         const xLabels = scores.map((p, i) => {
           const x = scaleX(i);
           const label = String(p.date || p.period || '').substring(0, 10);
-          return `<text x="${x}" y="${H - 4}" text-anchor="middle" fill="#8b91a8" font-size="9" font-family="'JetBrains Mono',monospace">${esc(label)}</text>`;
+          return `<text x="${x}" y="${H - 4}" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="'JetBrains Mono',monospace">${esc(label)}</text>`;
         }).join('');
 
         const dots = scores.map((p, i) => `
@@ -1006,26 +1006,26 @@
             <svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Maturity score timeline chart">
               <defs>
                 <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%"   stop-color="#4f7ef5" stop-opacity="0.25"/>
-                  <stop offset="100%" stop-color="#4f7ef5" stop-opacity="0.02"/>
+                  <stop offset="0%"   stop-color="#125A97" stop-opacity="0.25"/>
+                  <stop offset="100%" stop-color="#125A97" stop-opacity="0.02"/>
                 </linearGradient>
               </defs>
               <!-- Grid lines -->
-              <line x1="${PAD.left}" y1="${scaleY(0)}"  x2="${W - PAD.right}" y2="${scaleY(0)}"  stroke="#2a2d3e" stroke-width="1"/>
-              <line x1="${PAD.left}" y1="${scaleY(25)}" x2="${W - PAD.right}" y2="${scaleY(25)}" stroke="#2a2d3e" stroke-width="1" stroke-dasharray="4,4"/>
-              <line x1="${PAD.left}" y1="${scaleY(50)}" x2="${W - PAD.right}" y2="${scaleY(50)}" stroke="#2a2d3e" stroke-width="1" stroke-dasharray="4,4"/>
-              <line x1="${PAD.left}" y1="${scaleY(75)}" x2="${W - PAD.right}" y2="${scaleY(75)}" stroke="#2a2d3e" stroke-width="1" stroke-dasharray="4,4"/>
+              <line x1="${PAD.left}" y1="${scaleY(0)}"  x2="${W - PAD.right}" y2="${scaleY(0)}"  stroke="rgba(28, 45, 82, 0.8)" stroke-width="1"/>
+              <line x1="${PAD.left}" y1="${scaleY(25)}" x2="${W - PAD.right}" y2="${scaleY(25)}" stroke="rgba(28, 45, 82, 0.8)" stroke-width="1" stroke-dasharray="4,4"/>
+              <line x1="${PAD.left}" y1="${scaleY(50)}" x2="${W - PAD.right}" y2="${scaleY(50)}" stroke="rgba(28, 45, 82, 0.8)" stroke-width="1" stroke-dasharray="4,4"/>
+              <line x1="${PAD.left}" y1="${scaleY(75)}" x2="${W - PAD.right}" y2="${scaleY(75)}" stroke="rgba(28, 45, 82, 0.8)" stroke-width="1" stroke-dasharray="4,4"/>
               <!-- Y labels -->
-              <text x="${PAD.left - 4}" y="${scaleY(0) + 4}"  text-anchor="end" fill="#5a6480" font-size="9" font-family="'JetBrains Mono',monospace">0</text>
-              <text x="${PAD.left - 4}" y="${scaleY(50) + 4}" text-anchor="end" fill="#5a6480" font-size="9" font-family="'JetBrains Mono',monospace">50</text>
-              <text x="${PAD.left - 4}" y="${scaleY(100) + 4}" text-anchor="end" fill="#5a6480" font-size="9" font-family="'JetBrains Mono',monospace">100</text>
+              <text x="${PAD.left - 4}" y="${scaleY(0) + 4}"  text-anchor="end" fill="#64748b" font-size="9" font-family="'JetBrains Mono',monospace">0</text>
+              <text x="${PAD.left - 4}" y="${scaleY(50) + 4}" text-anchor="end" fill="#64748b" font-size="9" font-family="'JetBrains Mono',monospace">50</text>
+              <text x="${PAD.left - 4}" y="${scaleY(100) + 4}" text-anchor="end" fill="#64748b" font-size="9" font-family="'JetBrains Mono',monospace">100</text>
               <!-- Target line at 80 -->
-              <line x1="${PAD.left}" y1="${target80}" x2="${W - PAD.right}" y2="${target80}" stroke="#3d9970" stroke-width="1.5" stroke-dasharray="6,3" opacity="0.7"/>
-              <text x="${W - PAD.right + 4}" y="${target80 + 4}" fill="#3d9970" font-size="9" font-family="'JetBrains Mono',monospace">80</text>
+              <line x1="${PAD.left}" y1="${target80}" x2="${W - PAD.right}" y2="${target80}" stroke="#41A347" stroke-width="1.5" stroke-dasharray="6,3" opacity="0.7"/>
+              <text x="${W - PAD.right + 4}" y="${target80 + 4}" fill="#41A347" font-size="9" font-family="'JetBrains Mono',monospace">80</text>
               <!-- Area fill -->
               <polygon points="${areaPoints}" fill="url(#areaGrad)"/>
               <!-- Line -->
-              <polyline points="${points}" fill="none" stroke="#4f7ef5" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+              <polyline points="${points}" fill="none" stroke="#125A97" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
               <!-- Dots -->
               ${dots}
               <!-- X labels -->
@@ -1266,8 +1266,8 @@
             datasets: [{
               label: 'Current Repository',
               data: scores,
-              backgroundColor: 'rgba(79, 126, 245, 0.15)',
-              borderColor: 'rgba(79, 126, 245, 0.8)',
+              backgroundColor: 'rgba(18, 90, 151, 0.15)',
+              borderColor: 'rgba(18, 90, 151, 0.8)',
               borderWidth: 2,
               pointBackgroundColor: colors,
               pointBorderColor: colors,
@@ -1286,20 +1286,20 @@
                 max: 5,
                 ticks: {
                   stepSize: 1,
-                  color: '#5a6480',
+                  color: '#64748b',
                   font: { family: "'JetBrains Mono', monospace", size: 9 },
                   backdropColor: 'transparent',
                   callback: v => ['', 'Ad Hoc', 'Emerging', 'Defined', 'Enforced', 'Measured'][v] ?? v,
                 },
                 pointLabels: {
-                  color: '#c8cede',
+                  color: '#cbd5e1',
                   font: { family: "'Inter', sans-serif", size: 11, weight: '600' },
                 },
                 grid: {
-                  color: 'rgba(42, 45, 62, 0.8)',
+                  color: 'rgba(28, 45, 82, 0.8)',
                 },
                 angleLines: {
-                  color: 'rgba(42, 45, 62, 0.6)',
+                  color: 'rgba(28, 45, 82, 0.6)',
                 },
               },
             },
@@ -1308,18 +1308,18 @@
                 display: true,
                 position: 'bottom',
                 labels: {
-                  color: '#8b91a8',
+                  color: '#94a3b8',
                   font: { family: "'Inter', sans-serif", size: 11 },
                   boxWidth: 12,
                   padding: 12,
                 },
               },
               tooltip: {
-                backgroundColor: '#1a1d2e',
-                borderColor: '#2a2d3e',
+                backgroundColor: '#172340',
+                borderColor: 'rgba(148, 163, 184, 0.2)',
                 borderWidth: 1,
-                titleColor: '#c8cede',
-                bodyColor: '#8b91a8',
+                titleColor: '#cbd5e1',
+                bodyColor: '#94a3b8',
                 callbacks: {
                   label: ctx => {
                     const dim = dims[ctx.dataIndex];

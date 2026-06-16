@@ -8,24 +8,24 @@
    --------------------------------------------------------------------------- */
 :root {
   /* Colors */
-  --color-bg:           #0f1117;
-  --color-surface:      #1c1f2e;
-  --color-surface-alt:  #22263a;
-  --color-accent:       #4f7ef5;
+  --color-bg:           #0f172a;
+  --color-surface:      #172340;
+  --color-surface-alt:  #1c2d52;
+  --color-accent:       #125A97;
   --color-accent-dark:  #3a63d4;
-  --color-accent-glow:  rgba(79, 126, 245, 0.15);
-  --color-secondary:    #7c5cbf;
-  --color-secondary-glow: rgba(124, 92, 191, 0.12);
-  --color-text:         #e8eaf0;
-  --color-text-muted:   #8b91a8;
-  --color-border:       #2a2d3e;
-  --color-border-light: #343850;
-  --color-success:      #3d9970;
-  --color-warning:      #e8b44b;
+  --color-accent-glow:  rgba(18, 90, 151, 0.15);
+  --color-secondary:    #F7901E;
+  --color-secondary-glow: rgba(247, 144, 30, 0.12);
+  --color-text:         #e2e8f0;
+  --color-text-muted:   #94a3b8;
+  --color-border:       rgba(148, 163, 184, 0.15);
+  --color-border-light: rgba(148, 163, 184, 0.28);
+  --color-success:      #41A347;
+  --color-warning:      #F9A435;
   --color-error:        #e85b5b;
 
   /* Typography */
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+  --font-sans: 'Proxima Nova', Arial, sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', 'Courier New', monospace;
 
   /* Font sizes */
@@ -64,7 +64,7 @@
   --shadow-sm:  0 1px 3px rgba(0, 0, 0, 0.4);
   --shadow-md:  0 4px 16px rgba(0, 0, 0, 0.5);
   --shadow-lg:  0 8px 32px rgba(0, 0, 0, 0.6);
-  --shadow-accent: 0 4px 24px rgba(79, 126, 245, 0.2);
+  --shadow-accent: 0 4px 24px rgba(18, 90, 151, 0.2);
 
   /* Transitions */
   --transition-fast: 150ms ease;
@@ -109,7 +109,7 @@ a {
 }
 
 a:hover {
-  color: #7aa3f7;
+  color: #4F89C8;
   text-decoration: underline;
 }
 
@@ -194,7 +194,7 @@ code, kbd, samp, pre {
   top: 0;
   z-index: 1000;
   height: var(--nav-height);
-  background-color: rgba(15, 17, 23, 0.92);
+  background-color: rgba(15, 23, 42, 0.92);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--color-border);
@@ -295,8 +295,8 @@ code, kbd, samp, pre {
   width: 900px;
   height: 600px;
   background: radial-gradient(ellipse at center,
-    rgba(79, 126, 245, 0.12) 0%,
-    rgba(124, 92, 191, 0.08) 40%,
+    rgba(18, 90, 151, 0.12) 0%,
+    rgba(247, 144, 30, 0.08) 40%,
     transparent 70%);
   pointer-events: none;
 }
@@ -331,7 +331,7 @@ code, kbd, samp, pre {
   text-transform: uppercase;
   color: var(--color-accent);
   background: var(--color-accent-glow);
-  border: 1px solid rgba(79, 126, 245, 0.3);
+  border: 1px solid rgba(18, 90, 151, 0.3);
   padding: var(--space-1) var(--space-3);
   border-radius: 100px;
   margin-bottom: var(--space-5);
@@ -390,8 +390,8 @@ code, kbd, samp, pre {
   border-radius: 50%;
 }
 .terminal-dot--red    { background: #e85b5b; }
-.terminal-dot--yellow { background: #e8b44b; }
-.terminal-dot--green  { background: #3d9970; }
+.terminal-dot--yellow { background: #F9A435; }
+.terminal-dot--green  { background: #41A347; }
 
 .hero__terminal-title {
   margin-left: var(--space-3);
@@ -479,8 +479,8 @@ code, kbd, samp, pre {
 }
 
 .card--accent:hover {
-  border-color: rgba(79, 126, 245, 0.4);
-  box-shadow: 0 4px 24px rgba(79, 126, 245, 0.1);
+  border-color: rgba(18, 90, 151, 0.4);
+  box-shadow: 0 4px 24px rgba(18, 90, 151, 0.1);
 }
 
 .card__icon {
@@ -493,17 +493,17 @@ code, kbd, samp, pre {
   font-size: 1.25rem;
   margin-bottom: var(--space-4);
   background: var(--color-accent-glow);
-  border: 1px solid rgba(79, 126, 245, 0.2);
+  border: 1px solid rgba(18, 90, 151, 0.2);
 }
 
 .card__icon--purple {
   background: var(--color-secondary-glow);
-  border-color: rgba(124, 92, 191, 0.2);
+  border-color: rgba(247, 144, 30, 0.2);
 }
 
 .card__icon--green {
-  background: rgba(61, 153, 112, 0.1);
-  border-color: rgba(61, 153, 112, 0.2);
+  background: rgba(65, 163, 71, 0.1);
+  border-color: rgba(65, 163, 71, 0.2);
 }
 
 .card__title {
@@ -617,7 +617,7 @@ code, kbd, samp, pre {
    Code / Terminal Blocks
    --------------------------------------------------------------------------- */
 .code-block {
-  background: #0a0c14;
+  background: #080f1e;
   border: 1px solid var(--color-border);
   border-radius: var(--border-radius);
   overflow: hidden;
@@ -654,7 +654,7 @@ code, kbd, samp, pre {
   font-family: var(--font-mono);
   font-size: var(--text-sm);
   line-height: 1.7;
-  color: #c9d1e0;
+  color: #cbd5e1;
   white-space: pre;
 }
 
@@ -664,30 +664,30 @@ code, kbd, samp, pre {
 }
 
 .code-comment {
-  color: #5a6480;
+  color: #64748b;
 }
 
 .code-string {
-  color: #a8d4a0;
+  color: #58C4C5;
 }
 
 .code-keyword {
-  color: #c792ea;
+  color: #F9A435;
 }
 
 .code-value {
-  color: #f78c6c;
+  color: #F7901E;
 }
 
 /* Inline code */
 :not(pre) > code {
   font-family: var(--font-mono);
   font-size: 0.875em;
-  background: rgba(79, 126, 245, 0.1);
-  color: #a8c8f8;
+  background: rgba(18, 90, 151, 0.1);
+  color: #7ab3e8;
   padding: 0.1em 0.4em;
   border-radius: 4px;
-  border: 1px solid rgba(79, 126, 245, 0.15);
+  border: 1px solid rgba(18, 90, 151, 0.15);
 }
 
 /* ---------------------------------------------------------------------------
@@ -705,27 +705,27 @@ code, kbd, samp, pre {
 }
 
 .badge--blue {
-  background: rgba(79, 126, 245, 0.15);
-  color: #7aa3f7;
-  border: 1px solid rgba(79, 126, 245, 0.3);
+  background: rgba(18, 90, 151, 0.15);
+  color: #4F89C8;
+  border: 1px solid rgba(18, 90, 151, 0.3);
 }
 
 .badge--purple {
-  background: rgba(124, 92, 191, 0.15);
-  color: #ab8de0;
-  border: 1px solid rgba(124, 92, 191, 0.3);
+  background: rgba(247, 144, 30, 0.15);
+  color: #F9A435;
+  border: 1px solid rgba(247, 144, 30, 0.3);
 }
 
 .badge--green {
-  background: rgba(61, 153, 112, 0.15);
-  color: #5bbf94;
+  background: rgba(65, 163, 71, 0.15);
+  color: #58C4C5;
   border: 1px solid rgba(61, 153, 112, 0.3);
 }
 
 .badge--warning {
-  background: rgba(232, 180, 75, 0.12);
-  color: #e8b44b;
-  border: 1px solid rgba(232, 180, 75, 0.25);
+  background: rgba(249, 164, 53, 0.12);
+  color: #F9A435;
+  border: 1px solid rgba(249, 164, 53, 0.25);
 }
 
 .badge--gray {
@@ -748,10 +748,10 @@ code, kbd, samp, pre {
   flex-shrink: 0;
 }
 
-.level-badge--l0 { background: rgba(139, 145, 168, 0.15); color: #8b91a8; border: 1px solid rgba(139, 145, 168, 0.3); }
-.level-badge--l1 { background: rgba(61, 153, 112, 0.15);  color: #5bbf94;  border: 1px solid rgba(61, 153, 112, 0.3); }
-.level-badge--l2 { background: rgba(79, 126, 245, 0.15);  color: #7aa3f7;  border: 1px solid rgba(79, 126, 245, 0.3); }
-.level-badge--l3 { background: rgba(124, 92, 191, 0.15);  color: #ab8de0;  border: 1px solid rgba(124, 92, 191, 0.3); }
+.level-badge--l0 { background: rgba(139, 145, 168, 0.15); color: #94a3b8; border: 1px solid rgba(139, 145, 168, 0.3); }
+.level-badge--l1 { background: rgba(65, 163, 71, 0.15);  color: #58C4C5;  border: 1px solid rgba(61, 153, 112, 0.3); }
+.level-badge--l2 { background: rgba(18, 90, 151, 0.15);  color: #4F89C8;  border: 1px solid rgba(18, 90, 151, 0.3); }
+.level-badge--l3 { background: rgba(247, 144, 30, 0.15);  color: #F9A435;  border: 1px solid rgba(247, 144, 30, 0.3); }
 
 /* ---------------------------------------------------------------------------
    Lifecycle Flow
@@ -854,8 +854,8 @@ code, kbd, samp, pre {
 }
 
 .playbook-card:hover {
-  border-color: rgba(79, 126, 245, 0.35);
-  box-shadow: 0 4px 24px rgba(79, 126, 245, 0.1);
+  border-color: rgba(18, 90, 151, 0.35);
+  box-shadow: 0 4px 24px rgba(18, 90, 151, 0.1);
   transform: translateY(-2px);
 }
 
@@ -901,7 +901,7 @@ code, kbd, samp, pre {
   height: 48px;
   border-radius: 50%;
   background: var(--color-accent-glow);
-  border: 2px solid rgba(79, 126, 245, 0.35);
+  border: 2px solid rgba(18, 90, 151, 0.35);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -995,8 +995,8 @@ code, kbd, samp, pre {
    --------------------------------------------------------------------------- */
 .cta-section {
   background: linear-gradient(135deg,
-    rgba(79, 126, 245, 0.08) 0%,
-    rgba(124, 92, 191, 0.06) 100%);
+    rgba(18, 90, 151, 0.08) 0%,
+    rgba(247, 144, 30, 0.06) 100%);
   border: 1px solid var(--color-border);
   border-radius: var(--border-radius-xl);
   padding: var(--space-16) var(--space-12);
@@ -1131,7 +1131,7 @@ code, kbd, samp, pre {
 }
 
 .checklist-nav__item:hover {
-  background: rgba(79, 126, 245, 0.06);
+  background: rgba(18, 90, 151, 0.06);
   color: var(--color-text);
   text-decoration: none;
 }
@@ -1195,10 +1195,10 @@ code, kbd, samp, pre {
 }
 
 .maturity-tier--ad-hoc      { background: rgba(232, 91, 91, 0.1);   color: #e85b5b;  border: 1px solid rgba(232, 91, 91, 0.2); }
-.maturity-tier--foundation  { background: rgba(232, 180, 75, 0.1);  color: #e8b44b;  border: 1px solid rgba(232, 180, 75, 0.2); }
-.maturity-tier--governed    { background: rgba(79, 126, 245, 0.1);  color: #7aa3f7;  border: 1px solid rgba(79, 126, 245, 0.2); }
-.maturity-tier--integrated  { background: rgba(61, 153, 112, 0.1);  color: #5bbf94;  border: 1px solid rgba(61, 153, 112, 0.2); }
-.maturity-tier--optimizing  { background: rgba(168, 85, 247, 0.1);  color: #c084fc;  border: 1px solid rgba(168, 85, 247, 0.2); }
+.maturity-tier--foundation  { background: rgba(249, 164, 53, 0.1);  color: #F9A435;  border: 1px solid rgba(232, 180, 75, 0.2); }
+.maturity-tier--governed    { background: rgba(18, 90, 151, 0.1);  color: #4F89C8;  border: 1px solid rgba(18, 90, 151, 0.2); }
+.maturity-tier--integrated  { background: rgba(65, 163, 71, 0.1);  color: #58C4C5;  border: 1px solid rgba(65, 163, 71, 0.2); }
+.maturity-tier--optimizing  { background: rgba(0, 103, 105, 0.1);  color: #58C4C5;  border: 1px solid rgba(168, 85, 247, 0.2); }
 
 /* Checklist Sections */
 .checklist-section {
@@ -1266,7 +1266,7 @@ code, kbd, samp, pre {
 }
 
 .checklist-item:hover {
-  background: rgba(79, 126, 245, 0.04);
+  background: rgba(18, 90, 151, 0.04);
 }
 
 .checklist-item input[type="checkbox"] {
@@ -1302,7 +1302,7 @@ code, kbd, samp, pre {
 }
 
 .checklist-item input[type="checkbox"]:focus {
-  outline: 2px solid rgba(79, 126, 245, 0.5);
+  outline: 2px solid rgba(18, 90, 151, 0.5);
   outline-offset: 2px;
 }
 
