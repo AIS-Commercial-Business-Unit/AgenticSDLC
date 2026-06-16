@@ -9,6 +9,8 @@ on:
     branches: [main]
     paths:
       - 'website/**'
+      - 'metrics/**'
+      - 'docs/**'
   workflow_dispatch:
 
 permissions:
@@ -69,6 +71,13 @@ jobs:
           fi
           if [ -d "metrics/reports" ]; then
             cp metrics/reports/*.json ./website/metrics/reports/ 2>/dev/null || true
+          fi
+
+      - name: Copy governance data into website artifact
+        run: |
+          mkdir -p ./website/docs/governance
+          if [ -f "docs/governance/summary-grid.json" ]; then
+            cp docs/governance/summary-grid.json ./website/docs/governance/summary-grid.json
           fi
 
       - name: Upload artifact
