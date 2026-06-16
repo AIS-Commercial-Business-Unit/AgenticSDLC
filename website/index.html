@@ -14,23 +14,21 @@
 <body>
 
   <!-- ============================================================
-       NAVIGATION
+       NAVIGATION — keep in sync with all pages via shared.js AEF.initPage()
   ============================================================ -->
   <nav class="nav" role="navigation" aria-label="Main navigation">
     <div class="nav__inner">
-      <a class="nav__brand" href="/">
+      <a class="nav__brand" href="index.html">
         <div class="nav__brand-mark" aria-hidden="true">AEF</div>
         <span class="nav__brand-name">Agentic Engineering Framework</span>
       </a>
       <ul class="nav__links" role="list">
-        <li><a class="nav__link" href="index.html#features">Features</a></li>
-        <li><a class="nav__link" href="index.html#playbooks">Playbooks</a></li>
-        <li><a class="nav__link" href="index.html#quick-start">Documentation</a></li>
-        <li><a class="nav__link" href="maturity-checklist.html">Maturity Check</a></li>
-        <li><a class="nav__link" href="governance-explorer.html">Governance</a></li>
-        <li><a class="nav__link" href="metrics.html">Metrics</a></li>
+        <li><a class="nav__link" id="nav-home" href="index.html#features">Features</a></li>
+        <li><a class="nav__link" id="nav-maturity" href="maturity-checklist.html">Maturity Check</a></li>
+        <li><a class="nav__link" id="nav-governance" href="governance-explorer.html">Governance</a></li>
+        <li><a class="nav__link" id="nav-metrics" href="metrics.html">Metrics</a></li>
         <li>
-          <a class="nav__link nav__link--github" href="#" aria-label="View on GitHub">
+          <a class="nav__link nav__link--github" href="#github" aria-label="View on GitHub" rel="noopener noreferrer">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
               <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
             </svg>
@@ -48,25 +46,22 @@
     <div class="container">
       <div class="hero__inner">
         <div class="hero__content">
-          <div class="hero__eyebrow">
-            <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor" aria-hidden="true"><circle cx="5" cy="5" r="5"/></svg>
-            Open Framework · v1.0
-          </div>
           <h1 class="hero__title">
             Enterprise AI Engineering,<br/>
             <span>Governed and Auditable</span>
           </h1>
           <p class="hero__subtitle">
-            Bring structure, oversight, and confidence to GitHub Copilot and multi-agent workflows.
-            Built for large engineering organizations that can't afford ungoverned AI.
+            Move from ad hoc Copilot usage to governed, measurable, repeatable agentic engineering.
+            Built for large organizations that need structure, oversight, and auditability across every team.
           </p>
           <div class="hero__actions">
-            <a class="btn btn--primary btn--lg" href="#quick-start">Get Started</a>
-            <a class="btn btn--outline btn--lg" href="#">
+            <a class="btn btn--primary btn--lg" href="#features">Explore the Framework</a>
+            <a class="btn btn--outline btn--lg" href="https://github.com/AIS-Commercial-Business-Unit/AgenticSDLC/blob/main/README.md" rel="noopener noreferrer">View Documentation</a>
+            <a class="btn btn--outline" href="#github" rel="noopener noreferrer">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                 <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
               </svg>
-              View on GitHub
+              GitHub
             </a>
           </div>
         </div>
@@ -177,11 +172,11 @@
   <section class="section" id="features" style="background: var(--color-surface); border-top: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border);">
     <div class="container">
       <div class="section-header">
-        <span class="section-label">Core Concepts</span>
+        <span class="section-label">What It Provides</span>
         <h2>Everything you need to govern AI engineering at scale</h2>
-        <p>Six foundational building blocks that give your organization a repeatable, auditable AI engineering practice.</p>
+        <p>Eight capabilities that give your organization a repeatable, auditable AI engineering practice from day one.</p>
       </div>
-      <div class="feature-grid" role="list">
+      <div class="feature-grid" style="grid-template-columns: repeat(4, 1fr);" role="list">
 
         <article class="card card--accent" role="listitem">
           <div class="card__icon" aria-hidden="true">⚙️</div>
@@ -189,24 +184,14 @@
           <p class="card__body">
             A structured 9-step SDLC from Intake through Learn. Every development activity maps to a phase with defined inputs, outputs, and agent roles. Consistent across every team and project.
           </p>
-          <div style="margin-top: var(--space-4);">
-            <span class="badge badge--blue">9 Steps</span>
-            <span class="badge badge--gray" style="margin-left: 6px;">SDLC</span>
-          </div>
         </article>
 
         <article class="card card--accent" role="listitem">
           <div class="card__icon card__icon--purple" aria-hidden="true">🔐</div>
           <h3 class="card__title">Autonomy Levels (L0–L3)</h3>
           <p class="card__body">
-            A four-tier model that precisely defines how much authority an AI agent can exercise. From suggest-only (L0) to fully autonomous (L3), with explicit human approval requirements at each tier.
+            A four-tier model that precisely defines how much authority an agent can exercise. From suggest-only (L0) to bounded autonomous (L3), with explicit human approval requirements at each tier.
           </p>
-          <div style="margin-top: var(--space-4); display: flex; gap: 6px;">
-            <span class="level-badge level-badge--l0">L0</span>
-            <span class="level-badge level-badge--l1">L1</span>
-            <span class="level-badge level-badge--l2">L2</span>
-            <span class="level-badge level-badge--l3">L3</span>
-          </div>
         </article>
 
         <article class="card card--accent" role="listitem">
@@ -215,43 +200,46 @@
           <p class="card__body">
             A version-controlled registry of all governance decisions, agent configurations, and policy rules. Every policy change is tracked, reviewed, and auditable — not stored in a spreadsheet.
           </p>
-          <div style="margin-top: var(--space-4);">
-            <span class="badge badge--green">Version Controlled</span>
-          </div>
         </article>
 
         <article class="card card--accent" role="listitem">
           <div class="card__icon" aria-hidden="true">🗂️</div>
-          <h3 class="card__title">Brownfield Onboarding</h3>
+          <h3 class="card__title">Brownfield Repository Assessment</h3>
           <p class="card__body">
-            A structured assessment playbook for existing repositories. Evaluate current practices, identify gaps, and generate a prioritized adoption roadmap — without starting from scratch.
+            Evaluate any existing repository against the AIS Specify standard. Detect gaps, generate a maturity baseline, and produce a prioritized adoption roadmap — without starting from scratch.
           </p>
-          <div style="margin-top: var(--space-4);">
-            <span class="badge badge--warning">Existing Repos</span>
-          </div>
         </article>
 
         <article class="card card--accent" role="listitem">
           <div class="card__icon card__icon--purple" aria-hidden="true">🤖</div>
-          <h3 class="card__title">Agent Catalog</h3>
+          <h3 class="card__title">Agent and Skill Catalog</h3>
           <p class="card__body">
-            A structured inventory of every AI agent in your organization. Each entry documents the agent's role, boundaries, assigned autonomy level, permissions, and version history.
+            A structured inventory of every agent and reusable skill in your organization. Each entry documents role, boundaries, assigned autonomy level, permissions, and version history.
           </p>
-          <div style="margin-top: var(--space-4);">
-            <span class="badge badge--purple">Catalogued</span>
-            <span class="badge badge--gray" style="margin-left: 6px;">Versioned</span>
-          </div>
         </article>
 
         <article class="card card--accent" role="listitem">
           <div class="card__icon card__icon--green" aria-hidden="true">📊</div>
-          <h3 class="card__title">Audit Trail</h3>
+          <h3 class="card__title">Metrics and Evidence</h3>
           <p class="card__body">
-            Every agent action, approval gate, and governance decision is logged in structured format. Full attribution, timestamps, and justification — ready for compliance review or post-incident analysis.
+            Evidence-based maturity scoring per dimension, with traceable sources. Agent adoption, governance health, and framework maturity reported from real repository signals — not guesses.
           </p>
-          <div style="margin-top: var(--space-4);">
-            <span class="badge badge--green">Compliance Ready</span>
-          </div>
+        </article>
+
+        <article class="card card--accent" role="listitem">
+          <div class="card__icon" aria-hidden="true">🧪</div>
+          <h3 class="card__title">Experiment Framework</h3>
+          <p class="card__body">
+            Define bounded AI experiments with explicit hypotheses, success criteria, risk controls, and rollback conditions. Required before granting L2+ autonomy to any agent or workflow.
+          </p>
+        </article>
+
+        <article class="card card--accent" role="listitem">
+          <div class="card__icon card__icon--purple" aria-hidden="true">📦</div>
+          <h3 class="card__title">Enterprise Starter Kit</h3>
+          <p class="card__body">
+            Governance scaffolding, branch protections, PR templates, and CI policies ready to install. Teams go from zero governance to a structured, auditable workflow in a single command.
+          </p>
         </article>
 
       </div>
@@ -259,301 +247,117 @@
   </section>
 
   <!-- ============================================================
-       LIFECYCLE STEPS
+       FOUR-STAGE BUSINESS LIFECYCLE
   ============================================================ -->
-  <section class="section">
+  <section class="section" id="lifecycle">
     <div class="container">
       <div class="section-header">
-        <span class="section-label">AIS Specify Lifecycle</span>
-        <h2>A complete SDLC for the AI engineering era</h2>
-        <p>Nine phases that take every feature from business need to validated learning. Each phase has defined agent roles, approval gates, and structured artifacts.</p>
+        <span class="section-label">How It Works</span>
+        <h2>Four stages from requirement to measured outcome</h2>
+        <p>Every feature moves through four business-facing stages, each underpinned by the detailed AIS Specify lifecycle and governed agent activities.</p>
       </div>
 
-      <div class="lifecycle-flow" role="list" aria-label="9-step AIS Specify lifecycle">
-        <div class="lifecycle-step" role="listitem">
-          <div class="lifecycle-step__connector" aria-hidden="true"></div>
-          <div class="lifecycle-step__number">01</div>
-          <span class="lifecycle-step__label">Intake</span>
-        </div>
-        <div class="lifecycle-step" role="listitem">
-          <div class="lifecycle-step__connector" aria-hidden="true"></div>
-          <div class="lifecycle-step__number">02</div>
-          <span class="lifecycle-step__label">Specify</span>
-        </div>
-        <div class="lifecycle-step" role="listitem">
-          <div class="lifecycle-step__connector" aria-hidden="true"></div>
-          <div class="lifecycle-step__number">03</div>
-          <span class="lifecycle-step__label">Design</span>
-        </div>
-        <div class="lifecycle-step" role="listitem">
-          <div class="lifecycle-step__connector" aria-hidden="true"></div>
-          <div class="lifecycle-step__number">04</div>
-          <span class="lifecycle-step__label">Plan</span>
-        </div>
-        <div class="lifecycle-step" role="listitem">
-          <div class="lifecycle-step__connector" aria-hidden="true"></div>
-          <div class="lifecycle-step__number">05</div>
-          <span class="lifecycle-step__label">Implement</span>
-        </div>
-        <div class="lifecycle-step" role="listitem">
-          <div class="lifecycle-step__connector" aria-hidden="true"></div>
-          <div class="lifecycle-step__number">06</div>
-          <span class="lifecycle-step__label">Verify</span>
-        </div>
-        <div class="lifecycle-step" role="listitem">
-          <div class="lifecycle-step__connector" aria-hidden="true"></div>
-          <div class="lifecycle-step__number">07</div>
-          <span class="lifecycle-step__label">Deploy</span>
-        </div>
-        <div class="lifecycle-step" role="listitem">
-          <div class="lifecycle-step__connector" aria-hidden="true"></div>
-          <div class="lifecycle-step__number">08</div>
-          <span class="lifecycle-step__label">Report</span>
-        </div>
-        <div class="lifecycle-step" role="listitem">
-          <div class="lifecycle-step__connector" aria-hidden="true"></div>
-          <div class="lifecycle-step__number">09</div>
-          <span class="lifecycle-step__label">Learn</span>
-        </div>
+      <div class="feature-grid" role="list">
+
+        <article class="card card--accent" role="listitem">
+          <div style="display:flex; gap: var(--space-3); align-items:flex-start; margin-bottom: var(--space-4);">
+            <div style="min-width:36px; height:36px; background: rgba(79,126,245,0.15); border: 1px solid rgba(79,126,245,0.3); border-radius: var(--border-radius); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:var(--text-sm); color:var(--color-accent); font-family:var(--font-mono);">01</div>
+            <h3 class="card__title" style="padding-top: 6px;">Discover &amp; Specify</h3>
+          </div>
+          <p class="card__body">
+            Understand the repository, gather context, clarify business needs, and establish a measurable baseline. Structured specifications are committed to source control before any implementation begins.
+          </p>
+          <p style="margin-top: var(--space-3); font-size: var(--text-xs); color: var(--color-text-muted);">AIS Specify steps: <strong style="color:var(--color-text)">Intake · Specify</strong></p>
+        </article>
+
+        <article class="card card--accent" role="listitem">
+          <div style="display:flex; gap: var(--space-3); align-items:flex-start; margin-bottom: var(--space-4);">
+            <div style="min-width:36px; height:36px; background: rgba(124,92,191,0.15); border: 1px solid rgba(124,92,191,0.3); border-radius: var(--border-radius); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:var(--text-sm); color:#9b7de0; font-family:var(--font-mono);">02</div>
+            <h3 class="card__title" style="padding-top: 6px;">Architect &amp; Plan</h3>
+          </div>
+          <p class="card__body">
+            Architecture decisions, dependency analysis, risk assessment, and task decomposition. Human approval is required before any implementation begins, ensuring accountability at the highest-impact point.
+          </p>
+          <p style="margin-top: var(--space-3); font-size: var(--text-xs); color: var(--color-text-muted);">AIS Specify steps: <strong style="color:var(--color-text)">Design · Plan</strong></p>
+        </article>
+
+        <article class="card card--accent" role="listitem">
+          <div style="display:flex; gap: var(--space-3); align-items:flex-start; margin-bottom: var(--space-4);">
+            <div style="min-width:36px; height:36px; background: rgba(61,153,112,0.15); border: 1px solid rgba(61,153,112,0.3); border-radius: var(--border-radius); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:var(--text-sm); color:#5bbf94; font-family:var(--font-mono);">03</div>
+            <h3 class="card__title" style="padding-top: 6px;">Build &amp; Verify</h3>
+          </div>
+          <p class="card__body">
+            Bounded agent-assisted development, automated test generation, security validation, structured code review, and evidence collection. Agent autonomy is gated by the registered autonomy level.
+          </p>
+          <p style="margin-top: var(--space-3); font-size: var(--text-xs); color: var(--color-text-muted);">AIS Specify steps: <strong style="color:var(--color-text)">Implement · Verify</strong></p>
+        </article>
+
+        <article class="card card--accent" role="listitem">
+          <div style="display:flex; gap: var(--space-3); align-items:flex-start; margin-bottom: var(--space-4);">
+            <div style="min-width:36px; height:36px; background: rgba(232,180,75,0.15); border: 1px solid rgba(232,180,75,0.3); border-radius: var(--border-radius); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:var(--text-sm); color:#e8b44b; font-family:var(--font-mono);">04</div>
+            <h3 class="card__title" style="padding-top: 6px;">Deploy, Measure &amp; Learn</h3>
+          </div>
+          <p class="card__body">
+            Controlled release, metrics collection, retrospective analysis, experiment decisions, and governance refinement. Outcomes feed back into the registry and improve future cycles.
+          </p>
+          <p style="margin-top: var(--space-3); font-size: var(--text-xs); color: var(--color-text-muted);">AIS Specify steps: <strong style="color:var(--color-text)">Deploy · Report · Learn</strong></p>
+        </article>
+
       </div>
 
-      <!-- Phase detail cards -->
-      <div class="feature-grid" style="margin-top: var(--space-10);" role="list">
-        <article class="card" role="listitem">
-          <div style="display:flex; gap: var(--space-3); align-items:flex-start;">
-            <span class="badge badge--blue" style="margin-top:2px;">01–02</span>
-            <div>
-              <h3 class="card__title">Discovery</h3>
-              <p class="card__body">Business intake, stakeholder requirements, structured specification using the AIS Specify template. Agent: <code>Specify</code> at L1.</p>
-            </div>
-          </div>
-        </article>
-        <article class="card" role="listitem">
-          <div style="display:flex; gap: var(--space-3); align-items:flex-start;">
-            <span class="badge badge--purple" style="margin-top:2px;">03–04</span>
-            <div>
-              <h3 class="card__title">Architecture & Planning</h3>
-              <p class="card__body">System design, ADR creation, task decomposition. Human approval required before implementation begins. Agent: <code>Architect</code> at L1.</p>
-            </div>
-          </div>
-        </article>
-        <article class="card" role="listitem">
-          <div style="display:flex; gap: var(--space-3); align-items:flex-start;">
-            <span class="badge badge--green" style="margin-top:2px;">05–06</span>
-            <div>
-              <h3 class="card__title">Build & Verify</h3>
-              <p class="card__body">Implementation with agent assistance, automated test generation, structured code review gates. Agent autonomy gated by complexity tier.</p>
-            </div>
-          </div>
-        </article>
-        <article class="card" role="listitem">
-          <div style="display:flex; gap: var(--space-3); align-items:flex-start;">
-            <span class="badge badge--warning" style="margin-top:2px;">07–09</span>
-            <div>
-              <h3 class="card__title">Deploy, Report & Learn</h3>
-              <p class="card__body">Gated deployment, structured release report, retrospective loop feeding back into governance registry. Closes the learning cycle.</p>
-            </div>
-          </div>
-        </article>
+      <div style="text-align:center; margin-top: var(--space-8);">
+        <a class="btn btn--outline btn--sm" href="https://github.com/AIS-Commercial-Business-Unit/AgenticSDLC/blob/main/docs/sdlc/README.md" rel="noopener noreferrer">View the detailed 9-step AIS Specify lifecycle →</a>
       </div>
     </div>
   </section>
 
   <!-- ============================================================
-       PLAYBOOKS
-  ============================================================ -->
-  <section class="section" id="playbooks" style="background: var(--color-surface); border-top: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border);">
-    <div class="container">
-      <div class="section-header">
-        <span class="section-label">Playbooks</span>
-        <h2>Runnable governance procedures</h2>
-        <p>Step-by-step playbooks that can be executed directly with GitHub Copilot. Each playbook targets a specific adoption or governance challenge.</p>
-      </div>
-
-      <div class="playbook-grid" role="list">
-
-        <article class="playbook-card" role="listitem">
-          <h3 class="playbook-card__name">Repository Assessment</h3>
-          <p class="playbook-card__desc">
-            Evaluate any repository against the AIS Specify standards. Produces a scored gap analysis and prioritized remediation backlog.
-          </p>
-          <div class="playbook-card__footer">
-            <span class="badge badge--blue">Brownfield</span>
-            <span class="badge badge--gray">Run with Copilot</span>
-          </div>
-        </article>
-
-        <article class="playbook-card" role="listitem">
-          <h3 class="playbook-card__name">Governance Initializer</h3>
-          <p class="playbook-card__desc">
-            Bootstrap a new repository with the full governance scaffold: branch protections, PR templates, governance registry, and audit trail configuration.
-          </p>
-          <div class="playbook-card__footer">
-            <span class="badge badge--green">Greenfield</span>
-            <span class="badge badge--gray">Run with Copilot</span>
-          </div>
-        </article>
-
-        <article class="playbook-card" role="listitem">
-          <h3 class="playbook-card__name">Agent Catalog Builder</h3>
-          <p class="playbook-card__desc">
-            Inventory all AI agents currently in use across your organization, document their roles and boundaries, and create a structured catalog entry for each.
-          </p>
-          <div class="playbook-card__footer">
-            <span class="badge badge--purple">Catalog</span>
-            <span class="badge badge--gray">Run with Copilot</span>
-          </div>
-        </article>
-
-        <article class="playbook-card" role="listitem">
-          <h3 class="playbook-card__name">Experiment Charter</h3>
-          <p class="playbook-card__desc">
-            Define and document a bounded AI experiment with explicit hypotheses, success criteria, risk controls, and rollback conditions. Required before L2+ agent deployments.
-          </p>
-          <div class="playbook-card__footer">
-            <span class="badge badge--warning">Experiments</span>
-            <span class="badge badge--gray">Run with Copilot</span>
-          </div>
-        </article>
-
-        <article class="playbook-card" role="listitem">
-          <h3 class="playbook-card__name">Audit Trail Setup</h3>
-          <p class="playbook-card__desc">
-            Configure structured audit logging for all agent actions. Defines log schema, retention policy, and query patterns for compliance reporting.
-          </p>
-          <div class="playbook-card__footer">
-            <span class="badge badge--green">Compliance</span>
-            <span class="badge badge--gray">Run with Copilot</span>
-          </div>
-        </article>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================================================
-       QUICK START
-  ============================================================ -->
-  <section class="section" id="quick-start">
-    <div class="container">
-      <div class="section-header">
-        <span class="section-label">Quick Start</span>
-        <h2>Up and running in three steps</h2>
-        <p>The framework is configuration-driven and requires no build tools. Works with any existing GitHub repository.</p>
-      </div>
-
-      <div style="max-width: 800px; margin: 0 auto;">
-        <div class="quickstart-steps">
-
-          <div class="quickstart-step">
-            <div class="quickstart-step__num">1</div>
-            <div class="quickstart-step__content">
-              <h3>Clone the repository</h3>
-              <p>Get the framework onto your machine. The <code>.framework/</code> directory contains all governance scaffolding.</p>
-              <div class="code-block">
-                <div class="code-block__header">
-                  <span class="code-block__label">terminal</span>
-                  <span class="code-block__lang">bash</span>
-                </div>
-                <pre><code><span class="code-prompt">$ </span>git clone https://github.com/your-org/agentic-engineering-framework.git
-<span class="code-prompt">$ </span>cd agentic-engineering-framework
-<span class="code-comment"># Review the framework structure</span>
-<span class="code-prompt">$ </span>ls .framework/</code></pre>
-              </div>
-            </div>
-          </div>
-
-          <div class="quickstart-step">
-            <div class="quickstart-step__num">2</div>
-            <div class="quickstart-step__content">
-              <h3>Copy the example configuration</h3>
-              <p>Start from the example governance config and customize for your organization's policies and autonomy requirements.</p>
-              <div class="code-block">
-                <div class="code-block__header">
-                  <span class="code-block__label">terminal</span>
-                  <span class="code-block__lang">bash</span>
-                </div>
-                <pre><code><span class="code-prompt">$ </span>cp .framework/examples/governance.yml governance.yml
-<span class="code-prompt">$ </span>cp .framework/examples/agent-catalog.yml agent-catalog.yml
-<span class="code-comment"># Edit governance.yml to set your org defaults</span>
-<span class="code-prompt">$ </span>code governance.yml</code></pre>
-              </div>
-            </div>
-          </div>
-
-          <div class="quickstart-step">
-            <div class="quickstart-step__num">3</div>
-            <div class="quickstart-step__content">
-              <h3>Run the brownfield assessment</h3>
-              <p>Point the assessment playbook at any existing repository to generate a scored gap report and prioritized adoption roadmap.</p>
-              <div class="code-block">
-                <div class="code-block__header">
-                  <span class="code-block__label">terminal</span>
-                  <span class="code-block__lang">bash</span>
-                </div>
-                <pre><code><span class="code-comment"># Run via GitHub Copilot (with the framework loaded as a space)</span>
-<span class="code-prompt">&gt; </span>@copilot Run the Repository Assessment playbook for /path/to/my-repo
-
-<span class="code-comment"># Or run the assessment script directly</span>
-<span class="code-prompt">$ </span>bash .framework/playbooks/repository-assessment.sh --target ../my-repo
-<span class="code-prompt">$ </span>cat assessment-report.md</code></pre>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================================================
-       ENTERPRISE SDLC
+       ENTERPRISE INNER-SOURCE MODEL
   ============================================================ -->
   <section class="section" style="background: var(--color-surface); border-top: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border);">
     <div class="container">
       <div class="two-col">
         <div class="two-col__text">
-          <span class="section-label">Enterprise SDLC</span>
-          <h2>Built for Enterprise Scale</h2>
+          <span class="section-label">Enterprise Scaling</span>
+          <h2>Centrally Maintained, Distributed by Design</h2>
           <p>
-            The framework enforces engineering discipline at every level — from individual branches to organization-wide policies. GitHub rulesets, PR standards, and structured review gates are first-class.
+            The framework is maintained centrally by the AIS Commercial Business Unit and installed into individual repositories via a single command. Teams get shared agents, skills, playbooks, and governance defaults without duplicating infrastructure.
           </p>
           <ul>
-            <li>Protected branch rules and GitHub Ruleset templates included out of the box</li>
-            <li>Structured PR templates with required fields for AI-assisted changes</li>
-            <li>Code review gate requirements with senior engineer sign-off for L2+ agent output</li>
-            <li>GitHub Rulesets integration for organization-wide enforcement</li>
-            <li>Branch naming conventions tied to lifecycle phases and issue tracking</li>
-            <li>Conventional commit standards enforced via commit hooks and CI validation</li>
+            <li>Install the framework into any repository in minutes</li>
+            <li>Shared agent catalog, skill library, and governance policies</li>
+            <li>Controlled upgrades with repository-level configuration preserved</li>
+            <li>Teams contribute improvements through pull requests to the central framework</li>
+            <li>Governance health and maturity aggregated across repositories</li>
+            <li>Enterprise reporting across teams, business units, and the organization</li>
           </ul>
           <div style="margin-top: var(--space-6);">
-            <a class="btn btn--outline" href="#quick-start">View SDLC Documentation →</a>
+            <a class="btn btn--outline" href="https://github.com/AIS-Commercial-Business-Unit/AgenticSDLC/blob/main/docs/guides/install.md" rel="noopener noreferrer">Installation Guide →</a>
           </div>
         </div>
         <div>
           <div class="card" style="background: var(--color-bg);">
-            <h3 class="card__title" style="margin-bottom: var(--space-4); font-size: var(--text-sm); text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-text-muted);">Branch Strategy</h3>
-            <div class="code-block" style="border: none; background: transparent;">
-              <pre><code style="font-size: var(--text-xs);"><span class="code-string">main</span>        <span class="code-comment">← stable, released only</span>
-  └── <span class="code-string">dev</span>     <span class="code-comment">← integration branch</span>
-        ├── <span class="code-keyword">squad/42-add-audit-trail</span>
-        ├── <span class="code-keyword">squad/43-agent-catalog</span>
-        └── <span class="code-keyword">squad/44-brownfield-init</span></code></pre>
-            </div>
-            <hr style="border: none; border-top: 1px solid var(--color-border); margin: var(--space-4) 0;" />
-            <h3 class="card__title" style="margin-bottom: var(--space-4); font-size: var(--text-sm); text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-text-muted);">PR Requirements</h3>
-            <div style="display: flex; flex-direction: column; gap: var(--space-2);">
-              <div style="display: flex; align-items: center; gap: var(--space-3); font-size: var(--text-xs); color: var(--color-text-muted);">
-                <span style="color: var(--color-success);">✓</span> At least 1 reviewer (2 for L2+ agent changes)
+            <h3 class="card__title" style="margin-bottom: var(--space-4); font-size: var(--text-sm); text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-text-muted);">Inner-Source Model</h3>
+            <div style="display: flex; flex-direction: column; gap: var(--space-3); font-size: var(--text-sm);">
+              <div style="display: flex; align-items: flex-start; gap: var(--space-3);">
+                <span style="color: var(--color-accent); font-weight:700; flex-shrink:0;">→</span>
+                <span style="color: var(--color-text-muted);">Central framework repository owns agents, skills, governance defaults</span>
               </div>
-              <div style="display: flex; align-items: center; gap: var(--space-3); font-size: var(--text-xs); color: var(--color-text-muted);">
-                <span style="color: var(--color-success);">✓</span> CI must pass (tests + lint + schema validation)
+              <div style="display: flex; align-items: flex-start; gap: var(--space-3);">
+                <span style="color: var(--color-accent); font-weight:700; flex-shrink:0;">→</span>
+                <span style="color: var(--color-text-muted);"><code>npm run install-framework</code> bootstraps any target repo</span>
               </div>
-              <div style="display: flex; align-items: center; gap: var(--space-3); font-size: var(--text-xs); color: var(--color-text-muted);">
-                <span style="color: var(--color-success);">✓</span> PR template checklist completed
+              <div style="display: flex; align-items: flex-start; gap: var(--space-3);">
+                <span style="color: var(--color-accent); font-weight:700; flex-shrink:0;">→</span>
+                <span style="color: var(--color-text-muted);">Repositories override configuration; upgrades preserve customizations</span>
               </div>
-              <div style="display: flex; align-items: center; gap: var(--space-3); font-size: var(--text-xs); color: var(--color-text-muted);">
-                <span style="color: var(--color-success);">✓</span> Audit trail entry logged
+              <div style="display: flex; align-items: flex-start; gap: var(--space-3);">
+                <span style="color: var(--color-accent); font-weight:700; flex-shrink:0;">→</span>
+                <span style="color: var(--color-text-muted);">Teams contribute via PR; Scribe agent merges and publishes updates</span>
+              </div>
+              <div style="display: flex; align-items: flex-start; gap: var(--space-3);">
+                <span style="color: var(--color-accent); font-weight:700; flex-shrink:0;">→</span>
+                <span style="color: var(--color-text-muted);">Metrics collected per-repo and rolled up to org-level dashboard</span>
               </div>
             </div>
           </div>
@@ -563,20 +367,62 @@
   </section>
 
   <!-- ============================================================
-       MATURITY ASSESSMENT CTA
+       PROOF AND DEMONSTRATION
   ============================================================ -->
-  <section class="section">
+  <section class="section" id="demo">
     <div class="container">
-      <div class="cta-section">
-        <span class="section-label">Maturity Assessment</span>
-        <h2>Is Your Team Ready for Agentic Engineering?</h2>
-        <p>
-          Use our self-assessment checklist to evaluate your organization's current practices across branch management, PR process, AI governance, and CI/CD. Get a scored maturity tier and prioritized roadmap.
-        </p>
-        <div class="btn-group">
-          <a class="btn btn--primary btn--lg" href="maturity-checklist.html">Check Your Maturity →</a>
-          <a class="btn btn--outline" href="#quick-start">Read the Docs</a>
-        </div>
+      <div class="section-header">
+        <span class="section-label">See It Working</span>
+        <h2>Explore the live framework</h2>
+        <p>Every dashboard on this site is generated from the actual framework running against real repository data. No placeholder numbers.</p>
+      </div>
+
+      <div class="feature-grid" role="list">
+
+        <article class="card card--accent" role="listitem">
+          <div class="card__icon" aria-hidden="true">📊</div>
+          <h3 class="card__title">Maturity Assessment</h3>
+          <p class="card__body">
+            Evaluate your organization's readiness across six dimensions. Interactive checklist with live scoring, maturity tier, and a prioritized adoption roadmap.
+          </p>
+          <div style="margin-top: var(--space-4);">
+            <a class="btn btn--outline btn--sm" href="maturity-checklist.html">Open Assessment →</a>
+          </div>
+        </article>
+
+        <article class="card card--accent" role="listitem">
+          <div class="card__icon card__icon--purple" aria-hidden="true">🏛️</div>
+          <h3 class="card__title">Governance Explorer</h3>
+          <p class="card__body">
+            Browse every registered agent activity: autonomy level, risk rating, approval requirements, and review status. Filter by lifecycle step, autonomy, and risk.
+          </p>
+          <div style="margin-top: var(--space-4);">
+            <a class="btn btn--outline btn--sm" href="governance-explorer.html">Open Explorer →</a>
+          </div>
+        </article>
+
+        <article class="card card--accent" role="listitem">
+          <div class="card__icon card__icon--green" aria-hidden="true">📈</div>
+          <h3 class="card__title">Engineering Metrics</h3>
+          <p class="card__body">
+            Framework maturity profile, agent activity by lifecycle step, autonomy distribution, governance health, and adoption progress — all from repository-generated data.
+          </p>
+          <div style="margin-top: var(--space-4);">
+            <a class="btn btn--outline btn--sm" href="metrics.html">View Metrics →</a>
+          </div>
+        </article>
+
+        <article class="card card--accent" role="listitem">
+          <div class="card__icon" aria-hidden="true">📖</div>
+          <h3 class="card__title">Documentation</h3>
+          <p class="card__body">
+            Installation guide, architecture overview, lifecycle reference, governance registry format, agent catalog schema, and contribution guide.
+          </p>
+          <div style="margin-top: var(--space-4);">
+            <a class="btn btn--outline btn--sm" href="https://github.com/AIS-Commercial-Business-Unit/AgenticSDLC/blob/main/README.md" rel="noopener noreferrer">Read the Docs →</a>
+          </div>
+        </article>
+
       </div>
     </div>
   </section>
@@ -590,18 +436,22 @@
         <div class="nav__brand-mark" aria-hidden="true">AEF</div>
         <div>
           <div class="footer__brand-name">Agentic Engineering Framework</div>
-          <div class="footer__meta">v1.0.0-alpha · MIT License · Built by AIS Commercial Business Unit</div>
+          <div class="footer__meta">v0.23.0 · MIT License · AIS Commercial Business Unit</div>
         </div>
       </div>
       <nav class="footer__links" aria-label="Footer navigation">
-        <a href="#features">Features</a>
-        <a href="#playbooks">Playbooks</a>
-        <a href="#quick-start">Docs</a>
+        <a href="index.html#features">Features</a>
         <a href="maturity-checklist.html">Maturity Check</a>
-        <a href="#">GitHub</a>
+        <a href="governance-explorer.html">Governance</a>
+        <a href="metrics.html">Metrics</a>
+        <a href="https://github.com/AIS-Commercial-Business-Unit/AgenticSDLC/blob/main/README.md" rel="noopener noreferrer">Documentation</a>
+        <a href="#github" rel="noopener noreferrer">GitHub</a>
       </nav>
     </div>
   </footer>
+
+  <script src="shared.js"></script>
+  <script>AEF.initPage('home');</script>
 
 </body>
 </html>

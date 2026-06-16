@@ -297,7 +297,7 @@
 <body>
 
   <!-- ============================================================
-       NAVIGATION
+       NAVIGATION — keep in sync with all pages via shared.js AEF.initPage()
   ============================================================ -->
   <nav class="nav" role="navigation" aria-label="Main navigation">
     <div class="nav__inner">
@@ -306,13 +306,12 @@
         <span class="nav__brand-name">Agentic Engineering Framework</span>
       </a>
       <ul class="nav__links" role="list">
-        <li><a class="nav__link" href="index.html#features">Features</a></li>
-        <li><a class="nav__link" href="index.html#playbooks">Playbooks</a></li>
-        <li><a class="nav__link" href="maturity-checklist.html">Maturity Check</a></li>
-        <li><a class="nav__link nav__link--active" href="governance-explorer.html" aria-current="page">Governance</a></li>
-        <li><a class="nav__link" href="metrics.html">Metrics</a></li>
+        <li><a class="nav__link" id="nav-home" href="index.html#features">Features</a></li>
+        <li><a class="nav__link" id="nav-maturity" href="maturity-checklist.html">Maturity Check</a></li>
+        <li><a class="nav__link" id="nav-governance" href="governance-explorer.html">Governance</a></li>
+        <li><a class="nav__link" id="nav-metrics" href="metrics.html">Metrics</a></li>
         <li>
-          <a class="nav__link nav__link--github" href="#" aria-label="View on GitHub">
+          <a class="nav__link nav__link--github" href="#github" aria-label="View on GitHub" rel="noopener noreferrer">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
               <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
             </svg>
@@ -328,13 +327,9 @@
   ============================================================ -->
   <div class="page-hero">
     <div class="container">
-      <div class="page-hero__eyebrow">
-        <svg width="8" height="8" viewBox="0 0 10 10" fill="currentColor" aria-hidden="true"><circle cx="5" cy="5" r="5"/></svg>
-        Governance Registry
-      </div>
       <h1 class="page-hero__title">Governance Explorer</h1>
       <p class="page-hero__subtitle">
-        Inspect every agent activity: autonomy level, risk rating, approval requirements, and review status.
+        Inspect every registered agent activity: autonomy level, risk rating, approval requirements, and review status across the AIS Specify lifecycle.
       </p>
     </div>
   </div>
@@ -377,16 +372,16 @@
           <option value="">All Agents</option>
         </select>
 
-        <select id="filter-step" aria-label="Filter by AIS step">
-          <option value="">SDLC Steps</option>
+        <select id="filter-step" aria-label="Filter by AIS Specify step">
+          <option value="">All Lifecycle Steps</option>
           <option value="intake">Intake</option>
           <option value="specify">Specify</option>
           <option value="design">Design</option>
-          <option value="build">Build</option>
-          <option value="test">Test</option>
-          <option value="review">Review</option>
+          <option value="plan">Plan</option>
+          <option value="implement">Implement</option>
+          <option value="verify">Verify</option>
           <option value="deploy">Deploy</option>
-          <option value="operate">Operate</option>
+          <option value="report">Report</option>
           <option value="learn">Learn</option>
         </select>
 
@@ -442,7 +437,9 @@
 
       <!-- Source note -->
       <p class="source-note">
-        Generated from <code>governance-registry.yaml</code> by <code>generate-governance-grid.mjs</code>
+        Generated from <code>framework/templates/governance-registry.yaml</code> by
+        <a href="https://github.com/AIS-Commercial-Business-Unit/AgenticSDLC/blob/main/scripts/generate-governance-grid.mjs" rel="noopener noreferrer"><code>generate-governance-grid.mjs</code></a>
+        · Repository: <a href="#repo" data-aef-repo></a>
       </p>
 
     </div>
@@ -457,15 +454,16 @@
         <div class="nav__brand-mark" aria-hidden="true">AEF</div>
         <div>
           <div class="footer__brand-name">Agentic Engineering Framework</div>
-          <div class="footer__meta">v1.0.0-alpha · MIT License · Built by AIS Commercial Business Unit</div>
+          <div class="footer__meta">v0.23.0 · MIT License · AIS Commercial Business Unit</div>
         </div>
       </div>
       <nav class="footer__links" aria-label="Footer navigation">
         <a href="index.html#features">Features</a>
-        <a href="index.html#playbooks">Playbooks</a>
         <a href="maturity-checklist.html">Maturity Check</a>
         <a href="governance-explorer.html">Governance</a>
         <a href="metrics.html">Metrics</a>
+        <a href="https://github.com/AIS-Commercial-Business-Unit/AgenticSDLC/blob/main/README.md" rel="noopener noreferrer">Documentation</a>
+        <a href="#github" rel="noopener noreferrer">GitHub</a>
       </nav>
     </div>
   </footer>
@@ -682,6 +680,9 @@
         .catch(() => showFallback());
     })();
   </script>
+
+  <script src="shared.js"></script>
+  <script>AEF.initPage('governance');</script>
 
 </body>
 </html>
