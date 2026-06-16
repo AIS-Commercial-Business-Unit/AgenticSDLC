@@ -1,0 +1,51 @@
+{
+  "generated_at": "2026-06-16T12:29:15.556Z",
+  "repo": "C:\\Dev\\AIS-Commercial-Business-Unit\\AgenticSDLC",
+  "overall_percentage": 96,
+  "summary": {
+    "totalPresent": 49,
+    "totalMax": 51
+  },
+  "categories": {
+    "config": {
+      "adopted": 0,
+      "total": 1,
+      "percentage": 0
+    },
+    "agents": {
+      "adopted": 16,
+      "total": 16,
+      "percentage": 100
+    },
+    "skills": {
+      "adopted": 9,
+      "total": 9,
+      "percentage": 100
+    },
+    "governance": {
+      "adopted": 1,
+      "total": 2,
+      "percentage": 50
+    },
+    "docs": {
+      "adopted": 4,
+      "total": 4,
+      "percentage": 100
+    },
+    "tests": {
+      "adopted": 9,
+      "total": 9,
+      "percentage": 100
+    },
+    "ci": {
+      "adopted": 3,
+      "total": 3,
+      "percentage": 100
+    },
+    "playbooks": {
+      "adopted": 7,
+      "total": 7,
+      "percentage": 100
+    }
+  }
+}

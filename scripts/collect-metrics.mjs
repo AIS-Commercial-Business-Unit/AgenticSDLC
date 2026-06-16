@@ -236,6 +236,10 @@ async function buildReport() {
   }
   maturityHistory.sort((a, b) => a.date.localeCompare(b.date))
 
+  // Source 5: Framework maturity profile
+  const { scoreMaturity } = await import('./maturity-scorer.mjs')
+  const maturityProfile = await scoreMaturity(frameworkRoot)
+
   // Source 3: Framework adoption
   const adoption = await checkAdoption(frameworkRoot)
   const adoptionPercent = adoption.adoptionPercent ?? adoption.overall_percentage ?? 0
@@ -269,6 +273,7 @@ async function buildReport() {
     governanceHealth: deriveGovernanceHealth(auditAgg, adoption),
     maturityHistory,
     latestMaturity,
+    maturityProfile,
   }
 
   return report

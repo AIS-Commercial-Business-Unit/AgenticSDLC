@@ -1,0 +1,519 @@
+{
+  "generated_at": "2026-06-16T12:28:39.969Z",
+  "overall_score": 4.6,
+  "overall_label": "Measured",
+  "dimensions": [
+    {
+      "id": "governance",
+      "label": "Governance",
+      "description": "Degree to which agent activities are defined, approved, and reviewed in a governance registry.",
+      "score": 4.5,
+      "max_score": 5,
+      "maturity_level": "Measured",
+      "evidence": [
+        "framework/templates/governance-registry.yaml",
+        "29 registry entries",
+        "docs/governance/summary-grid.json",
+        "0 overdue registry entries"
+      ],
+      "gaps": [
+        "Some governance entries are missing approval_requirements",
+        "Some governance entries are missing policy_source references"
+      ],
+      "next_action": "Add approval_requirements to every governance registry entry.",
+      "previous_categories": [
+        "governance"
+      ],
+      "score_breakdown": {
+        "criteria": [
+          {
+            "label": "Registry file exists",
+            "met": true,
+            "points": 1
+          },
+          {
+            "label": "Registry has at least 5 entries",
+            "met": true,
+            "points": 0.5
+          },
+          {
+            "label": "All entries define approval_requirements",
+            "met": false,
+            "points": 0.5
+          },
+          {
+            "label": "All entries define required_evidence",
+            "met": true,
+            "points": 0.5
+          },
+          {
+            "label": "summary-grid.json exists",
+            "met": true,
+            "points": 0.5
+          },
+          {
+            "label": "All entries schedule review_due_at",
+            "met": true,
+            "points": 0.5
+          },
+          {
+            "label": "All entries reference policy_source",
+            "met": false,
+            "points": 0.5
+          },
+          {
+            "label": "No entries are overdue",
+            "met": true,
+            "points": 0.5
+          },
+          {
+            "label": "All entries track completeness_pct",
+            "met": true,
+            "points": 0.5
+          },
+          {
+            "label": "All entries set max_autonomy",
+            "met": true,
+            "points": 0.5
+          }
+        ]
+      }
+    },
+    {
+      "id": "agent-coverage",
+      "label": "Agent Coverage",
+      "description": "Coverage of the AIS SDLC lifecycle steps by properly defined and governed agents.",
+      "score": 5,
+      "max_score": 5,
+      "maturity_level": "Measured",
+      "evidence": [
+        "16 agent YAML files under framework/agents",
+        "9/9 AIS lifecycle steps covered",
+        "26 markdown prompt files under .github/agents"
+      ],
+      "gaps": [],
+      "next_action": "Maintain current controls and keep evidence current.",
+      "previous_categories": [
+        "agents"
+      ],
+      "score_breakdown": {
+        "criteria": [
+          {
+            "label": "At least 1 agent is defined",
+            "met": true,
+            "points": 0.5
+          },
+          {
+            "label": "At least 5 agents are defined",
+            "met": true,
+            "points": 0.5
+          },
+          {
+            "label": "At least 10 agents are defined",
+            "met": true,
+            "points": 0.5
+          },
+          {
+            "label": "Agents cover at least 4 lifecycle steps",
+            "met": true,
+            "points": 0.5
+          },
+          {
+            "label": "Agents cover at least 7 lifecycle steps",
+            "met": true,
+            "points": 0.5
+          },
+          {
+            "label": "Agents cover all 9 lifecycle steps",
+            "met": true,
+            "points": 0.5
+          },
+          {
+            "label": "All agents define prohibited_actions",
+            "met": true,
+            "points": 0.5
+          },
+          {
+            "label": "All agents define governance_entries",
+            "met": true,
+            "points": 0.5
+          },
+          {
+            "label": ".github/agents has at least 3 markdown prompt files",
+            "met": true,
+            "points": 0.5
+          },
+          {
+            "label": "All agents define source_prompt and agent_file",
+            "met": true,
+            "points": 0.5
+          }
+        ]
+      }
+    },
+    {
+      "id": "skill-coverage",
+      "label": "Skill Coverage",
+      "description": "Quality and completeness of reusable skills implementing SDLC activities.",
+      "score": 4.5,
+      "max_score": 5,
+      "maturity_level": "Measured",
+      "evidence": [
+        "9 skill YAML files under framework/skills",
+        "5 inferred SDLC activity groups covered by skills"
+      ],
+      "gaps": [
+        "Some skills are missing allowed_tools or prohibited tool restrictions"
+      ],
+      "next_action": "Define allowed_tools or prohibited tool restrictions for every skill.",
+      "previous_categories": [
+        "skills"
+      ],
+      "score_breakdown": {
+        "criteria": [
+          {
+            "label": "At least 1 skill is defined",
+            "met": true,
+            "points": 0.5
+          },
+          {
+            "label": "At least 5 skills are defined",
+            "met": true,
+            "points": 0.5
+          },
+          {
+            "label": "At least 8 skills are defined",
+            "met": true,
+            "points": 0.5
+          },
+          {
+            "label": "All skills define inputs",
+            "met": true,
+            "points": 0.5
+          },
+          {
+            "label": "All skills define outputs",
+            "met": true,
+            "points": 0.5
+          },
+          {
+            "label": "All skills define example_usage",
+            "met": true,
+            "points": 0.5
+          },
+          {
+            "label": "All skills define version",
+            "met": true,
+            "points": 0.5
+          },
+          {
+            "label": "All skills define description",
+            "met": true,
+            "points": 0.5
+          },
+          {
+            "label": "Skills cover at least 4 inferred SDLC activities",
+            "met": true,
+            "points": 0.5
+          },
+          {
+            "label": "All skills define tool restrictions",
+            "met": false,
+            "points": 0.5
+          }
+        ]
+      }
+    },
+    {
+      "id": "context-configuration",
+      "label": "Context & Configuration",
+      "description": "Whether agents have reliable, scoped context and the framework is properly configured.",
+      "score": 3.5,
+      "max_score": 5,
+      "maturity_level": "Enforced",
+      "evidence": [
+        ".specify/",
+        ".github/agents/",
+        "26 markdown prompt files under .specify/prompts",
+        "10 schema files under framework/schemas",
+        "framework/templates/"
+      ],
+      "gaps": [
+        "config/aispec.config.yaml not found"
+      ],
+      "next_action": "Create config/aispec.config.yaml for scoped framework configuration.",
+      "previous_categories": [
+        "config"
+      ],
+      "score_breakdown": {
+        "criteria": [
+          {
+            "label": "config/aispec.config.yaml exists",
+            "met": false,
+            "points": 1
+          },
+          {
+            "label": "AGENTS.md exists",
+            "met": true,
+            "points": 0.5
+          },
+          {
+            "label": ".github/agents directory exists",
+            "met": true,
+            "points": 0.5
+          },
+          {
+            "label": ".specify/prompts has at least 3 markdown prompts",
+            "met": true,
+            "points": 0.5
+          },
+          {
+            "label": "framework/templates directory exists",
+            "met": true,
+            "points": 0.5
+          },
+          {
+            "label": "framework/schemas has at least 3 JSON schema files",
+            "met": true,
+            "points": 0.5
+          },
+          {
+            "label": ".specify/prompts has at least 10 prompt files",
+            "met": true,
+            "points": 0.5
+          },
+          {
+            "label": "framework/templates/governance-registry.yaml exists",
+            "met": true,
+            "points": 0.5
+          }
+        ]
+      }
+    },
+    {
+      "id": "quality-verification",
+      "label": "Quality & Verification",
+      "description": "Whether agent-produced artifacts are validated by automated tests and schema checks.",
+      "score": 4.5,
+      "max_score": 5,
+      "maturity_level": "Measured",
+      "evidence": [
+        "9 test files under tests/",
+        "10 schema files under framework/schemas",
+        ".github/workflows/test.yml",
+        ".github/workflows/validate-schemas.yml",
+        "package.json pretest runs validate-schemas"
+      ],
+      "gaps": [
+        "Fewer than 10 test files were found"
+      ],
+      "next_action": "Expand the automated test suite to at least ten files.",
+      "previous_categories": [
+        "tests"
+      ],
+      "score_breakdown": {
+        "criteria": [
+          {
+            "label": "At least 1 test file exists",
+            "met": true,
+            "points": 0.5
+          },
+          {
+            "label": "At least 5 test files exist",
+            "met": true,
+            "points": 0.5
+          },
+          {
+            "label": "At least 8 test files exist",
+            "met": true,
+            "points": 0.5
+          },
+          {
+            "label": ".github/workflows/test.yml exists",
+            "met": true,
+            "points": 0.5
+          },
+          {
+            "label": ".github/workflows/validate-schemas.yml exists",
+            "met": true,
+            "points": 0.5
+          },
+          {
+            "label": "At least 3 schema files exist",
+            "met": true,
+            "points": 0.5
+          },
+          {
+            "label": "At least 6 schema files exist",
+            "met": true,
+            "points": 0.5
+          },
+          {
+            "label": "tests/fixtures directory exists",
+            "met": true,
+            "points": 0.5
+          },
+          {
+            "label": "package.json pretest runs schema validation",
+            "met": true,
+            "points": 0.5
+          },
+          {
+            "label": "At least 10 test files exist",
+            "met": false,
+            "points": 0.5
+          }
+        ]
+      }
+    },
+    {
+      "id": "delivery-automation",
+      "label": "Delivery Automation",
+      "description": "Degree to which delivery, deployment, and quality checks are automated in CI/CD.",
+      "score": 5,
+      "max_score": 5,
+      "maturity_level": "Measured",
+      "evidence": [
+        "13 workflow files under .github/workflows",
+        "CI workflow present",
+        "Deploy workflow present",
+        "Metrics collection workflow present",
+        "Agentic scan workflow present"
+      ],
+      "gaps": [],
+      "next_action": "Maintain current controls and keep evidence current.",
+      "previous_categories": [
+        "ci"
+      ],
+      "score_breakdown": {
+        "criteria": [
+          {
+            "label": "At least 1 workflow file exists",
+            "met": true,
+            "points": 0.5
+          },
+          {
+            "label": "At least 3 workflow files exist",
+            "met": true,
+            "points": 0.5
+          },
+          {
+            "label": "At least 5 workflow files exist",
+            "met": true,
+            "points": 0.5
+          },
+          {
+            "label": "CI workflow exists",
+            "met": true,
+            "points": 0.5
+          },
+          {
+            "label": "Deploy workflow exists",
+            "met": true,
+            "points": 0.5
+          },
+          {
+            "label": "Schema validation workflow exists",
+            "met": true,
+            "points": 0.5
+          },
+          {
+            "label": "Metrics collection workflow exists",
+            "met": true,
+            "points": 0.5
+          },
+          {
+            "label": "Release automation workflow exists",
+            "met": true,
+            "points": 0.5
+          },
+          {
+            "label": "Agentic scan workflow exists",
+            "met": true,
+            "points": 0.5
+          },
+          {
+            "label": "At least 8 workflow files exist",
+            "met": true,
+            "points": 0.5
+          }
+        ]
+      }
+    },
+    {
+      "id": "documentation-enablement",
+      "label": "Documentation & Enablement",
+      "description": "Whether teams can understand, adopt, and extend the framework through documentation and playbooks.",
+      "score": 5,
+      "max_score": 5,
+      "maturity_level": "Measured",
+      "evidence": [
+        "README.md",
+        "CONTRIBUTING.md",
+        "11 docs subdirectories",
+        "5 playbook markdown files",
+        "7 brownfield prompt files"
+      ],
+      "gaps": [],
+      "next_action": "Maintain current controls and keep evidence current.",
+      "previous_categories": [
+        "docs",
+        "playbooks"
+      ],
+      "score_breakdown": {
+        "criteria": [
+          {
+            "label": "README.md exists",
+            "met": true,
+            "points": 0.5
+          },
+          {
+            "label": "CONTRIBUTING.md exists",
+            "met": true,
+            "points": 0.5
+          },
+          {
+            "label": "docs/getting-started exists",
+            "met": true,
+            "points": 0.5
+          },
+          {
+            "label": "docs/playbooks exists with at least 1 file",
+            "met": true,
+            "points": 0.5
+          },
+          {
+            "label": "docs/sdlc exists",
+            "met": true,
+            "points": 0.5
+          },
+          {
+            "label": "docs/extending exists",
+            "met": true,
+            "points": 0.5
+          },
+          {
+            "label": "docs/features has at least 2 markdown files",
+            "met": true,
+            "points": 0.5
+          },
+          {
+            "label": ".specify/prompts has brownfield prompt files",
+            "met": true,
+            "points": 0.5
+          },
+          {
+            "label": "docs/assessment exists",
+            "met": true,
+            "points": 0.5
+          },
+          {
+            "label": "docs has at least 5 subdirectories",
+            "met": true,
+            "points": 0.5
+          }
+        ]
+      }
+    }
+  ]
+}
