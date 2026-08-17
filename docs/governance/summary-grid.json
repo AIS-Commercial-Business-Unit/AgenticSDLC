@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-08-10T06:27:08.133Z",
+  "generated_at": "2026-08-17T06:09:50.549Z",
   "registry_path": "framework/templates/governance-registry.yaml",
   "governance_health": {
     "total_registry_entries": 29,
     "overdue_count": 0,
-    "due_soon_count": 0,
-    "healthy_count": 29
+    "due_soon_count": 29,
+    "healthy_count": 0
   },
   "entries": [
     {
@@ -21,8 +21,8 @@
       "approval_required": "none",
       "review_due_at": "2026-09-12",
       "overdue": false,
-      "due_soon": false,
-      "indicator": "",
+      "due_soon": true,
+      "indicator": "🔔",
       "owner": "steven-suing",
       "notes": "Strictly read-only. Assessment outputs written to framework workspace only."
     },
@@ -39,8 +39,8 @@
       "approval_required": "none",
       "review_due_at": "2026-09-12",
       "overdue": false,
-      "due_soon": false,
-      "indicator": "",
+      "due_soon": true,
+      "indicator": "🔔",
       "owner": "steven-suing",
       "notes": "Strictly read-only. Any write to target is a critical governance violation."
     },
@@ -57,8 +57,8 @@
       "approval_required": "product-owner",
       "review_due_at": "2026-09-12",
       "overdue": false,
-      "due_soon": false,
-      "indicator": "",
+      "due_soon": true,
+      "indicator": "🔔",
       "owner": "steven-suing",
       "notes": null
     },
@@ -75,8 +75,8 @@
       "approval_required": "solution-architect",
       "review_due_at": "2026-09-12",
       "overdue": false,
-      "due_soon": false,
-      "indicator": "",
+      "due_soon": true,
+      "indicator": "🔔",
       "owner": "steven-suing",
       "notes": "ADR must not be marked accepted until solution-architect approves the GitHub PR."
     },
@@ -93,8 +93,8 @@
       "approval_required": "product-owner",
       "review_due_at": "2026-09-12",
       "overdue": false,
-      "due_soon": false,
-      "indicator": "",
+      "due_soon": true,
+      "indicator": "🔔",
       "owner": "steven-suing",
       "notes": null
     },
@@ -111,8 +111,8 @@
       "approval_required": "solution-architect",
       "review_due_at": "2026-09-12",
       "overdue": false,
-      "due_soon": false,
-      "indicator": "",
+      "due_soon": true,
+      "indicator": "🔔",
       "owner": "steven-suing",
       "notes": "High risk due to cross-service blast radius. Boundary changes require ADR."
     },
@@ -129,8 +129,8 @@
       "approval_required": "tech-lead",
       "review_due_at": "2026-09-12",
       "overdue": false,
-      "due_soon": false,
-      "indicator": "",
+      "due_soon": true,
+      "indicator": "🔔",
       "owner": "steven-suing",
       "notes": null
     },
@@ -147,8 +147,8 @@
       "approval_required": "solution-architect, tech-lead",
       "review_due_at": "2026-09-12",
       "overdue": false,
-      "due_soon": false,
-      "indicator": "",
+      "due_soon": true,
+      "indicator": "🔔",
       "owner": "steven-suing",
       "notes": "Contract changes are backwards-compatibility breaking by default. Semver required."
     },
@@ -165,8 +165,8 @@
       "approval_required": "solution-architect",
       "review_due_at": "2026-09-12",
       "overdue": false,
-      "due_soon": false,
-      "indicator": "",
+      "due_soon": true,
+      "indicator": "🔔",
       "owner": "steven-suing",
       "notes": null
     },
@@ -183,8 +183,8 @@
       "approval_required": "tech-lead",
       "review_due_at": "2026-09-12",
       "overdue": false,
-      "due_soon": false,
-      "indicator": "",
+      "due_soon": true,
+      "indicator": "🔔",
       "owner": "steven-suing",
       "notes": null
     },
@@ -201,8 +201,8 @@
       "approval_required": "tech-lead",
       "review_due_at": "2026-09-12",
       "overdue": false,
-      "due_soon": false,
-      "indicator": "",
+      "due_soon": true,
+      "indicator": "🔔",
       "owner": "steven-suing",
       "notes": "Estimates derived from similar historical work items in the audit trail."
     },
@@ -219,8 +219,8 @@
       "approval_required": "none",
       "review_due_at": "2026-09-12",
       "overdue": false,
-      "due_soon": false,
-      "indicator": "",
+      "due_soon": true,
+      "indicator": "🔔",
       "owner": "steven-suing",
       "notes": null
     },
@@ -237,8 +237,8 @@
       "approval_required": "tech-lead",
       "review_due_at": "2026-09-12",
       "overdue": false,
-      "due_soon": false,
-      "indicator": "",
+      "due_soon": true,
+      "indicator": "🔔",
       "owner": "steven-suing",
       "notes": null
     },
@@ -255,8 +255,8 @@
       "approval_required": "tech-lead",
       "review_due_at": "2026-09-12",
       "overdue": false,
-      "due_soon": false,
-      "indicator": "",
+      "due_soon": true,
+      "indicator": "🔔",
       "owner": "steven-suing",
       "notes": "Domain layer must never import Kafka, MongoDB, or Spring infrastructure types."
     },
@@ -273,8 +273,8 @@
       "approval_required": "tech-lead",
       "review_due_at": "2026-09-12",
       "overdue": false,
-      "due_soon": false,
-      "indicator": "",
+      "due_soon": true,
+      "indicator": "🔔",
       "owner": "steven-suing",
       "notes": "L3 current_autonomy is held at L2 pending first successful L3 execution evidence. Will be elevated after 3 successful routine refactors with full evidence trail.\n"
     },
@@ -291,8 +291,8 @@
       "approval_required": "tech-lead",
       "review_due_at": "2026-09-12",
       "overdue": false,
-      "due_soon": false,
-      "indicator": "",
+      "due_soon": true,
+      "indicator": "🔔",
       "owner": "steven-suing",
       "notes": null
     },
@@ -309,8 +309,8 @@
       "approval_required": "tech-lead, schema-validation-check",
       "review_due_at": "2026-09-12",
       "overdue": false,
-      "due_soon": false,
-      "indicator": "",
+      "due_soon": true,
+      "indicator": "🔔",
       "owner": "steven-suing",
       "notes": "High risk — cross-service impact. Schema validation is a hard gate."
     },
@@ -327,8 +327,8 @@
       "approval_required": "none",
       "review_due_at": "2026-09-12",
       "overdue": false,
-      "due_soon": false,
-      "indicator": "",
+      "due_soon": true,
+      "indicator": "🔔",
       "owner": "steven-suing",
       "notes": "L3 autonomy approved for this activity only. Append-only. Never overwrite."
     },
@@ -345,8 +345,8 @@
       "approval_required": "tech-lead",
       "review_due_at": "2026-09-12",
       "overdue": false,
-      "due_soon": false,
-      "indicator": "",
+      "due_soon": true,
+      "indicator": "🔔",
       "owner": "steven-suing",
       "notes": "Review reports are advisory only. Merge approval is always a human decision."
     },
@@ -363,8 +363,8 @@
       "approval_required": "tech-lead",
       "review_due_at": "2026-09-12",
       "overdue": false,
-      "due_soon": false,
-      "indicator": "",
+      "due_soon": true,
+      "indicator": "🔔",
       "owner": "steven-suing",
       "notes": null
     },
@@ -381,8 +381,8 @@
       "approval_required": "tech-lead",
       "review_due_at": "2026-09-12",
       "overdue": false,
-      "due_soon": false,
-      "indicator": "",
+      "due_soon": true,
+      "indicator": "🔔",
       "owner": "steven-suing",
       "notes": "Must never run against production. Environment isolation is a hard gate."
     },
@@ -399,8 +399,8 @@
       "approval_required": "security-team",
       "review_due_at": "2026-09-12",
       "overdue": false,
-      "due_soon": false,
-      "indicator": "",
+      "due_soon": true,
+      "indicator": "🔔",
       "owner": "steven-suing",
       "notes": "Critical risk. Findings must not be downgraded without security-team sign-off."
     },
@@ -417,8 +417,8 @@
       "approval_required": "devops-lead",
       "review_due_at": "2026-09-12",
       "overdue": false,
-      "due_soon": false,
-      "indicator": "",
+      "due_soon": true,
+      "indicator": "🔔",
       "owner": "steven-suing",
       "notes": null
     },
@@ -435,8 +435,8 @@
       "approval_required": "devops-lead",
       "review_due_at": "2026-09-12",
       "overdue": false,
-      "due_soon": false,
-      "indicator": "",
+      "due_soon": true,
+      "indicator": "🔔",
       "owner": "steven-suing",
       "notes": "L3 current_autonomy held at L2 until rollback procedure has been tested and documented. Elevate to L3 after first successful deploy + rollback drill with evidence.\n"
     },
@@ -453,8 +453,8 @@
       "approval_required": "security-team, devops-lead",
       "review_due_at": "2026-09-12",
       "overdue": false,
-      "due_soon": false,
-      "indicator": "",
+      "due_soon": true,
+      "indicator": "🔔",
       "owner": "steven-suing",
       "notes": "Co-approval from devops-lead required alongside security-team."
     },
@@ -471,8 +471,8 @@
       "approval_required": "none",
       "review_due_at": "2026-09-12",
       "overdue": false,
-      "due_soon": false,
-      "indicator": "",
+      "due_soon": true,
+      "indicator": "🔔",
       "owner": "steven-suing",
       "notes": null
     },
@@ -489,8 +489,8 @@
       "approval_required": "tech-lead",
       "review_due_at": "2026-09-12",
       "overdue": false,
-      "due_soon": false,
-      "indicator": "",
+      "due_soon": true,
+      "indicator": "🔔",
       "owner": "steven-suing",
       "notes": "Held at L2 pending validation of append-only merge tooling."
     },
@@ -507,8 +507,8 @@
       "approval_required": "tech-lead",
       "review_due_at": "2026-09-12",
       "overdue": false,
-      "due_soon": false,
-      "indicator": "",
+      "due_soon": true,
+      "indicator": "🔔",
       "owner": "steven-suing",
       "notes": "Experimental agent — charter must include explicit success and failure criteria."
     },
@@ -525,8 +525,8 @@
       "approval_required": "none",
       "review_due_at": "2026-09-12",
       "overdue": false,
-      "due_soon": false,
-      "indicator": "",
+      "due_soon": true,
+      "indicator": "🔔",
       "owner": "steven-suing",
       "notes": "Recommendations are advisory. Cost interventions require engineering-manager decision."
     }
