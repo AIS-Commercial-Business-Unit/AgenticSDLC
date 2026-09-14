@@ -1,8 +1,8 @@
 # Governance Summary Grid
 
-> Generated: 2026-09-07 06:13:53 UTC  
+> Generated: 2026-09-14 06:14:14 UTC  
 > Registry: `framework/templates/governance-registry.yaml`  
-> Total entries: **29** | ⚠️ Overdue: **0** | 🔔 Due soon: **29** | ✅ Healthy: **0**
+> Total entries: **29** | ⚠️ Overdue: **29** | 🔔 Due soon: **0** | ✅ Healthy: **0**
 
 ## Legend
 
@@ -16,35 +16,35 @@
 
 | Agent | AIS Step | Activity | Max Autonomy | Risk | Approval Required | Review Date |
 |---|---|---|---|---|---|---|
-| `brownfield-assessor-agent` | Intake | Assess Repository Readiness | **L0** | 🟢 low | none | 🔔 2026-09-12 |
-| `modernization-agent` | Intake | Analyze Legacy Codebase | **L0** | 🟢 low | none | 🔔 2026-09-12 |
-| `specification-agent` | Intake | Parse Requirements Document | **L2** | 🟢 low | product-owner | 🔔 2026-09-12 |
-| `architecture-agent` | Specify | Author Architecture Decision Record | **L1** | 🟡 medium | solution-architect | 🔔 2026-09-12 |
-| `specification-agent` | Specify | Generate Structured Specification | **L2** | 🟡 medium | product-owner | 🔔 2026-09-12 |
-| `architecture-agent` | Design | Define Service Boundaries | **L1** | 🟠 high | solution-architect | 🔔 2026-09-12 |
-| `architecture-agent` | Design | Review API Contracts | **L1** | 🟡 medium | tech-lead | 🔔 2026-09-12 |
-| `integration-developer-agent` | Design | Define Integration Contract | **L1** | 🟠 high | solution-architect, tech-lead | 🔔 2026-09-12 |
-| `modernization-agent` | Design | Produce Migration Plan | **L1** | 🟠 high | solution-architect | 🔔 2026-09-12 |
-| `planning-agent` | Plan | Decompose Specification into Work Items | **L2** | 🟢 low | tech-lead | 🔔 2026-09-12 |
-| `planning-agent` | Plan | Estimate Effort for Work Items | **L1** | 🟢 low | tech-lead | 🔔 2026-09-12 |
-| `workflow-coordinator-agent` | Plan | Route Work Item to Agent | **L2** | 🟢 low | none | 🔔 2026-09-12 |
-| `backend-developer-agent` | Implement | Implement REST API Endpoint | **L2** | 🟡 medium | tech-lead | 🔔 2026-09-12 |
-| `backend-developer-agent` | Implement | Implement Data Model | **L2** | 🟡 medium | tech-lead | 🔔 2026-09-12 |
-| `backend-developer-agent` | Implement | Routine Code Refactor | **L3** | 🟢 low | tech-lead | 🔔 2026-09-12 |
-| `frontend-developer-agent` | Implement | Implement React Component | **L2** | 🟢 low | tech-lead | 🔔 2026-09-12 |
-| `integration-developer-agent` | Implement | Build Integration Adapter | **L2** | 🟠 high | tech-lead, schema-validation-check | 🔔 2026-09-12 |
-| `scribe-governance-agent` | Implement | Write Audit Event to Trail | **L3** | 🟢 low | none | 🔔 2026-09-12 |
-| `code-reviewer-agent` | Verify | Review PR for Framework Patterns | **L1** | 🟢 low | tech-lead | 🔔 2026-09-12 |
-| `qa-tester-agent` | Verify | Author Test Plan | **L2** | 🟢 low | tech-lead | 🔔 2026-09-12 |
-| `qa-tester-agent` | Verify | Execute Integration Test Suite | **L3** | 🟡 medium | tech-lead | 🔔 2026-09-12 |
-| `security-agent` | Verify | Scan for Vulnerabilities | **L1** | 🔴 critical | security-team | 🔔 2026-09-12 |
-| `devops-platform-agent` | Deploy | Generate Kubernetes Manifests | **L2** | 🟠 high | devops-lead | 🔔 2026-09-12 |
-| `devops-platform-agent` | Deploy | Deploy to Non-Production Environment | **L3** | 🟠 high | devops-lead | 🔔 2026-09-12 |
-| `security-agent` | Deploy | Assess Deployment Secrets and Configuration | **L1** | 🔴 critical | security-team, devops-lead | 🔔 2026-09-12 |
-| `finops-agent` | Report | Collect AI Token Usage Metrics | **L0** | 🟢 low | none | 🔔 2026-09-12 |
-| `scribe-governance-agent` | Report | Merge Governance Decision Inbox | **L3** | 🟡 medium | tech-lead | 🔔 2026-09-12 |
-| `experiment-runner-agent` | Learn | Execute Experiment Charter | **L2** | 🟡 medium | tech-lead | 🔔 2026-09-12 |
-| `finops-agent` | Learn | Generate Cost Optimization Report | **L1** | 🟢 low | none | 🔔 2026-09-12 |
+| `brownfield-assessor-agent` | Intake | Assess Repository Readiness | **L0** | 🟢 low | none | ⚠️ 2026-09-12 |
+| `modernization-agent` | Intake | Analyze Legacy Codebase | **L0** | 🟢 low | none | ⚠️ 2026-09-12 |
+| `specification-agent` | Intake | Parse Requirements Document | **L2** | 🟢 low | product-owner | ⚠️ 2026-09-12 |
+| `architecture-agent` | Specify | Author Architecture Decision Record | **L1** | 🟡 medium | solution-architect | ⚠️ 2026-09-12 |
+| `specification-agent` | Specify | Generate Structured Specification | **L2** | 🟡 medium | product-owner | ⚠️ 2026-09-12 |
+| `architecture-agent` | Design | Define Service Boundaries | **L1** | 🟠 high | solution-architect | ⚠️ 2026-09-12 |
+| `architecture-agent` | Design | Review API Contracts | **L1** | 🟡 medium | tech-lead | ⚠️ 2026-09-12 |
+| `integration-developer-agent` | Design | Define Integration Contract | **L1** | 🟠 high | solution-architect, tech-lead | ⚠️ 2026-09-12 |
+| `modernization-agent` | Design | Produce Migration Plan | **L1** | 🟠 high | solution-architect | ⚠️ 2026-09-12 |
+| `planning-agent` | Plan | Decompose Specification into Work Items | **L2** | 🟢 low | tech-lead | ⚠️ 2026-09-12 |
+| `planning-agent` | Plan | Estimate Effort for Work Items | **L1** | 🟢 low | tech-lead | ⚠️ 2026-09-12 |
+| `workflow-coordinator-agent` | Plan | Route Work Item to Agent | **L2** | 🟢 low | none | ⚠️ 2026-09-12 |
+| `backend-developer-agent` | Implement | Implement REST API Endpoint | **L2** | 🟡 medium | tech-lead | ⚠️ 2026-09-12 |
+| `backend-developer-agent` | Implement | Implement Data Model | **L2** | 🟡 medium | tech-lead | ⚠️ 2026-09-12 |
+| `backend-developer-agent` | Implement | Routine Code Refactor | **L3** | 🟢 low | tech-lead | ⚠️ 2026-09-12 |
+| `frontend-developer-agent` | Implement | Implement React Component | **L2** | 🟢 low | tech-lead | ⚠️ 2026-09-12 |
+| `integration-developer-agent` | Implement | Build Integration Adapter | **L2** | 🟠 high | tech-lead, schema-validation-check | ⚠️ 2026-09-12 |
+| `scribe-governance-agent` | Implement | Write Audit Event to Trail | **L3** | 🟢 low | none | ⚠️ 2026-09-12 |
+| `code-reviewer-agent` | Verify | Review PR for Framework Patterns | **L1** | 🟢 low | tech-lead | ⚠️ 2026-09-12 |
+| `qa-tester-agent` | Verify | Author Test Plan | **L2** | 🟢 low | tech-lead | ⚠️ 2026-09-12 |
+| `qa-tester-agent` | Verify | Execute Integration Test Suite | **L3** | 🟡 medium | tech-lead | ⚠️ 2026-09-12 |
+| `security-agent` | Verify | Scan for Vulnerabilities | **L1** | 🔴 critical | security-team | ⚠️ 2026-09-12 |
+| `devops-platform-agent` | Deploy | Generate Kubernetes Manifests | **L2** | 🟠 high | devops-lead | ⚠️ 2026-09-12 |
+| `devops-platform-agent` | Deploy | Deploy to Non-Production Environment | **L3** | 🟠 high | devops-lead | ⚠️ 2026-09-12 |
+| `security-agent` | Deploy | Assess Deployment Secrets and Configuration | **L1** | 🔴 critical | security-team, devops-lead | ⚠️ 2026-09-12 |
+| `finops-agent` | Report | Collect AI Token Usage Metrics | **L0** | 🟢 low | none | ⚠️ 2026-09-12 |
+| `scribe-governance-agent` | Report | Merge Governance Decision Inbox | **L3** | 🟡 medium | tech-lead | ⚠️ 2026-09-12 |
+| `experiment-runner-agent` | Learn | Execute Experiment Charter | **L2** | 🟡 medium | tech-lead | ⚠️ 2026-09-12 |
+| `finops-agent` | Learn | Generate Cost Optimization Report | **L1** | 🟢 low | none | ⚠️ 2026-09-12 |
 
 ## Entries by AIS Step
 
