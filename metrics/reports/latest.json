@@ -1,10 +1,10 @@
 {
   "schemaVersion": "1.0.0",
-  "generatedAt": "2026-11-02T06:09:27.052Z",
+  "generatedAt": "2026-11-09T06:09:56.205Z",
   "period": {
     "days": 30,
-    "from": "2026-10-03T06:09:22.772Z",
-    "to": "2026-11-02T06:09:27.052Z"
+    "from": "2026-10-10T06:09:52.532Z",
+    "to": "2026-11-09T06:09:56.205Z"
   },
   "repository": "AIS-Commercial-Business-Unit/AgenticSDLC",
   "auditEvents": {
@@ -84,7 +84,7 @@
     "tier": "Ad Hoc"
   },
   "maturityProfile": {
-    "generated_at": "2026-11-02T06:09:27.051Z",
+    "generated_at": "2026-11-09T06:09:56.204Z",
     "overall_score": 4.6,
     "overall_label": "Measured",
     "dimensions": [

@@ -1,6 +1,6 @@
 # Governance Summary Grid
 
-> Generated: 2026-11-02 06:09:27 UTC  
+> Generated: 2026-11-09 06:09:56 UTC  
 > Registry: `framework/templates/governance-registry.yaml`  
 > Total entries: **29** | ⚠️ Overdue: **29** | 🔔 Due soon: **0** | ✅ Healthy: **0**
 
